@@ -35,6 +35,7 @@ const getIdFromLocalStorage = (name: string, defaultId = 1): number => {
 
 const Pet: FunctionComponent = () => {
   const [isPressAlt, setIsPressAlt] = useState<boolean>(false);
+  const [scale, setScale] = useState<number>(1);
   const [showWaifu, setShowWaifu] = useState<boolean>(true);
   const [tips, setTips] = useState<{
     priority: number;
@@ -238,6 +239,7 @@ const Pet: FunctionComponent = () => {
       .then(result => {
         const text = `这句一言来自 <span>「${result.from}」</span>，是 <span>${result.creator}</span> 在 hitokoto.cn 投稿的。`;
         showMessage(result.hitokoto, 6000, 9);
+        // TODO fix
         window.setTimeout(() => {
           showMessage(text, 4000, 9);
         }, 6000);
@@ -304,13 +306,26 @@ const Pet: FunctionComponent = () => {
     }
   };
 
+  const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+    if (isPressAlt) {
+      e.preventDefault();
+
+      if (e.deltaY > 0) {
+        setScale(scale + 0.01);
+      } else {
+        setScale(scale - 0.01);
+      }
+    }
+  };
+
   const waifuStyle: CSSProperties = {
-    display: showWaifu ? 'block' : 'none'
+    display: showWaifu ? 'block' : 'none',
+    zoom: scale
   };
 
   return (
     <div>
-      <div id="waifu" style={waifuStyle} ref={waifuRef}>
+      <div id="waifu" style={waifuStyle} ref={waifuRef} onWheel={handleWheel}>
         {tips && (
           <div
             id="waifu-tips"
