@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, screen } from 'electron';
 import path from 'path';
 import { format as formatUrl } from 'url';
 
@@ -7,14 +7,25 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 // global reference to mainWindow (necessary to prevent window from being garbage collected)
 let mainWindow: BrowserWindow | null;
 
+// app.dock.hide();
+
 function createMainWindow() {
+  const { width, height } = screen.getPrimaryDisplay().bounds;
+
   const window = new BrowserWindow({
-    // alwaysOnTop: true,
-    // autoHideMenuBar: true,
-    // hasShadow: false,
-    // transparent: true,
-    // titleBarStyle: 'hidden',
-    // frame: false,
+    x: Math.floor(0.9 * width),
+    y: Math.floor(0.9 * height),
+    show: false,
+    alwaysOnTop: true,
+    autoHideMenuBar: true,
+    hasShadow: false,
+    transparent: true,
+    frame: false,
+    width: 350,
+    height: 350,
+    minimizable: false,
+    maximizable: false,
+    resizable: false,
     webPreferences: { nodeIntegration: true, webSecurity: false }
   });
 
@@ -45,6 +56,10 @@ function createMainWindow() {
     });
   });
 
+  window.on('ready-to-show', () => {
+    window.show();
+  });
+
   return window;
 }
 
@@ -66,4 +81,8 @@ app.on('activate', () => {
 // create main BrowserWindow when electron is ready
 app.on('ready', () => {
   mainWindow = createMainWindow();
+  mainWindow.setMenu(null);
+  mainWindow.setMenuBarVisibility(false);
+  mainWindow.setVisibleOnAllWorkspaces(true);
+  // mainWindow.setIgnoreMouseEvents(true);
 });
