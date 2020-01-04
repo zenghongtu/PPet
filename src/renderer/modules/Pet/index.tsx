@@ -51,6 +51,7 @@ const Pet: FunctionComponent = () => {
   ]);
 
   const messageTimerRef = useRef<number | null>(null);
+  const hitokotoTimerRef = useRef<number | null>(null);
   const waifuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -81,7 +82,7 @@ const Pet: FunctionComponent = () => {
     timeout: number,
     priority = 0
   ) => {
-    if (!text || (tips && tips.priority < priority)) return;
+    if (!text || (tips && tips.priority > priority)) return;
 
     if (messageTimerRef.current) {
       clearTimeout(messageTimerRef.current);
@@ -233,16 +234,17 @@ const Pet: FunctionComponent = () => {
 
   // TODO 节流
   const showHitokoto = () => {
-    // 增加 hitokoto.cn 的 API
     fetch('https://v1.hitokoto.cn')
       .then(response => response.json())
       .then(result => {
         const text = `这句一言来自 <span>「${result.from}」</span>，是 <span>${result.creator}</span> 在 hitokoto.cn 投稿的。`;
-        showMessage(result.hitokoto, 6000, 9);
-        // TODO fix
-        window.setTimeout(() => {
-          showMessage(text, 4000, 9);
-        }, 6000);
+        showMessage(result.hitokoto, 6000, 10);
+        if (hitokotoTimerRef.current) {
+          clearTimeout(hitokotoTimerRef.current);
+        }
+        hitokotoTimerRef.current = window.setTimeout(() => {
+          showMessage(text, 6000, 9);
+        }, 4000);
       });
   };
 
