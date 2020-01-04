@@ -9,7 +9,7 @@ module.exports = {
   env: {
     browser: true,
     node: true,
-    es6: true
+    es2020: true
   },
   globals: {
     __static: true
@@ -18,5 +18,8 @@ module.exports = {
     react: {
       version: 'detect'
     }
+  },
+  rules: {
+    'no-unused-vars': 1
   }
 };

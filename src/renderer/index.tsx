@@ -1,8 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-
-import { App } from './components/App';
-
+import BasicLayout from './layouts/BasicLayout';
 import './index.scss';
 
-ReactDOM.render(<App />, document.getElementById('app'));
+ReactDOM.render(<BasicLayout />, document.getElementById('app'));

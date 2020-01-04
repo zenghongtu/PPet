@@ -9,7 +9,7 @@
     "dist": "yarn compile && electron-builder",
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
     "dist:all": "yarn run dist --x64 -wml",
-    "dist:win": "yarn run dist --x64 -w",
+    "dist:win": "yarn run dist --win --ia32",
     "dist:mac": "yarn run dist -m",
     "dist:linux": "yarn run dist -l"
   },
@@ -28,6 +28,7 @@
     "eslint-plugin-react": "^7.17.0",
     "font-awesome": "^4.7.0",
     "node-sass": "^4.13.0",
+    "normalize.css": "^8.0.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-hot-loader": "4.12.18",

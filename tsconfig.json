@@ -7,6 +7,7 @@
     },
     "baseUrl": "src/",
     "jsx": "react",
+    "types": ["node"],
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
@@ -20,8 +21,9 @@
     "resolveJsonModule": true,
     "alwaysStrict": true,
     "strictFunctionTypes": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "noUnusedLocals": false,
+    "noUnusedParameters": false
   },
+  "include": ["./src"],
   "exclude": ["node_modules"]
 }
