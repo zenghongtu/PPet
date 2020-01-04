@@ -1,24 +1,20 @@
-#waifu-toggle {
+.waifu-toggle {
+  width: 10px;
+  padding: 5px;
   background-color: #fa0;
   border-radius: 5px;
   bottom: 66px;
   color: #fff;
   cursor: pointer;
   font-size: 12px;
-  left: 0;
-  margin-left: -100px;
-  padding: 5px 2px 5px 5px;
+  right: -5px;
+  margin-right: 0px;
   position: fixed;
-  transition: margin-left 1s;
-  width: 60px;
+  transition: margin-right 0.2s;
   writing-mode: vertical-rl;
 
-  &.waifu-toggle-active {
-    margin-left: -50px;
-
-    &:hover {
-      margin-left: -30px;
-    }
+  &:hover {
+    margin-right: 2px;
   }
 }
 

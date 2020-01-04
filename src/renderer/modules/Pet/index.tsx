@@ -237,17 +237,20 @@ const Pet: FunctionComponent = () => {
     waifuRef.current && (waifuRef.current.style.bottom = '-1000px');
     window.setTimeout(() => {
       setShowWaifu(false);
-    }, 3000);
+    }, 2000);
   };
 
   const showUp = () => {
-    setShowWaifu(true);
+    const isSwitch = !showWaifu;
+    if (isSwitch) {
+      setShowWaifu(true);
+    }
     window.setTimeout(() => {
       waifuRef.current && (waifuRef.current.style.bottom = '0');
     });
     window.setTimeout(() => {
-      welcomeMessage();
-    }, 3000);
+      isSwitch ? showMessage(messageArray, 2000) : welcomeMessage();
+    }, 2000);
   };
 
   const toolList = [
@@ -301,11 +304,12 @@ const Pet: FunctionComponent = () => {
 
       {!showWaifu && (
         <div
+          className="waifu-toggle"
           onClick={() => {
             showUp();
           }}
         >
-          123
+          現れ
         </div>
       )}
     </div>
