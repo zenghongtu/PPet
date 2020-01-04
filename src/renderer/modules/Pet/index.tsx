@@ -330,8 +330,13 @@ const Pet: FunctionComponent = () => {
     }
   };
 
-  const waifuStyle: CSSProperties = {
+  interface IWaifuStyle extends CSSProperties {
+    WebkitAppRegion: string;
+  }
+  const waifuStyle: IWaifuStyle = {
     display: showWaifu ? 'block' : 'none',
+    cursor: isPressAlt ? 'move' : 'grab',
+    WebkitAppRegion: isPressAlt ? 'drag' : 'no-drag',
     zoom: scale
   };
 

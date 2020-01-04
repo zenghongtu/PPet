@@ -7,7 +7,7 @@
   color: #fff;
   cursor: pointer;
   font-size: 12px;
-  right: -5px;
+  right: 0;
   margin-right: 0px;
   position: fixed;
   transition: margin-right 0.2s;
@@ -26,6 +26,7 @@
   transform: translateY(3px);
   transition: transform 0.3s ease-in-out, bottom 3s ease-in-out;
   z-index: 1;
+  cursor: grab;
 
   &:hover {
     transform: translateY(0);
@@ -57,7 +58,7 @@
 }
 
 #waifu #live2d {
-  cursor: grab;
+  cursor: inherit;
   position: relative;
 
   &:active {
