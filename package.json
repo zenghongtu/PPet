@@ -17,6 +17,7 @@
     "source-map-support": "^0.5.16"
   },
   "devDependencies": {
+    "@types/node": "^13.1.2",
     "@types/react": "^16.9.17",
     "@types/react-dom": "^16.9.4",
     "electron": "7.1.7",
@@ -25,6 +26,7 @@
     "electron-webpack-eslint": "^5.0.1",
     "electron-webpack-ts": "^3.2.0",
     "eslint-plugin-react": "^7.17.0",
+    "font-awesome": "^4.7.0",
     "node-sass": "^4.13.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
@@ -32,5 +34,15 @@
     "sass-loader": "^8.0.0",
     "typescript": "^3.7.4",
     "webpack": "4.41.5"
+  },
+  "electronWebpack": {
+    "commonSourceDirectory": "src/common",
+    "staticSourceDirectory": "src/static",
+    "main": {
+      "sourceDirectory": "src/main"
+    },
+    "renderer": {
+      "sourceDirectory": "src/renderer"
+    }
   }
 }
