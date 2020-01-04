@@ -4,3 +4,5 @@ declare module '*.scss' {
 }
 
 declare const __static: string;
+declare const loadlive2d: any;
+declare const Live2D: any;
