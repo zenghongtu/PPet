@@ -207,6 +207,7 @@ const Pet: FunctionComponent = () => {
       .then(result => {
         loadModel(result.model.id);
         showMessage(result.model.message, 4000, 10);
+        localStorage.modelMessage = result.model.message;
       });
   };
 
@@ -255,8 +256,12 @@ const Pet: FunctionComponent = () => {
   };
 
   const showInfo = () => {
-    // TODO
-    console.log('showInfo: ');
+    const modelId = localStorage.modelId || '未知';
+    const modelTexturesId = localStorage.modelTexturesId || '未知';
+    const modelMessage = localStorage.modelMessage;
+
+    const text = `${modelMessage}, modelId: ${modelId}, modelTexturesId: ${modelTexturesId}`;
+    showMessage(text, 8000, 11);
   };
 
   const hideWaifu = () => {
