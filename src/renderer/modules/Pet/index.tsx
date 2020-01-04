@@ -8,6 +8,7 @@ import React, {
 
 import './live2d.min.js';
 import './style.scss';
+import { remote } from 'electron';
 
 interface IWaifuTips {
   mouseover: Mouseover[];
@@ -33,6 +34,7 @@ const getIdFromLocalStorage = (name: string, defaultId = 1): number => {
 };
 
 const Pet: FunctionComponent = () => {
+  const [isPressAlt, setIsPressAlt] = useState<boolean>(false);
   const [showWaifu, setShowWaifu] = useState<boolean>(true);
   const [tips, setTips] = useState<{
     priority: number;
@@ -54,6 +56,24 @@ const Pet: FunctionComponent = () => {
     initModel();
     showUp();
   }, []);
+
+  useEffect(() => {
+    const handleKeydown = handleKeyEvent.bind(null, true);
+    const handleKeyup = handleKeyEvent.bind(null, false);
+    window.addEventListener('keydown', handleKeydown);
+    window.addEventListener('keyup', handleKeyup);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeydown);
+      window.removeEventListener('keyup', handleKeyup);
+    };
+  }, []);
+
+  const handleKeyEvent = (val: boolean, ev: KeyboardEvent) => {
+    if (ev.keyCode === 18) {
+      setIsPressAlt(val);
+    }
+  };
 
   const showMessage = (
     text: string | string[],
@@ -257,13 +277,19 @@ const Pet: FunctionComponent = () => {
     }, 2000);
   };
 
+  const quitApp = () => {
+    remote.app.quit();
+  };
+
   const toolList = [
     { name: 'comment', icon: 'comment', call: showHitokoto },
     { name: 'user', icon: 'user-circle', call: loadOtherModel },
     { name: 'clothes', icon: 'street-view', call: loadOtherTextures },
     { name: 'camera', icon: 'camera-retro', call: capture },
     { name: 'info', icon: 'info-circle', call: showInfo },
-    { name: 'hide', icon: 'times', call: hideWaifu }
+    isPressAlt
+      ? { name: 'quit', icon: 'times', call: quitApp }
+      : { name: 'hide', icon: 'eye-slash', call: hideWaifu }
   ];
 
   const handleToolListClick = (e: React.MouseEvent<HTMLSpanElement>) => {
