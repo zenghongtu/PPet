@@ -11,7 +11,8 @@
     "dist:all": "yarn run dist --x64 -wml",
     "dist:win": "yarn run dist --win --ia32",
     "dist:mac": "yarn run dist -m",
-    "dist:linux": "yarn run dist -l"
+    "dist:linux": "yarn run dist -l",
+    "lint": "eslint src --fix --ext .ts,.tsx "
   },
   "dependencies": {
     "source-map-support": "^0.5.16"
@@ -20,6 +21,8 @@
     "@types/node": "^13.1.2",
     "@types/react": "^16.9.17",
     "@types/react-dom": "^16.9.4",
+    "@typescript-eslint/eslint-plugin": "^2.14.0",
+    "@typescript-eslint/parser": "^2.14.0",
     "electron": "7.1.7",
     "electron-builder": "21.2.0",
     "electron-webpack": "^2.7.4",
