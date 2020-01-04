@@ -157,11 +157,15 @@ const Pet: FunctionComponent = () => {
     });
   };
 
-  const loadRandModel = () => {
+  const loadOtherTextures = (rand = false) => {
     const modelId = getIdFromLocalStorage('modelId');
     const modelTexturesId = getIdFromLocalStorage('modelTexturesId', 53);
     // 可选 "rand"(随机), "switch"(顺序)
-    fetch(`${apiBaseUrl}/rand_textures/?id=${modelId}-${modelTexturesId}`)
+    fetch(
+      `${apiBaseUrl}/${
+        rand ? 'rand' : 'switch'
+      }_textures/?id=${modelId}-${modelTexturesId}`
+    )
       .then(response => response.json())
       .then(result => {
         if (
@@ -174,9 +178,9 @@ const Pet: FunctionComponent = () => {
       });
   };
 
-  const loadOtherModel = () => {
+  const loadOtherModel = (rand = false) => {
     const modelId = getIdFromLocalStorage('modelId');
-    fetch(`${apiBaseUrl}/switch/?id=${modelId}`)
+    fetch(`${apiBaseUrl}/${rand ? 'rand' : 'switch'}/?id=${modelId}`)
       .then(response => response.json())
       .then(result => {
         loadModel(result.model.id);
@@ -256,7 +260,7 @@ const Pet: FunctionComponent = () => {
   const toolList = [
     { name: 'comment', icon: 'comment', call: showHitokoto },
     { name: 'user', icon: 'user-circle', call: loadOtherModel },
-    { name: 'clothes', icon: 'street-view', call: loadRandModel },
+    { name: 'clothes', icon: 'street-view', call: loadOtherTextures },
     { name: 'camera', icon: 'camera-retro', call: capture },
     { name: 'info', icon: 'info-circle', call: showInfo },
     { name: 'hide', icon: 'times', call: hideWaifu }
