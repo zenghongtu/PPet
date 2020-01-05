@@ -335,6 +335,10 @@ const Pet: FunctionComponent = () => {
     showMessage(text, 8000, 11);
   };
 
+  const showPlugins = () => {
+    showMessage('插件中心，还在努力开发中...', 4000, 12);
+  };
+
   const hideWaifu = () => {
     showMessage('愿你有一天能与重要的人重逢。', 2000, 11);
     waifuRef.current && (waifuRef.current.style.bottom = '-1000px');
@@ -368,6 +372,7 @@ const Pet: FunctionComponent = () => {
     { name: 'user', icon: 'user-circle', call: loadOtherModel },
     { name: 'clothes', icon: 'street-view', call: loadOtherTextures },
     { name: 'camera', icon: 'camera-retro', call: capture },
+    { name: 'plugin', icon: 'inbox', call: showPlugins },
     { name: 'info', icon: 'info-circle', call: showInfo },
     { name: 'hide', icon: 'eye-slash', call: hideWaifu }
   ];
