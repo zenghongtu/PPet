@@ -12,6 +12,8 @@
   position: fixed;
   transition: margin-right 0.2s;
   writing-mode: vertical-rl;
+  -webkit-app-region: drag;
+  -webkit-user-select: none;
 
   &:hover {
     margin-right: 2px;

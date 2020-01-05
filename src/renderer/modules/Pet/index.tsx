@@ -8,7 +8,6 @@ import React, {
 
 import './live2d.min.js';
 import './style.scss';
-import { remote } from 'electron';
 
 interface IWaifuTips {
   mouseover: Mouseover[];
@@ -291,19 +290,13 @@ const Pet: FunctionComponent = () => {
     }, 2000);
   };
 
-  const quitApp = () => {
-    remote.app.quit();
-  };
-
   const toolList = [
     { name: 'comment', icon: 'comment', call: showHitokoto },
     { name: 'user', icon: 'user-circle', call: loadOtherModel },
     { name: 'clothes', icon: 'street-view', call: loadOtherTextures },
     { name: 'camera', icon: 'camera-retro', call: capture },
     { name: 'info', icon: 'info-circle', call: showInfo },
-    isPressAlt
-      ? { name: 'quit', icon: 'times', call: quitApp }
-      : { name: 'hide', icon: 'eye-slash', call: hideWaifu }
+    { name: 'hide', icon: 'eye-slash', call: hideWaifu }
   ];
 
   const handleToolListClick = (e: React.MouseEvent<HTMLSpanElement>) => {
