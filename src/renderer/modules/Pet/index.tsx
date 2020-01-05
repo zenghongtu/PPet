@@ -52,8 +52,7 @@ const Pet: FunctionComponent = () => {
     '好久不见，日子过得好快呢……',
     '大坏蛋！你都多久没理人家了呀，嘤嘤嘤～',
     '嗨～快来逗我玩吧！',
-    '拿小拳拳锤你胸口！',
-    '记得把小家加入 Adblock 白名单哦！'
+    '拿小拳拳锤你胸口！'
   ]);
 
   const messageTimerRef = useRef<number | null>(null);
@@ -188,8 +187,8 @@ const Pet: FunctionComponent = () => {
   };
 
   const initModel = () => {
-    const modelId = getIdFromLocalStorage('modelId');
-    const modelTexturesId = getIdFromLocalStorage('modelTexturesId', 53);
+    const modelId = getIdFromLocalStorage('modelId', 3);
+    const modelTexturesId = getIdFromLocalStorage('modelTexturesId', 45);
 
     loadModel(+modelId, +modelTexturesId);
 
