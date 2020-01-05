@@ -1,6 +1,7 @@
 import { app, BrowserWindow, screen } from 'electron';
 import path from 'path';
 import { format as formatUrl } from 'url';
+import { autoUpdater } from 'electron-updater';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -92,4 +93,6 @@ app.on('ready', () => {
   mainWindow.setMenuBarVisibility(false);
   mainWindow.setVisibleOnAllWorkspaces(true);
   // mainWindow.setIgnoreMouseEvents(true);
+
+  autoUpdater.checkForUpdatesAndNotify();
 });
