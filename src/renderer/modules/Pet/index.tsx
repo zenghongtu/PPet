@@ -26,9 +26,13 @@ interface Mouseover {
   text: string[];
 }
 
+const { screen, getCurrentWindow } = remote;
+
 const defaultSize = 350;
 
 const apiBaseUrl = 'https://live2d.fghrsh.net/api';
+
+const currentWindow = getCurrentWindow();
 
 const getIdFromLocalStorage = (name: string, defaultId = 1): number => {
   const _id = localStorage.getItem(name) || defaultId;
@@ -55,6 +59,10 @@ const Pet: FunctionComponent = () => {
   const hitokotoTimerRef = useRef<number | null>(null);
   const scrollTimerRef = useRef<number | null>(null);
   const waifuRef = useRef<HTMLDivElement>(null);
+  const winSizeRef = useRef<{
+    width: number;
+    height: number;
+  }>({ width: defaultSize, height: defaultSize });
 
   useEffect(() => {
     initModel();
@@ -272,11 +280,13 @@ const Pet: FunctionComponent = () => {
   };
 
   const hideWaifu = () => {
-    // TODO
     showMessage('愿你有一天能与重要的人重逢。', 2000, 11);
     waifuRef.current && (waifuRef.current.style.bottom = '-1000px');
     window.setTimeout(() => {
       setShowWaifu(false);
+      currentWindow.setSize(40, 80);
+      const { x, y } = screen.getCursorScreenPoint();
+      currentWindow.setPosition(x - 20, y - 40);
     }, 2000);
   };
 
@@ -284,6 +294,10 @@ const Pet: FunctionComponent = () => {
     const isSwitch = !showWaifu;
     if (isSwitch) {
       setShowWaifu(true);
+      const { width, height } = winSizeRef.current;
+      currentWindow.setSize(width, height);
+      const { x, y } = screen.getCursorScreenPoint();
+      currentWindow.setPosition(x - width, y - height);
     }
     window.setTimeout(() => {
       waifuRef.current && (waifuRef.current.style.bottom = '0');
@@ -337,9 +351,10 @@ const Pet: FunctionComponent = () => {
       }
 
       scrollTimerRef.current = window.setTimeout(() => {
-        const _width = Math.floor(defaultSize * zoomFactor);
-        const _height = Math.floor(defaultSize * zoomFactor);
-        remote.getCurrentWindow().setSize(_width, _height);
+        const width = Math.floor(defaultSize * zoomFactor);
+        const height = Math.floor(defaultSize * zoomFactor);
+        currentWindow.setSize(width, height);
+        winSizeRef.current = { width, height };
       }, 200);
     }
   };
@@ -379,10 +394,9 @@ const Pet: FunctionComponent = () => {
 
       {!showWaifu && (
         <div
+          title="双击现身哦~"
           className="waifu-toggle"
-          onClick={() => {
-            showUp();
-          }}
+          onDoubleClick={showUp}
         >
           現れ
         </div>

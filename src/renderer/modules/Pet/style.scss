@@ -3,21 +3,12 @@
   padding: 5px;
   background-color: #fa0;
   border-radius: 5px;
-  bottom: 66px;
   color: #fff;
-  cursor: pointer;
   font-size: 12px;
-  right: 0;
-  margin-right: 0px;
-  position: fixed;
-  transition: margin-right 0.2s;
+  margin: 0;
   writing-mode: vertical-rl;
   -webkit-app-region: drag;
   -webkit-user-select: none;
-
-  &:hover {
-    margin-right: 2px;
-  }
 }
 
 #waifu {
