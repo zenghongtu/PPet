@@ -3,6 +3,7 @@ import path from 'path';
 import { format as formatUrl } from 'url';
 import { autoUpdater } from 'electron-updater';
 import * as Sentry from '@sentry/electron';
+import initTray from './ppetTray';
 
 Sentry.init({
   dsn: 'https://57b49a715b324bbf928b32f92054c8d6@sentry.io/1872002'
@@ -105,7 +106,9 @@ app.on('ready', () => {
   mainWindow.setMenu(null);
   mainWindow.setMenuBarVisibility(false);
   mainWindow.setVisibleOnAllWorkspaces(true);
+  mainWindow.webContents.setIgnoreMenuShortcuts(true);
   // mainWindow.setIgnoreMouseEvents(true);
 
+  initTray(mainWindow);
   autoUpdater.checkForUpdatesAndNotify();
 });

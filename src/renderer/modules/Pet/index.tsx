@@ -8,8 +8,7 @@ import React, {
 
 import './live2d.min.js';
 import './style.scss';
-import { remote, webFrame } from 'electron';
-import emitter from '@/utils/emitter';
+import { remote, webFrame, ipcRenderer } from 'electron';
 
 interface IWaifuTips {
   mouseover: Mouseover[];
@@ -73,12 +72,15 @@ const Pet: FunctionComponent = () => {
   useEffect(() => {
     initModel();
     showUp();
-    const handleShowTool = (isShow: boolean) => {
+    const handleShowTool = (
+      event: Electron.IpcRendererEvent,
+      isShow: boolean
+    ) => {
       setIsShowTools(isShow);
     };
-    emitter.on('show-tool', handleShowTool);
+    ipcRenderer.on('switch-tool-message', handleShowTool);
     return () => {
-      emitter.off('show-tool', handleShowTool);
+      ipcRenderer.removeListener('switch-tool-message', handleShowTool);
     };
   }, []);
 
