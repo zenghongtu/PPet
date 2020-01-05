@@ -8,6 +8,7 @@ import React, {
 
 import './live2d.min.js';
 import './style.scss';
+import { remote, webFrame } from 'electron';
 
 interface IWaifuTips {
   mouseover: Mouseover[];
@@ -25,6 +26,8 @@ interface Mouseover {
   text: string[];
 }
 
+const defaultSize = 350;
+
 const apiBaseUrl = 'https://live2d.fghrsh.net/api';
 
 const getIdFromLocalStorage = (name: string, defaultId = 1): number => {
@@ -34,7 +37,6 @@ const getIdFromLocalStorage = (name: string, defaultId = 1): number => {
 
 const Pet: FunctionComponent = () => {
   const [isPressAlt, setIsPressAlt] = useState<boolean>(false);
-  const [scale, setScale] = useState<number>(1);
   const [showWaifu, setShowWaifu] = useState<boolean>(true);
   const [tips, setTips] = useState<{
     priority: number;
@@ -51,6 +53,7 @@ const Pet: FunctionComponent = () => {
 
   const messageTimerRef = useRef<number | null>(null);
   const hitokotoTimerRef = useRef<number | null>(null);
+  const scrollTimerRef = useRef<number | null>(null);
   const waifuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -73,7 +76,7 @@ const Pet: FunctionComponent = () => {
   const handleKeyEvent = (val: boolean, ev: KeyboardEvent) => {
     if (ev.keyCode === 18) {
       if (val) {
-        showMessage('可以用滚轮把我变大变小了哦~', 4000);
+        showMessage('可以用滚轮把我变大变小了哦~', 4000, 12);
       } else {
         setTips(null);
       }
@@ -315,11 +318,29 @@ const Pet: FunctionComponent = () => {
     if (isPressAlt) {
       e.preventDefault();
 
+      let zoomFactor = webFrame.getZoomFactor();
+
       if (e.deltaY > 0) {
-        setScale(scale + 0.01);
+        zoomFactor += 0.1;
       } else {
-        setScale(scale - 0.01);
+        zoomFactor -= 0.1;
       }
+
+      if (zoomFactor < 0.3) {
+        return;
+      }
+
+      webFrame.setZoomFactor(zoomFactor);
+
+      if (scrollTimerRef.current) {
+        clearTimeout(scrollTimerRef.current);
+      }
+
+      scrollTimerRef.current = window.setTimeout(() => {
+        const _width = Math.floor(defaultSize * zoomFactor);
+        const _height = Math.floor(defaultSize * zoomFactor);
+        remote.getCurrentWindow().setSize(_width, _height);
+      }, 200);
     }
   };
 
@@ -329,12 +350,11 @@ const Pet: FunctionComponent = () => {
   const waifuStyle: IWaifuStyle = {
     display: showWaifu ? 'block' : 'none',
     cursor: isPressAlt ? 'move' : 'grab',
-    WebkitAppRegion: isPressAlt ? 'drag' : 'no-drag',
-    zoom: scale
+    WebkitAppRegion: isPressAlt ? 'drag' : 'no-drag'
   };
 
   return (
-    <div>
+    <>
       <div id="waifu" style={waifuStyle} ref={waifuRef} onWheel={handleWheel}>
         {tips && (
           <div
@@ -367,7 +387,7 @@ const Pet: FunctionComponent = () => {
           現れ
         </div>
       )}
-    </div>
+    </>
   );
 };
 
