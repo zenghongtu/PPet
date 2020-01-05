@@ -9,6 +9,7 @@ import React, {
 import './live2d.min.js';
 import './style.scss';
 import { remote, webFrame } from 'electron';
+import emitter from '@/utils/emitter';
 
 interface IWaifuTips {
   mouseover: Mouseover[];
@@ -41,6 +42,7 @@ const getIdFromLocalStorage = (name: string, defaultId = 1): number => {
 
 const Pet: FunctionComponent = () => {
   const [isPressAlt, setIsPressAlt] = useState<boolean>(false);
+  const [isShowTools, setIsShowTools] = useState<boolean>(true);
   const [showWaifu, setShowWaifu] = useState<boolean>(true);
   const [tips, setTips] = useState<{
     priority: number;
@@ -67,6 +69,13 @@ const Pet: FunctionComponent = () => {
   useEffect(() => {
     initModel();
     showUp();
+    const handleShowTool = (isShow: boolean) => {
+      setIsShowTools(isShow);
+    };
+    emitter.on('show-tool', handleShowTool);
+    return () => {
+      emitter.off('show-tool', handleShowTool);
+    };
   }, []);
 
   useEffect(() => {
@@ -378,18 +387,20 @@ const Pet: FunctionComponent = () => {
           ></div>
         )}
         <canvas id="live2d" width="300" height="300"></canvas>
-        <div id="waifu-tool" onClick={handleToolListClick}>
-          {toolList.map(item => {
-            const { name, icon } = item;
-            return (
-              <span
-                key={name}
-                data-name={name}
-                className={`fa fa-lg fa-${icon}`}
-              ></span>
-            );
-          })}
-        </div>
+        {isShowTools && (
+          <div id="waifu-tool" onClick={handleToolListClick}>
+            {toolList.map(item => {
+              const { name, icon } = item;
+              return (
+                <span
+                  key={name}
+                  data-name={name}
+                  className={`fa fa-lg fa-${icon}`}
+                ></span>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {!showWaifu && (

@@ -32,6 +32,7 @@
     "font-awesome": "^4.7.0",
     "husky": "^3.1.0",
     "lint-staged": "^9.5.0",
+    "mitt": "^1.2.0",
     "node-sass": "^4.13.0",
     "normalize.css": "^8.0.1",
     "react": "^16.12.0",

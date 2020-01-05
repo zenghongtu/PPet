@@ -3,6 +3,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import BasicLayout from './layouts/BasicLayout';
 import './index.scss';
+import emitter from './utils/emitter';
 
 const { Menu, MenuItem, app, getCurrentWindow } = remote;
 
@@ -23,6 +24,15 @@ const menu = Menu.buildFromTemplate([
     click: item => {
       const { checked } = item;
       app.setLoginItemSettings({ openAtLogin: checked });
+    }
+  },
+  {
+    label: '小工具',
+    type: 'checkbox',
+    checked: true,
+    click: item => {
+      const { checked } = item;
+      emitter.emit('show-tool', checked);
     }
   },
   {
