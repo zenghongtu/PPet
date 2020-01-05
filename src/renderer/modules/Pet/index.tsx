@@ -138,7 +138,7 @@ const Pet: FunctionComponent = () => {
   };
 
   const handleKeyEvent = (val: boolean, ev: KeyboardEvent) => {
-    if (ev.keyCode === 18) {
+    if (ev.key === 'Alt') {
       if (val) {
         showMessage('可以用滚轮把我变大变小了哦~', 4000, 12);
       } else {
