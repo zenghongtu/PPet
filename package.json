@@ -1,17 +1,24 @@
 {
-  "name": "electron-starter",
-  "version": "0.0.1",
-  "description": "Electron starter",
+  "name": "PPet",
+  "version": "0.1.0",
+  "description": "给你的桌面添加一点趣味~",
   "license": "MIT",
+  "repository": "https://github.com/zenghongtu/PPet.git",
+  "homepage": "https://github.com/zenghongtu/PPet",
+  "author": "zenghongtu <zenghongtu@gmail.com>",
   "scripts": {
     "start": "electron-webpack dev",
     "compile": "electron-webpack",
     "dist": "yarn compile && electron-builder",
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
-    "dist:all": "yarn run dist --x64 -wml",
+    "dist:all": "yarn run dist -wml -c.mac.identity=null",
     "dist:win": "yarn run dist --win --ia32",
     "dist:mac": "yarn run dist -m",
     "dist:linux": "yarn run dist -l",
+    "patch": "yarn version --patch",
+    "minor": "yarn version --minor",
+    "major": "yarn version --major",
+    "release": "yarn dist -p always",
     "lint": "eslint src --fix --ext .ts,.tsx "
   },
   "dependencies": {
@@ -44,9 +51,73 @@
     "typescript": "^3.7.4",
     "webpack": "4.41.5"
   },
+  "build": {
+    "productName": "PPet",
+    "artifactName": "PPet-${version}.${ext}",
+    "appId": "com.zenghongtu.ppet",
+    "asar": true,
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "category": "public.app-category.development",
+      "icon": "static/icons/mac/icon.icns",
+      "darkModeSupport": true
+    },
+    "win": {
+      "icon": "static/icons/win/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "ia32"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "createDesktopShortcut": "always",
+      "createStartMenuShortcut": true,
+      "shortcutName": "PPet",
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true,
+      "artifactName": "PPet-${version}.${ext}",
+      "unicode": true
+    },
+    "extraFiles": [],
+    "dmg": {
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "linux": {
+      "icon": "static/icons/png",
+      "target": [
+        "deb"
+      ],
+      "category": "Development"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "zenghongtu",
+        "repo": "PPet"
+      }
+    ]
+  },
   "electronWebpack": {
     "commonSourceDirectory": "src/common",
-    "staticSourceDirectory": "src/static",
     "main": {
       "sourceDirectory": "src/main"
     },
