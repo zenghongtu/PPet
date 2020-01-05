@@ -4,6 +4,9 @@ import { format as formatUrl } from 'url';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
+app.commandLine.appendSwitch('disable-renderer-backgrounding');
+app.commandLine.appendSwitch('disable-background-timer-throttling');
+
 // global reference to mainWindow (necessary to prevent window from being garbage collected)
 let mainWindow: BrowserWindow | null;
 
@@ -26,7 +29,11 @@ function createMainWindow() {
     minimizable: false,
     maximizable: false,
     resizable: false,
-    webPreferences: { nodeIntegration: true, webSecurity: false }
+    webPreferences: {
+      nodeIntegration: true,
+      webSecurity: false,
+      backgroundThrottling: false
+    }
   });
 
   if (isDevelopment) {

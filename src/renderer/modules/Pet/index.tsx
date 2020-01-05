@@ -31,7 +31,7 @@ const { screen, getCurrentWindow } = remote;
 
 const defaultSize = 350;
 
-const apiBaseUrl = 'https://live2d.fghrsh.net/api';
+const apiBaseUrl = 'https://ppet.zenghongtu.com/api';
 
 const currentWindow = getCurrentWindow();
 
@@ -58,6 +58,10 @@ const Pet: FunctionComponent = () => {
   ]);
 
   const messageTimerRef = useRef<number | null>(null);
+  const intervalSetRef = useRef<{
+    startTime: Date;
+    timer: number | null;
+  } | null>(null);
   const hitokotoTimerRef = useRef<number | null>(null);
   const scrollTimerRef = useRef<number | null>(null);
   const waifuRef = useRef<HTMLDivElement>(null);
@@ -89,6 +93,49 @@ const Pet: FunctionComponent = () => {
       window.removeEventListener('keyup', handleKeyup);
     };
   }, []);
+
+  useEffect(() => {
+    currentWindow.on('blur', handleWindowBlur);
+    currentWindow.on('focus', handleWindowFocus);
+    return () => {
+      currentWindow.removeListener('blur', handleWindowBlur);
+      currentWindow.removeListener('focus', handleWindowFocus);
+    };
+  }, []);
+
+  const handleWindowBlur = () => {
+    const timer = window.setInterval(() => {
+      if (!intervalSetRef.current) {
+        return;
+      }
+
+      const curTS = new Date().getTime();
+      const startTS =
+        intervalSetRef.current.startTime &&
+        intervalSetRef.current.startTime.getTime();
+
+      if (!startTS) {
+        return;
+      }
+
+      const duration = Math.floor((curTS - startTS) / (1e3 * 60));
+      // TODO 更多语句
+      const text = `你已经持续工作${duration}分钟了，该休息一下和我玩耍了哦~`;
+      showMessage(text, 6000, 9);
+    }, 25 * 60 * 1e3);
+
+    intervalSetRef.current = { startTime: new Date(), timer };
+  };
+
+  const handleWindowFocus = () => {
+    if (!intervalSetRef.current) {
+      return;
+    }
+    const timer = intervalSetRef.current.timer;
+    if (timer) {
+      clearInterval(timer);
+    }
+  };
 
   const handleKeyEvent = (val: boolean, ev: KeyboardEvent) => {
     if (ev.keyCode === 18) {
