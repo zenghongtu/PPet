@@ -10,7 +10,7 @@ app.commandLine.appendSwitch('disable-background-timer-throttling');
 // global reference to mainWindow (necessary to prevent window from being garbage collected)
 let mainWindow: BrowserWindow | null;
 
-// app.dock.hide();
+app.dock.hide();
 
 function createMainWindow() {
   const { width, height } = screen.getPrimaryDisplay().bounds;
