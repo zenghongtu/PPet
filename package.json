@@ -15,6 +15,7 @@
     "lint": "eslint src --fix --ext .ts,.tsx "
   },
   "dependencies": {
+    "@sentry/electron": "1.1.0",
     "source-map-support": "^0.5.16"
   },
   "devDependencies": {
@@ -25,6 +26,7 @@
     "@typescript-eslint/parser": "^2.14.0",
     "electron": "7.1.7",
     "electron-builder": "21.2.0",
+    "electron-updater": "^4.2.0",
     "electron-webpack": "^2.7.4",
     "electron-webpack-eslint": "^5.0.1",
     "electron-webpack-ts": "^3.2.0",

@@ -1,7 +1,20 @@
-import { app, BrowserWindow, screen } from 'electron';
+import { app, BrowserWindow, screen, crashReporter } from 'electron';
 import path from 'path';
 import { format as formatUrl } from 'url';
 import { autoUpdater } from 'electron-updater';
+import * as Sentry from '@sentry/electron';
+
+Sentry.init({
+  dsn: 'https://57b49a715b324bbf928b32f92054c8d6@sentry.io/1872002'
+});
+
+crashReporter.start({
+  companyName: 'None',
+  productName: 'PPet',
+  ignoreSystemCrashHandler: true,
+  submitURL:
+    'https://sentry.io/api/1872002/minidump/?sentry_key=57b49a715b324bbf928b32f92054c8d6'
+});
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
