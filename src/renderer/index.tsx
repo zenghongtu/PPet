@@ -6,10 +6,8 @@ import './index.scss';
 
 const { Menu, MenuItem, app, getCurrentWindow } = remote;
 
-const menu = new Menu();
-
-menu.append(
-  new MenuItem({
+const menu = Menu.buildFromTemplate([
+  {
     label: '@置顶',
     type: 'checkbox',
     checked: true,
@@ -17,11 +15,8 @@ menu.append(
       const { checked } = item;
       getCurrentWindow().setAlwaysOnTop(checked);
     }
-  })
-);
-
-menu.append(
-  new MenuItem({
+  },
+  {
     label: '开机启动',
     type: 'checkbox',
     checked: app.getLoginItemSettings().openAtLogin,
@@ -29,17 +24,14 @@ menu.append(
       const { checked } = item;
       app.setLoginItemSettings({ openAtLogin: checked });
     }
-  })
-);
-
-menu.append(
-  new MenuItem({
+  },
+  {
     label: '退出',
     click: item => {
       app.quit();
     }
-  })
-);
+  }
+]);
 
 window.addEventListener(
   'contextmenu',
