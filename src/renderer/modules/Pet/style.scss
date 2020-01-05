@@ -20,6 +20,7 @@
   transition: transform 0.3s ease-in-out, bottom 3s ease-in-out;
   z-index: 1;
   cursor: grab;
+  -webkit-user-select: none;
 
   &:hover {
     transform: translateY(0);
@@ -66,23 +67,23 @@
   right: -10px;
   top: 70px;
   transition: opacity 1s;
+
+  & span {
+    color: rgb(91, 91, 91);
+    display: block;
+    line-height: 30px;
+    text-align: center;
+    transition: color 0.3s;
+    cursor: pointer;
+
+    &:hover {
+      color: #fa0;
+    }
+  }
 }
 
 #waifu:hover #waifu-tool {
   opacity: 1;
-}
-
-#waifu-tool span {
-  color: #5b6c7d;
-  cursor: pointer;
-  display: block;
-  line-height: 30px;
-  text-align: center;
-  transition: color 0.3s;
-
-  &:hover {
-    color: #0684bd;
-  }
 }
 
 @keyframes shake {
