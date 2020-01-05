@@ -22,6 +22,18 @@ menu.append(
 
 menu.append(
   new MenuItem({
+    label: '开机启动',
+    type: 'checkbox',
+    checked: app.getLoginItemSettings().openAtLogin,
+    click: item => {
+      const { checked } = item;
+      app.setLoginItemSettings({ openAtLogin: checked });
+    }
+  })
+);
+
+menu.append(
+  new MenuItem({
     label: '退出',
     click: item => {
       app.quit();
