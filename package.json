@@ -30,6 +30,8 @@
     "electron-webpack-ts": "^3.2.0",
     "eslint-plugin-react": "^7.17.0",
     "font-awesome": "^4.7.0",
+    "husky": "^3.1.0",
+    "lint-staged": "^9.5.0",
     "node-sass": "^4.13.0",
     "normalize.css": "^8.0.1",
     "react": "^16.12.0",
@@ -48,5 +50,11 @@
     "renderer": {
       "sourceDirectory": "src/renderer"
     }
+  },
+  "lint-staged": {
+    "src/**/*.{ts,tsx}": [
+      "npm run lint",
+      "git add"
+    ]
   }
 }
