@@ -48,6 +48,7 @@ function createMainWindow() {
     frame: false,
     width: 350,
     height: 350,
+    skipTaskbar: true,
     minimizable: false,
     maximizable: false,
     resizable: false,
