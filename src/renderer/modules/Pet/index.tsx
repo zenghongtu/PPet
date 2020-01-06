@@ -324,7 +324,7 @@ const Pet: FunctionComponent = () => {
 
   const welcomeMessage = () => {
     const now = new Date().getHours();
-    let text;
+    let text: string;
 
     if (now > 5 && now <= 7)
       text = '早上好！一日之计在于晨，美好的一天就要开始了。';
@@ -337,11 +337,12 @@ const Pet: FunctionComponent = () => {
     else if (now > 17 && now <= 19)
       text = '傍晚了！窗外夕阳的景色很美丽呢，最美不过夕阳红～';
     else if (now > 19 && now <= 21) text = '晚上好，今天过得怎么样？';
-    else if (now > 21 && now <= 23)
-      text = ['已经这么晚了呀，早点休息吧，晚安～', '深夜时要爱护眼睛呀！'];
+    else if (now > 21 && now <= 23) text = '深夜时要爱护眼睛呀！';
     else text = '你是夜猫子呀？这么晚还不睡觉，明天起的来嘛？';
 
-    showMessage(text, 7000, 8);
+    const messages = [...messageArray, text];
+
+    showMessage(messages, 7000, 8);
   };
 
   // TODO 节流
