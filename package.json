@@ -33,6 +33,7 @@
     "@typescript-eslint/parser": "^2.14.0",
     "electron": "7.1.7",
     "electron-builder": "21.2.0",
+    "electron-positioner": "^4.1.0",
     "electron-updater": "^4.2.0",
     "electron-webpack": "^2.7.4",
     "electron-webpack-eslint": "^5.0.1",

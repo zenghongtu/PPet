@@ -2,6 +2,7 @@ import { app, BrowserWindow, screen, crashReporter } from 'electron';
 import path from 'path';
 import { format as formatUrl } from 'url';
 import { autoUpdater } from 'electron-updater';
+import Positioner from 'electron-positioner';
 import * as Sentry from '@sentry/electron';
 import initTray from './ppetTray';
 
@@ -30,17 +31,14 @@ if (isLinux) {
 
 // global reference to mainWindow (necessary to prevent window from being garbage collected)
 let mainWindow: BrowserWindow | null;
+let mainWindowPositioner;
 
 if (process.platform === 'darwin' && !isDevelopment) {
   app.dock.hide();
 }
 
 function createMainWindow() {
-  const { width, height } = screen.getPrimaryDisplay().bounds;
-
   const window = new BrowserWindow({
-    x: Math.floor(0.9 * width),
-    y: Math.floor(0.9 * height),
     show: false,
     alwaysOnTop: true,
     autoHideMenuBar: true,
@@ -115,6 +113,9 @@ const onAppReady = () => {
   mainWindow.setVisibleOnAllWorkspaces(true);
   mainWindow.webContents.setIgnoreMenuShortcuts(true);
   // mainWindow.setIgnoreMouseEvents(true);
+
+  mainWindowPositioner = new Positioner(mainWindow);
+  mainWindowPositioner.move('bottomRight');
 
   initTray(mainWindow);
 };
