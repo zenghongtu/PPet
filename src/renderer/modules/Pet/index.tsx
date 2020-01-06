@@ -42,7 +42,6 @@ const getIdFromLocalStorage = (name: string, defaultId = 1): number => {
 const Pet: FunctionComponent = () => {
   const [isPressAlt, setIsPressAlt] = useState<boolean>(false);
   const [isShowTools, setIsShowTools] = useState<boolean>(true);
-  const [showWaifu, setShowWaifu] = useState<boolean>(true);
   const [tips, setTips] = useState<{
     priority: number;
     text: string;
@@ -340,31 +339,12 @@ const Pet: FunctionComponent = () => {
     showMessage('插件中心，还在努力开发中...', 4000, 12);
   };
 
-  const hideWaifu = () => {
-    showMessage('愿你有一天能与重要的人重逢。', 2000, 11);
-    waifuRef.current && (waifuRef.current.style.bottom = '-1000px');
-    window.setTimeout(() => {
-      setShowWaifu(false);
-      currentWindow.setSize(40, 80);
-      const { x, y } = screen.getCursorScreenPoint();
-      currentWindow.setPosition(x - 20, y - 40);
-    }, 2000);
-  };
-
   const showUp = () => {
-    const isSwitch = !showWaifu;
-    if (isSwitch) {
-      setShowWaifu(true);
-      const { width, height } = winSizeRef.current;
-      currentWindow.setSize(width, height);
-      const { x, y } = screen.getCursorScreenPoint();
-      currentWindow.setPosition(x - width, y - height);
-    }
     window.setTimeout(() => {
       waifuRef.current && (waifuRef.current.style.bottom = '0');
     });
     window.setTimeout(() => {
-      isSwitch ? showMessage(messageArray, 2000) : welcomeMessage();
+      welcomeMessage();
     }, 2000);
   };
 
@@ -374,8 +354,8 @@ const Pet: FunctionComponent = () => {
     { name: 'clothes', icon: 'street-view', call: loadOtherTextures },
     { name: 'camera', icon: 'camera-retro', call: capture },
     { name: 'plugin', icon: 'inbox', call: showPlugins },
-    { name: 'info', icon: 'info-circle', call: showInfo },
-    { name: 'hide', icon: 'eye-slash', call: hideWaifu }
+    { name: 'info', icon: 'info-circle', call: showInfo }
+    // { name: 'hide', icon: 'eye-slash', call: hideWaifu }
   ];
 
   const handleToolListClick = (e: React.MouseEvent<HTMLSpanElement>) => {
@@ -424,8 +404,8 @@ const Pet: FunctionComponent = () => {
   interface IWaifuStyle extends CSSProperties {
     WebkitAppRegion: string;
   }
+
   const waifuStyle: IWaifuStyle = {
-    display: showWaifu ? 'block' : 'none',
     cursor: isPressAlt ? 'move' : 'grab',
     WebkitAppRegion: isPressAlt ? 'drag' : 'no-drag'
   };
@@ -455,16 +435,6 @@ const Pet: FunctionComponent = () => {
           </div>
         )}
       </div>
-
-      {!showWaifu && (
-        <div
-          title="双击现身哦~"
-          className="waifu-toggle"
-          onDoubleClick={showUp}
-        >
-          現れ
-        </div>
-      )}
     </>
   );
 };
