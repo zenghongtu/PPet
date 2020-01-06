@@ -18,6 +18,15 @@ const initTray = (mainWindow: BrowserWindow) => {
       }
     },
     {
+      label: '忽略点击',
+      type: 'checkbox',
+      checked: false,
+      click: item => {
+        const { checked } = item;
+        mainWindow.setIgnoreMouseEvents(checked);
+      }
+    },
+    {
       label: '开机启动',
       type: 'checkbox',
       checked: app.getLoginItemSettings().openAtLogin,
@@ -51,7 +60,7 @@ const initTray = (mainWindow: BrowserWindow) => {
       }
     },
     {
-      label: '关于',
+      label: '关于PPet',
       role: 'about'
     },
     {
