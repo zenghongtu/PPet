@@ -18,14 +18,22 @@ crashReporter.start({
 });
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
+const isLinux = process.platform === 'linux';
 
 app.commandLine.appendSwitch('disable-renderer-backgrounding');
 app.commandLine.appendSwitch('disable-background-timer-throttling');
 
+// TODO: https://stackoverflow.com/questions/53538215/cant-succeed-in-making-transparent-window-in-electron-javascript
+if (isLinux) {
+  app.commandLine.appendSwitch('enable-transparent-visuals');
+}
+
 // global reference to mainWindow (necessary to prevent window from being garbage collected)
 let mainWindow: BrowserWindow | null;
 
-app.dock.hide();
+if (process.platform === 'darwin' && !isDevelopment) {
+  app.dock.hide();
+}
 
 function createMainWindow() {
   const { width, height } = screen.getPrimaryDisplay().bounds;
@@ -100,8 +108,7 @@ app.on('activate', () => {
   }
 });
 
-// create main BrowserWindow when electron is ready
-app.on('ready', () => {
+const onAppReady = () => {
   mainWindow = createMainWindow();
   mainWindow.setMenu(null);
   mainWindow.setMenuBarVisibility(false);
@@ -110,5 +117,17 @@ app.on('ready', () => {
   // mainWindow.setIgnoreMouseEvents(true);
 
   initTray(mainWindow);
+};
+
+// create main BrowserWindow when electron is ready
+app.on('ready', () => {
+  if (isLinux) {
+    setTimeout(() => {
+      onAppReady();
+    }, 500);
+  } else {
+    onAppReady();
+  }
+
   autoUpdater.checkForUpdatesAndNotify();
 });
