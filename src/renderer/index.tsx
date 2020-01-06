@@ -8,4 +8,12 @@ Sentry.init({
   dsn: 'https://57b49a715b324bbf928b32f92054c8d6@sentry.io/1872002'
 });
 
+window.addEventListener(
+  'contextmenu',
+  e => {
+    e.preventDefault();
+  },
+  false
+);
+
 ReactDOM.render(<BasicLayout />, document.getElementById('app'));
