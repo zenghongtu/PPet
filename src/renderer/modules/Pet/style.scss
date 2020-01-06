@@ -56,7 +56,7 @@
   transition: opacity 1s;
 
   & span {
-    color: rgb(91, 91, 91);
+    color: #6a6a6a;
     display: block;
     line-height: 30px;
     text-align: center;
@@ -65,6 +65,7 @@
 
     &:hover {
       color: #fa0;
+      opacity: 1;
     }
   }
 }

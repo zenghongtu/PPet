@@ -60,16 +60,15 @@ const Pet: FunctionComponent = () => {
     timer: number | null;
   } | null>(null);
   const hitokotoTimerRef = useRef<number | null>(null);
-  const scrollTimerRef = useRef<number | null>(null);
   const waifuRef = useRef<HTMLDivElement>(null);
-  const winSizeRef = useRef<{
-    width: number;
-    height: number;
-  }>({ width: defaultSize, height: defaultSize });
 
   useEffect(() => {
     initModel();
     showUp();
+    if (localStorage.zoomFactor) {
+      handleZoomFactorChange(localStorage.zoomFactor);
+    }
+
     const handleShowTool = (
       event: Electron.IpcRendererEvent,
       isShow: boolean
@@ -79,6 +78,36 @@ const Pet: FunctionComponent = () => {
     ipcRenderer.on('switch-tool-message', handleShowTool);
     return () => {
       ipcRenderer.removeListener('switch-tool-message', handleShowTool);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleZoom = (
+      event: Electron.IpcRendererEvent,
+      type: 'zoomIn' | 'zoomOut' | 'reset'
+    ) => {
+      let zoomFactor = webFrame.getZoomFactor();
+
+      if (type === 'zoomIn') {
+        zoomFactor += 0.1;
+      } else if (type === 'zoomOut') {
+        zoomFactor -= 0.1;
+      } else {
+        zoomFactor = 1;
+      }
+
+      if (zoomFactor < 0.3) {
+        return;
+      }
+      // 处理精度丢失。。
+      zoomFactor = Math.round(zoomFactor * 10) / 10;
+      handleZoomFactorChange(zoomFactor);
+    };
+
+    ipcRenderer.on('zoom-change-message', handleZoom);
+
+    return () => {
+      ipcRenderer.removeListener('zoom-change-message', handleZoom);
     };
   }, []);
 
@@ -102,6 +131,17 @@ const Pet: FunctionComponent = () => {
       currentWindow.removeListener('focus', handleWindowFocus);
     };
   }, []);
+
+  const handleZoomFactorChange = (zoomFactor: number) => {
+    zoomFactor = Number(zoomFactor);
+    webFrame.setZoomFactor(zoomFactor);
+
+    const width = Math.floor(defaultSize * zoomFactor);
+    const height = Math.floor(defaultSize * zoomFactor);
+    currentWindow.setSize(width, height);
+
+    localStorage.zoomFactor = zoomFactor;
+  };
 
   const handleWindowBlur = () => {
     const timer = window.setInterval(() => {
@@ -370,37 +410,6 @@ const Pet: FunctionComponent = () => {
     }
   };
 
-  const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
-    if (isPressAlt) {
-      e.preventDefault();
-
-      let zoomFactor = webFrame.getZoomFactor();
-
-      if (e.deltaY > 0) {
-        zoomFactor += 0.1;
-      } else {
-        zoomFactor -= 0.1;
-      }
-
-      if (zoomFactor < 0.3) {
-        return;
-      }
-
-      webFrame.setZoomFactor(zoomFactor);
-
-      if (scrollTimerRef.current) {
-        clearTimeout(scrollTimerRef.current);
-      }
-
-      scrollTimerRef.current = window.setTimeout(() => {
-        const width = Math.floor(defaultSize * zoomFactor);
-        const height = Math.floor(defaultSize * zoomFactor);
-        currentWindow.setSize(width, height);
-        winSizeRef.current = { width, height };
-      }, 200);
-    }
-  };
-
   interface IWaifuStyle extends CSSProperties {
     WebkitAppRegion: string;
   }
@@ -412,7 +421,7 @@ const Pet: FunctionComponent = () => {
 
   return (
     <>
-      <div id="waifu" style={waifuStyle} ref={waifuRef} onWheel={handleWheel}>
+      <div id="waifu" style={waifuStyle} ref={waifuRef}>
         {tips && (
           <div
             id="waifu-tips"
