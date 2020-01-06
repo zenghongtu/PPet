@@ -2,7 +2,10 @@
 
 # PPet
 
-> 给你的桌面添加一点趣味吧~😁
+> 给你的桌面多一点趣味~😁
+
+[![Current Release](https://img.shields.io/github/release/zenghongtu/PPet.svg?style=flat-square)](https://github.com/zenghongtu/PPet/releases)
+![License](https://img.shields.io/github/license/zenghongtu/PPet.svg?style=flat-square)
 
 ## 预览
 
@@ -30,17 +33,49 @@
 
 <img src="assets/Xnip2020-01-06_23-35-38.png" width="200">
 
-## 后续开发
+## 后续功能
 
 - 插件中心
 - 选词翻译
 - 换壁纸
 - 记录剪切板
+- 日常清理
 - 自定义对话
-- 自定义 model
+- 自定义以及更多的 model
 - ...
 
-如果你有好的想法或者遇到什么问题，也欢迎留言反馈~
+如果你有什么好的想法，也欢迎留言交流~👏🏻
+
+## 安装
+
+[这里](https://github.com/zenghongtu/PPet/releases)去下载最新版本，或者下面的指定系统版本。
+
+### Mac
+
+[下载](https://github.com/zenghongtu/PPet/releases/download/v0.1.0/PPet-0.1.0.dmg) .dmg
+
+### Linux
+
+'Debian / Ubuntu' 使用 .deb [下载](https://github.com/zenghongtu/PPet/releases/download/v0.1.0/PPet-0.1.0.deb):
+
+```
+$ sudo dpkg -i Mob-0.2.2-linux-amd64.deb
+```
+
+### Window
+
+[下载](https://github.com/zenghongtu/PPet/releases/download/v0.1.0/PPet-0.1.0.exe)
+
+## 开发
+
+```
+$ yarn install
+$ yarn run start
+```
+
+## 欢迎参与贡献
+
+发现了错误? 向我发起一个 PR 吧! 参考 [Commit message 和 Change log 编写指南 - 阮一峰的网络日志](http://www.ruanyifeng.com/blog/2016/01/commit_message_change_log.html) 提交 commit 即可。
 
 ## 更多
 
