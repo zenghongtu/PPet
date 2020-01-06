@@ -180,7 +180,7 @@ const Pet: FunctionComponent = () => {
   const handleKeyEvent = (val: boolean, ev: KeyboardEvent) => {
     if (ev.key === 'Alt') {
       if (val) {
-        showMessage('可以用滚轮把我变大变小了哦~', 4000, 12);
+        showMessage('现在可以拖动我了哦~', 4000, 12);
       } else {
         setTips(null);
       }
