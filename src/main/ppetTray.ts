@@ -132,6 +132,14 @@ const initTray = (mainWindow: BrowserWindow) => {
       }
     },
     {
+      label: '清除配置',
+      click: async () => {
+        mainWindow.webContents.send('model-change-message', {
+          type: 'setting-reset'
+        });
+      }
+    },
+    {
       type: 'separator'
     },
     {

@@ -118,6 +118,10 @@ const Pet: FunctionComponent = () => {
         setLmConfigPath('');
       } else if (type === 'setting') {
         setIsShowSetting(true);
+      } else if (type === 'setting-reset') {
+        localStorage.clear();
+        remote.app.relaunch();
+        remote.app.exit(0);
       } else {
         console.log('what?');
       }
