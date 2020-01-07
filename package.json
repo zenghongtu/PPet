@@ -26,6 +26,7 @@
     "source-map-support": "^0.5.16"
   },
   "devDependencies": {
+    "@types/fs-extra": "^8.0.1",
     "@types/node": "^13.1.2",
     "@types/react": "^16.9.17",
     "@types/react-dom": "^16.9.4",
@@ -41,6 +42,8 @@
     "electron-webpack-ts": "^3.2.0",
     "eslint-plugin-react": "^7.17.0",
     "font-awesome": "^4.7.0",
+    "fs-extra": "^8.1.0",
+    "globby": "^11.0.0",
     "husky": "^3.1.0",
     "lint-staged": "^9.5.0",
     "mitt": "^1.2.0",

@@ -5,10 +5,13 @@ import React, {
   CSSProperties,
   FunctionComponent
 } from 'react';
+import { remote, webFrame, ipcRenderer } from 'electron';
+import path from 'path';
+import fs from 'fs';
+import { format as formatUrl } from 'url';
 
 import './live2d.min.js';
 import './style.scss';
-import { remote, webFrame, ipcRenderer } from 'electron';
 
 interface IWaifuTips {
   mouseover: Mouseover[];
@@ -34,6 +37,10 @@ const apiBaseUrl = 'https://ppet.zenghongtu.com/api';
 
 const currentWindow = getCurrentWindow();
 
+const defaultModelConfigPath: string = remote.getGlobal(
+  'defaultModelConfigPath'
+);
+
 const getIdFromLocalStorage = (name: string, defaultId = 1): number => {
   const _id = localStorage.getItem(name) || defaultId;
   return +_id;
@@ -41,6 +48,7 @@ const getIdFromLocalStorage = (name: string, defaultId = 1): number => {
 
 const Pet: FunctionComponent = () => {
   const [isPressAlt, setIsPressAlt] = useState<boolean>(false);
+  const [lmConfigPath, setLmConfigPath] = useState<string>('');
   const [isShowTools, setIsShowTools] = useState<boolean>(true);
   const [tips, setTips] = useState<{
     priority: number;
@@ -63,8 +71,16 @@ const Pet: FunctionComponent = () => {
   const waifuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    initModel();
+    const hasLocalModel = fs.existsSync(defaultModelConfigPath);
+
+    if (hasLocalModel) {
+      handleUseLocalModel(defaultModelConfigPath);
+    } else {
+      initModel();
+    }
+
     showUp();
+
     if (localStorage.zoomFactor) {
       handleZoomFactorChange(localStorage.zoomFactor);
     }
@@ -75,9 +91,26 @@ const Pet: FunctionComponent = () => {
     ) => {
       setIsShowTools(isShow);
     };
+
+    const handleModelChange = (
+      event: Electron.IpcRendererEvent,
+      { type }: { type: 'loaded' | 'remove' }
+    ) => {
+      if (type === 'loaded') {
+        handleUseLocalModel(defaultModelConfigPath);
+      } else if (type === 'remove') {
+        initModel();
+        setLmConfigPath('');
+      } else {
+        console.log('what?');
+      }
+    };
+
     ipcRenderer.on('switch-tool-message', handleShowTool);
+    ipcRenderer.on('model-change-message', handleModelChange);
     return () => {
       ipcRenderer.removeListener('switch-tool-message', handleShowTool);
+      ipcRenderer.removeListener('model-change-message', handleModelChange);
     };
   }, []);
 
@@ -131,6 +164,15 @@ const Pet: FunctionComponent = () => {
       currentWindow.removeListener('focus', handleWindowFocus);
     };
   }, []);
+
+  const handleUseLocalModel = (pathname: string) => {
+    const localModelConfigUrl = formatUrl({
+      pathname,
+      protocol: 'file'
+    });
+    setLmConfigPath(localModelConfigUrl);
+    loadLocalLocalModel(localModelConfigUrl);
+  };
 
   const handleZoomFactorChange = (zoomFactor: number) => {
     zoomFactor = Number(zoomFactor);
@@ -212,6 +254,14 @@ const Pet: FunctionComponent = () => {
     messageTimerRef.current = window.setTimeout(() => {
       setTips(null);
     }, timeout);
+  };
+
+  const loadLocalLocalModel = (fileUrl: string): void => {
+    loadlive2d(
+      'live2d',
+      fileUrl,
+      console.log(`Live2D 模型 ${fileUrl} 加载完成`)
+    );
   };
 
   const loadModel = (modelId: number, modelTexturesId = 0): void => {
@@ -391,8 +441,18 @@ const Pet: FunctionComponent = () => {
 
   const toolList = [
     { name: 'comment', icon: 'comment', call: showHitokoto },
-    { name: 'user', icon: 'user-circle', call: loadOtherModel },
-    { name: 'clothes', icon: 'street-view', call: loadOtherTextures },
+    {
+      name: 'user',
+      icon: 'user-circle',
+      call: loadOtherModel,
+      disabled: !!lmConfigPath
+    },
+    {
+      name: 'clothes',
+      icon: 'street-view',
+      call: loadOtherTextures,
+      disabled: !!lmConfigPath
+    },
     { name: 'camera', icon: 'camera-retro', call: capture },
     { name: 'plugin', icon: 'inbox', call: showPlugins },
     { name: 'info', icon: 'info-circle', call: showInfo }
@@ -433,7 +493,10 @@ const Pet: FunctionComponent = () => {
         {isShowTools && (
           <div id="waifu-tool" onClick={handleToolListClick}>
             {toolList.map(item => {
-              const { name, icon } = item;
+              const { name, icon, disabled } = item;
+              if (disabled) {
+                return null;
+              }
               return (
                 <span
                   key={name}
