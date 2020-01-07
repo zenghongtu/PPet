@@ -110,6 +110,14 @@ const initTray = (mainWindow: BrowserWindow) => {
       }
     },
     {
+      label: '设置Model',
+      click: async () => {
+        mainWindow.webContents.send('model-change-message', {
+          type: 'setting'
+        });
+      }
+    },
+    {
       label: '移除Model',
       click: async () => {
         try {

@@ -5,7 +5,7 @@ import React, {
   CSSProperties,
   FunctionComponent
 } from 'react';
-import { remote, webFrame, ipcRenderer } from 'electron';
+import { remote, webFrame, ipcRenderer, KeyboardInputEvent } from 'electron';
 import path from 'path';
 import fs from 'fs';
 import { format as formatUrl } from 'url';
@@ -31,7 +31,8 @@ interface Mouseover {
 
 const { screen, getCurrentWindow } = remote;
 
-const defaultSize = 350;
+const tipsHeight = 50;
+const defaultSize = 300;
 
 const apiBaseUrl = 'https://ppet.zenghongtu.com/api';
 
@@ -40,6 +41,11 @@ const currentWindow = getCurrentWindow();
 const defaultModelConfigPath: string = remote.getGlobal(
   'defaultModelConfigPath'
 );
+
+const settingStr = localStorage.getItem('setting');
+const initSetting = settingStr
+  ? JSON.parse(settingStr)
+  : { width: 300, height: 300 };
 
 const getIdFromLocalStorage = (name: string, defaultId = 1): number => {
   const _id = localStorage.getItem(name) || defaultId;
@@ -50,6 +56,12 @@ const Pet: FunctionComponent = () => {
   const [isPressAlt, setIsPressAlt] = useState<boolean>(false);
   const [lmConfigPath, setLmConfigPath] = useState<string>('');
   const [isShowTools, setIsShowTools] = useState<boolean>(true);
+  const [isShowSetting, setIsShowSetting] = useState<boolean>(false);
+  const [setting, setSetting] = useState<{
+    width: number;
+    height: number;
+  }>(initSetting);
+
   const [tips, setTips] = useState<{
     priority: number;
     text: string;
@@ -71,6 +83,7 @@ const Pet: FunctionComponent = () => {
   const waifuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // TODO refactor
     const hasLocalModel = fs.existsSync(defaultModelConfigPath);
 
     if (hasLocalModel) {
@@ -82,7 +95,9 @@ const Pet: FunctionComponent = () => {
     showUp();
 
     if (localStorage.zoomFactor) {
-      handleZoomFactorChange(localStorage.zoomFactor);
+      setTimeout(() => {
+        handleZoomFactorChange(localStorage.zoomFactor);
+      }, 500);
     }
 
     const handleShowTool = (
@@ -94,13 +109,15 @@ const Pet: FunctionComponent = () => {
 
     const handleModelChange = (
       event: Electron.IpcRendererEvent,
-      { type }: { type: 'loaded' | 'remove' }
+      { type }: { type: 'loaded' | 'remove' | 'setting' }
     ) => {
       if (type === 'loaded') {
         handleUseLocalModel(defaultModelConfigPath);
       } else if (type === 'remove') {
         initModel();
         setLmConfigPath('');
+      } else if (type === 'setting') {
+        setIsShowSetting(true);
       } else {
         console.log('what?');
       }
@@ -113,6 +130,13 @@ const Pet: FunctionComponent = () => {
       ipcRenderer.removeListener('model-change-message', handleModelChange);
     };
   }, []);
+
+  useEffect(() => {
+    handleSetWindowSize(
+      tipsHeight + setting.width,
+      tipsHeight + setting.height
+    );
+  }, [setting.width, setting.height]);
 
   useEffect(() => {
     const handleZoom = (
@@ -165,6 +189,9 @@ const Pet: FunctionComponent = () => {
     };
   }, []);
 
+  const handleSetWindowSize = (width: number, height: number) => {
+    currentWindow.setSize(+width, +height);
+  };
   const handleUseLocalModel = (pathname: string) => {
     const localModelConfigUrl = formatUrl({
       pathname,
@@ -178,10 +205,11 @@ const Pet: FunctionComponent = () => {
     zoomFactor = Number(zoomFactor);
     webFrame.setZoomFactor(zoomFactor);
 
-    const width = Math.floor(defaultSize * zoomFactor);
-    const height = Math.floor(defaultSize * zoomFactor);
-    currentWindow.setSize(width, height);
+    const width = Math.floor((setting.width + tipsHeight) * zoomFactor);
+    const height = Math.floor((setting.height + tipsHeight) * zoomFactor);
+    handleSetWindowSize(width, height);
 
+    // TODO move to setting
     localStorage.zoomFactor = zoomFactor;
   };
 
@@ -471,11 +499,26 @@ const Pet: FunctionComponent = () => {
     }
   };
 
+  const handleConfirmClick = () => {
+    const width = Number(
+      (document.querySelector('#setting-with') as HTMLInputElement).value
+    );
+    const height = Number(
+      (document.querySelector('#setting-height') as HTMLInputElement).value
+    );
+    const newSetting = { ...setting, width, height };
+    localStorage.setItem('setting', JSON.stringify(newSetting));
+    setSetting(newSetting);
+    setIsShowSetting(false);
+    handleSetWindowSize(tipsHeight + width, tipsHeight + height);
+  };
+
   interface IWaifuStyle extends CSSProperties {
     WebkitAppRegion: string;
   }
 
   const waifuStyle: IWaifuStyle = {
+    // border: isShowSetting ? '1px solid #fa0' : 'none',
     cursor: isPressAlt ? 'move' : 'grab',
     WebkitAppRegion: isPressAlt ? 'drag' : 'no-drag'
   };
@@ -489,7 +532,11 @@ const Pet: FunctionComponent = () => {
             dangerouslySetInnerHTML={{ __html: tips.text }}
           ></div>
         )}
-        <canvas id="live2d" width="300" height="300"></canvas>
+        <canvas
+          id="live2d"
+          width={setting.width}
+          height={setting.height}
+        ></canvas>
         {isShowTools && (
           <div id="waifu-tool" onClick={handleToolListClick}>
             {toolList.map(item => {
@@ -505,6 +552,36 @@ const Pet: FunctionComponent = () => {
                 ></span>
               );
             })}
+          </div>
+        )}
+        {isShowSetting && (
+          <div className="setting">
+            <div className="setting-item">
+              h:
+              <input
+                defaultValue={setting.height}
+                placeholder="高度"
+                id="setting-height"
+                className="setting-input"
+                type="number"
+              ></input>
+              px
+            </div>
+            <div className="setting-item">
+              w:
+              <input
+                defaultValue={setting.width}
+                placeholder="宽度"
+                id="setting-with"
+                className="setting-input"
+                type="number"
+              ></input>
+              px
+            </div>
+
+            <button className="setting-confirm" onClick={handleConfirmClick}>
+              确定
+            </button>
           </div>
         )}
       </div>

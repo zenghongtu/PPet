@@ -276,3 +276,29 @@
     transform: translate(0, 0) rotate(0);
   }
 }
+
+.setting {
+  padding: 10px 15px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(236, 217, 188, 1);
+  border: 1px solid rgba(224, 186, 140, 0.62);
+  border-radius: 12px;
+  box-shadow: 0 3px 15px 2px rgba(191, 158, 118, 0.2);
+}
+
+.setting-item {
+  height: 32px;
+}
+
+.setting-input {
+  width: 50px;
+  outline: none;
+}
+
+.setting-confirm {
+  outline: none;
+  background: whitesmoke;
+}
