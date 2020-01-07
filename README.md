@@ -56,12 +56,7 @@
 
 ### Linux
 
-'Debian / Ubuntu' 使用 .deb [下载](https://github.com/zenghongtu/PPet/releases/download/v0.1.0/PPet-0.1.0.deb):
-
-```
-$ sudo dpkg -i Mob-0.2.2-linux-amd64.deb
-```
-
+'Debian / Ubuntu' 使用 .deb [下载](https://github.com/zenghongtu/PPet/releases/download/v0.1.0/PPet-0.1.0.deb)
 ### Window
 
 [下载](https://github.com/zenghongtu/PPet/releases/download/v0.1.0/PPet-0.1.0.exe)
