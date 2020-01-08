@@ -23,6 +23,8 @@
 
 ## 功能
 
+- [x] 本地导入 Model (选择模型文件夹中的模型配置文件，一般叫`modle.json`/`index.json`)
+- [x] 设置 Model （导入的模型如果显示不完整，可以设置其宽度和高度）
 - [x] @置顶
 - [x] 忽略点击
 - [x] 开机启动
@@ -31,7 +33,7 @@
 - [x] 放大缩小（Ctrl/Cmd 和 +、-、0 控制）
 - [x] 提醒休息（默认 25 分钟）
 
-<img src="assets/Xnip2020-01-06_23-35-38.png" width="200">
+<img src="assets/Xnip2020-01-08_13-07-40.png" width="200">
 
 ## 后续功能
 
@@ -52,14 +54,15 @@
 
 ### Mac
 
-[下载](https://github.com/zenghongtu/PPet/releases/download/v0.1.0/PPet-0.1.0.dmg) .dmg
+[下载](https://github.com/zenghongtu/PPet/releases/download/v0.2.0/PPet-0.2.0.dmg) .dmg
 
 ### Linux
 
-'Debian / Ubuntu' 使用 .deb [下载](https://github.com/zenghongtu/PPet/releases/download/v0.1.0/PPet-0.1.0.deb)
+'Debian / Ubuntu' 使用 .deb [下载](https://github.com/zenghongtu/PPet/releases/download/v0.2.0/PPet-0.2.0.deb)
+
 ### Window
 
-[下载](https://github.com/zenghongtu/PPet/releases/download/v0.1.0/PPet-0.1.0.exe)
+[下载](https://github.com/zenghongtu/PPet/releases/download/v0.2.0/PPet-0.2.0.exe)
 
 ## 开发
 
