@@ -3204,10 +3204,10 @@ electron-webpack@^2.7.4:
     webpack-merge "^4.2.1"
     yargs "^13.2.4"
 
-electron@7.1.7:
-  version "7.1.7"
-  resolved "https://registry.npm.taobao.org/electron/download/electron-7.1.7.tgz#520e2bc422e3dfd4bae166dd3be62101f2cbdc52"
-  integrity sha1-Ug4rxCLj39S64WbdO+YhAfLL3FI=
+electron@7.1.2:
+  version "7.1.2"
+  resolved "http://r.cnpmjs.org/electron/download/electron-7.1.2.tgz#d1726b9e50b29e97f5f12b52feb225ba87e0640f"
+  integrity sha1-0XJrnlCynpf18StS/rIluofgZA8=
   dependencies:
     "@electron/get" "^1.0.1"
     "@types/node" "^12.0.12"
