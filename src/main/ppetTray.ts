@@ -184,12 +184,6 @@ const initTray = (mainWindow: BrowserWindow) => {
       type: 'separator'
     },
     {
-      label: '检查更新',
-      click: () => {
-        autoUpdater.checkForUpdatesAndNotify();
-      }
-    },
-    {
       label: '反馈建议',
       click: () => {
         shell.openExternal('https://github.com/zenghongtu/PPet/issues');
