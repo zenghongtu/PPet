@@ -1,6 +1,6 @@
 {
   "name": "PPet",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "给你的桌面添加一点趣味~",
   "license": "MIT",
   "repository": "https://github.com/zenghongtu/PPet.git",
@@ -11,7 +11,7 @@
     "compile": "electron-webpack",
     "dist": "yarn compile && electron-builder",
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
-    "dist:all": "yarn run dist -wml -c.mac.identity=null",
+    "dist:all": "yarn run dist -wml",
     "dist:win": "yarn run dist --win --ia32",
     "dist:mac": "yarn run dist -m",
     "dist:linux": "yarn run dist -l",
