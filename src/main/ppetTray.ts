@@ -9,7 +9,6 @@ import {
 } from 'electron';
 import path from 'path';
 import fs from 'fs-extra';
-import { autoUpdater } from 'electron-updater';
 import electronLocalshortcut from 'electron-localshortcut';
 
 let ppetTray;
@@ -23,6 +22,7 @@ const defaultModelConfigPath = (global.defaultModelConfigPath = path.join(
   'model.json'
 ));
 
+// TODO refactor
 const initTray = (mainWindow: BrowserWindow) => {
   const sendMessage = (type: 'zoomIn' | 'zoomOut' | 'reset') => {
     mainWindow?.webContents.send('zoom-change-message', type);
@@ -37,6 +37,15 @@ const initTray = (mainWindow: BrowserWindow) => {
   });
   electronLocalshortcut.register(mainWindow, 'CmdOrCtrl+0', () => {
     sendMessage('reset');
+  });
+  electronLocalshortcut.register(mainWindow, 'CmdOrCtrl+,', () => {
+    mainWindow.webContents.send('model-change-message', {
+      type: 'setting'
+    });
+  });
+  electronLocalshortcut.register(mainWindow, 'CmdOrCtrl+r', () => {
+    app.relaunch();
+    app.exit(0);
   });
 
   const menu = Menu.buildFromTemplate([
@@ -82,27 +91,28 @@ const initTray = (mainWindow: BrowserWindow) => {
     },
     {
       label: '放大',
-      accelerator: 'CommandOrControl+=',
+      accelerator: 'CmdOrCtrl+=',
       click: async () => {
         sendMessage('zoomIn');
       }
     },
     {
       label: '缩小',
-      accelerator: 'CommandOrControl+-',
+      accelerator: 'CmdOrCtrl+-',
       click: async () => {
         sendMessage('zoomOut');
       }
     },
     {
       label: '原始大小',
-      accelerator: 'CommandOrControl+0',
+      accelerator: 'CmdOrCtrl+0',
       click: async () => {
         sendMessage('reset');
       }
     },
     {
       label: '画布设置',
+      accelerator: 'CmdOrCtrl+,',
       click: async () => {
         mainWindow.webContents.send('model-change-message', {
           type: 'setting'
@@ -178,6 +188,14 @@ const initTray = (mainWindow: BrowserWindow) => {
           dialog.showErrorBox('移除 model 失败', err.message || '...');
           console.error('remove model error: ', err);
         }
+      }
+    },
+    {
+      label: '重新渲染',
+      accelerator: 'CmdOrCtrl+r',
+      click: () => {
+        app.relaunch();
+        app.exit(0);
       }
     },
     {
