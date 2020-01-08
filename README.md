@@ -23,23 +23,25 @@
 
 ## 功能
 
-- [x] 本地导入 Model 
-  > 选择模型文件夹中的模型配置文件，一般叫`modle.json`/`index.json`
-  
-  > 导入的模型如果显示不完整，可以【设置 Model】设置其宽度和高度
-  
-  > 强烈推荐 [梦象](https://mx.paul.ren/)，上面有很多 Model，可以自行下载导入
-  
-- [x] 设置 Model
-- [x] @置顶
-- [x] 忽略点击
-- [x] 开机启动
-- [x] 小工具
-- [x] 拖动（按住 Alt）
-- [x] 放大缩小（Ctrl/Cmd 和 +、-、0 控制）
-- [x] 提醒休息（默认 25 分钟）
+- [x] 本地导入 Model
 
-<img src="assets/Xnip2020-01-08_13-07-40.png" width="200">
+  > 选择模型文件夹中的模型配置文件（一般为`model.json`/`index.json`），将会导入该配置文件所在的文件夹
+
+  > 导入的模型如果显示不完整，可以【设置 Model】设置其宽度和高度。如果还存在问题可以尝试【重新渲染】
+
+  > 一些资源推荐：[xiazeyu/live2d-widget-models](https://github.com/xiazeyu/live2d-widget-models) / [xiaoski/live2d_models_collection](https://github.com/xiaoski/live2d_models_collection)/ [QiShaoXuan/live2DModel](https://github.com/QiShaoXuan/live2DModel) / [梦象](https://mx.paul.ren/) 上的 Model 还不错，可以自行下载导入
+
+* [x] 设置 Model
+  > 目前只能设置 w 和 h
+* [x] @置顶
+* [x] 忽略点击
+* [x] 开机启动
+* [x] 小工具
+* [x] 拖动（按住 Alt）
+* [x] 放大缩小（Ctrl/Cmd 和 +、-、0 控制）
+* [x] 提醒休息（默认 25 分钟）
+
+<img src="assets/Xnip2020-01-06_23-35-38.png" width="200">
 
 ## 后续功能
 
@@ -49,7 +51,6 @@
 - 记录剪切板
 - 日常清理
 - 自定义对话
-- 自定义以及更多的 model
 - ...
 
 如果你有什么好的想法，也欢迎留言交流~👏🏻
@@ -58,17 +59,19 @@
 
 [这里](https://github.com/zenghongtu/PPet/releases)去下载最新版本，或者下面的指定系统版本。
 
+蓝奏云备份: https://www.lanzous.com/b044af9ib 密码:6g7n
+
 ### Mac
 
-[下载](https://github.com/zenghongtu/PPet/releases/download/v0.2.0/PPet-0.2.0.dmg) .dmg
+[下载](https://github.com/zenghongtu/PPet/releases/download/v1.0.0/PPet-1.0.0.dmg) .dmg
 
 ### Linux
 
-'Debian / Ubuntu' 使用 .deb [下载](https://github.com/zenghongtu/PPet/releases/download/v0.2.0/PPet-0.2.0.deb)
+'Debian / Ubuntu' 使用 .deb [下载](https://github.com/zenghongtu/PPet/releases/download/v1.0.0/PPet-1.0.0.deb)
 
 ### Window
 
-[下载](https://github.com/zenghongtu/PPet/releases/download/v0.2.0/PPet-0.2.0.exe)
+[下载](https://github.com/zenghongtu/PPet/releases/download/v1.0.0/PPet-1.0.0.exe)
 
 ## 开发
 
