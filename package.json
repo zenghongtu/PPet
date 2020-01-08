@@ -18,6 +18,7 @@
     "patch": "yarn version --patch",
     "minor": "yarn version --minor",
     "major": "yarn version --major",
+    "build": "yarn compile",
     "release": "yarn dist -p always",
     "lint": "eslint src --fix --ext .ts,.tsx "
   },
