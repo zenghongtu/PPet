@@ -10,6 +10,7 @@ import {
 import path from 'path';
 import fs from 'fs-extra';
 import { autoUpdater } from 'electron-updater';
+import electronLocalshortcut from 'electron-localshortcut';
 
 let ppetTray;
 
@@ -23,6 +24,21 @@ const defaultModelConfigPath = (global.defaultModelConfigPath = path.join(
 ));
 
 const initTray = (mainWindow: BrowserWindow) => {
+  const sendMessage = (type: 'zoomIn' | 'zoomOut' | 'reset') => {
+    mainWindow?.webContents.send('zoom-change-message', type);
+  };
+
+  electronLocalshortcut.register(mainWindow, 'CmdOrCtrl+=', () => {
+    sendMessage('zoomIn');
+  });
+
+  electronLocalshortcut.register(mainWindow, 'CmdOrCtrl+-', () => {
+    sendMessage('zoomOut');
+  });
+  electronLocalshortcut.register(mainWindow, 'CmdOrCtrl+0', () => {
+    sendMessage('reset');
+  });
+
   const menu = Menu.buildFromTemplate([
     {
       label: '@置顶',
@@ -51,6 +67,7 @@ const initTray = (mainWindow: BrowserWindow) => {
         app.setLoginItemSettings({ openAtLogin: checked });
       }
     },
+
     {
       label: '小工具',
       type: 'checkbox',
@@ -58,6 +75,46 @@ const initTray = (mainWindow: BrowserWindow) => {
       click: item => {
         const { checked } = item;
         mainWindow.webContents.send('switch-tool-message', checked);
+      }
+    },
+    {
+      type: 'separator'
+    },
+    {
+      label: '放大',
+      accelerator: 'CommandOrControl+=',
+      click: async () => {
+        sendMessage('zoomIn');
+      }
+    },
+    {
+      label: '缩小',
+      accelerator: 'CommandOrControl+-',
+      click: async () => {
+        sendMessage('zoomOut');
+      }
+    },
+    {
+      label: '原始大小',
+      accelerator: 'CommandOrControl+0',
+      click: async () => {
+        sendMessage('reset');
+      }
+    },
+    {
+      label: '画布设置',
+      click: async () => {
+        mainWindow.webContents.send('model-change-message', {
+          type: 'setting'
+        });
+      }
+    },
+    {
+      label: '清除设置',
+      click: async () => {
+        mainWindow.webContents.send('model-change-message', {
+          type: 'setting-reset'
+        });
       }
     },
     {
@@ -110,14 +167,6 @@ const initTray = (mainWindow: BrowserWindow) => {
       }
     },
     {
-      label: '设置Model',
-      click: async () => {
-        mainWindow.webContents.send('model-change-message', {
-          type: 'setting'
-        });
-      }
-    },
-    {
       label: '移除Model',
       click: async () => {
         try {
@@ -129,14 +178,6 @@ const initTray = (mainWindow: BrowserWindow) => {
           dialog.showErrorBox('移除 model 失败', err.message || '...');
           console.error('remove model error: ', err);
         }
-      }
-    },
-    {
-      label: '清除配置',
-      click: async () => {
-        mainWindow.webContents.send('model-change-message', {
-          type: 'setting-reset'
-        });
       }
     },
     {

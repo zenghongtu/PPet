@@ -3,7 +3,6 @@ import path from 'path';
 import { format as formatUrl } from 'url';
 import { autoUpdater } from 'electron-updater';
 import Positioner from 'electron-positioner';
-import electronLocalshortcut from 'electron-localshortcut';
 import * as Sentry from '@sentry/electron';
 import initTray from './ppetTray';
 
@@ -120,21 +119,6 @@ const onAppReady = () => {
   mainWindowPositioner.move('bottomRight');
 
   initTray(mainWindow);
-
-  const sendMessage = (type: 'zoomIn' | 'zoomOut' | 'reset') => {
-    mainWindow?.webContents.send('zoom-change-message', type);
-  };
-
-  electronLocalshortcut.register(mainWindow, 'CmdOrCtrl+=', () => {
-    sendMessage('zoomIn');
-  });
-
-  electronLocalshortcut.register(mainWindow, 'CmdOrCtrl+-', () => {
-    sendMessage('zoomOut');
-  });
-  electronLocalshortcut.register(mainWindow, 'CmdOrCtrl+0', () => {
-    sendMessage('reset');
-  });
 };
 
 // create main BrowserWindow when electron is ready
