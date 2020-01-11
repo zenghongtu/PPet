@@ -23,6 +23,7 @@ const isLinux = process.platform === 'linux';
 
 app.commandLine.appendSwitch('disable-renderer-backgrounding');
 app.commandLine.appendSwitch('disable-background-timer-throttling');
+app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required');
 
 // TODO: https://stackoverflow.com/questions/53538215/cant-succeed-in-making-transparent-window-in-electron-javascript
 if (isLinux) {
