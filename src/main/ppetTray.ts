@@ -64,7 +64,7 @@ const initTray = (mainWindow: BrowserWindow) => {
       checked: false,
       click: item => {
         const { checked } = item;
-        mainWindow.setIgnoreMouseEvents(checked);
+        mainWindow.setIgnoreMouseEvents(checked, { forward: true });
       }
     },
     {
