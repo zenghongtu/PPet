@@ -148,7 +148,7 @@ const initTray = (mainWindow: BrowserWindow) => {
           const filePath = filePaths[0];
           const fileName = path.basename(filePath);
 
-          const requiredKeyList = ['version', 'model', 'textures', 'motions'];
+          const requiredKeyList = ['layout', 'model', 'textures', 'motions'];
 
           const contentStr = fs.readFileSync(filePath, { encoding: 'utf-8' });
           const config = JSON.parse(contentStr);
