@@ -10,6 +10,7 @@ import {
 import path from 'path';
 import fs from 'fs-extra';
 import electronLocalshortcut from 'electron-localshortcut';
+import config from './config';
 
 let ppetTray;
 
@@ -48,23 +49,36 @@ const initTray = (mainWindow: BrowserWindow) => {
     app.exit(0);
   });
 
+  const alwaysOnTop = config.get('alwaysOnTop', true);
+  const ignoreMouseEvents = config.get('ignoreMouseEvents', false);
+  const showTool = config.get('showTool', true);
+
+  mainWindow.setAlwaysOnTop(alwaysOnTop);
+  mainWindow.setIgnoreMouseEvents(ignoreMouseEvents, { forward: true });
+
+  mainWindow.once('show', () => {
+    mainWindow.webContents.send('switch-tool-message', showTool);
+  });
+
   const menu = Menu.buildFromTemplate([
     {
       label: '@置顶',
       type: 'checkbox',
-      checked: true,
+      checked: alwaysOnTop,
       click: item => {
         const { checked } = item;
         mainWindow.setAlwaysOnTop(checked);
+        config.set('alwaysOnTop', checked);
       }
     },
     {
       label: '忽略点击',
       type: 'checkbox',
-      checked: false,
+      checked: ignoreMouseEvents,
       click: item => {
         const { checked } = item;
         mainWindow.setIgnoreMouseEvents(checked, { forward: true });
+        config.set('ignoreMouseEvents', checked);
       }
     },
     {
@@ -76,14 +90,14 @@ const initTray = (mainWindow: BrowserWindow) => {
         app.setLoginItemSettings({ openAtLogin: checked });
       }
     },
-
     {
       label: '小工具',
       type: 'checkbox',
-      checked: true,
+      checked: showTool,
       click: item => {
         const { checked } = item;
         mainWindow.webContents.send('switch-tool-message', checked);
+        config.set('showTool', checked);
       }
     },
     {
