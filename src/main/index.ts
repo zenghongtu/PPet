@@ -52,6 +52,7 @@ function createMainWindow() {
     minimizable: false,
     maximizable: false,
     resizable: false,
+    titleBarStyle: 'customButtonsOnHover',
     webPreferences: {
       nodeIntegration: true,
       webSecurity: false,
