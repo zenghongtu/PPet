@@ -38,6 +38,21 @@ const apiBaseUrl = 'https://ppet.zenghongtu.com/api';
 
 const currentWindow = getCurrentWindow();
 
+const langs = {
+  zh: {
+    confirmBtn: '确定',
+    casHeight: '高度',
+    casWidth: '宽度'
+  },
+  en: {
+    confirmBtn: 'Confirm',
+    casHeight: 'Height',
+    casWidth: 'Width'
+  }
+};
+
+type langType = keyof typeof langs;
+
 const defaultModelConfigPath: string = remote.getGlobal(
   'defaultModelConfigPath'
 );
@@ -56,6 +71,7 @@ const Pet: FunctionComponent = () => {
   const [isPressAlt, setIsPressAlt] = useState<boolean>(false);
   const [lmConfigPath, setLmConfigPath] = useState<string>('');
   const [isShowTools, setIsShowTools] = useState<boolean>(true);
+  const [lang, setLang] = useState<langType>('zh');
   const [isShowSetting, setIsShowSetting] = useState<boolean>(false);
   const [setting, setSetting] = useState<{
     width: number;
@@ -127,13 +143,94 @@ const Pet: FunctionComponent = () => {
       }
     };
 
+    const handleLangChange = (
+      event: Electron.IpcRendererEvent,
+      lang: langType = 'zh'
+    ) => {
+      setLang(lang);
+    };
+
     ipcRenderer.on('switch-tool-message', handleShowTool);
     ipcRenderer.on('model-change-message', handleModelChange);
+    ipcRenderer.on('lang-change-message', handleLangChange);
     return () => {
       ipcRenderer.removeListener('switch-tool-message', handleShowTool);
       ipcRenderer.removeListener('model-change-message', handleModelChange);
+      ipcRenderer.removeListener('lang-change-message', handleLangChange);
     };
   }, []);
+
+  useEffect(() => {
+    // TODO 自定义
+    const _tips: IWaifuTips = require(`./waifu-tips/${lang}.json`);
+
+    let handleWindowMouseOver: (event: MouseEvent) => void;
+    let handleWindowClick: (event: MouseEvent) => void;
+
+    _tips.mouseover.forEach(tips => {
+      handleWindowMouseOver = (event: MouseEvent) => {
+        if (
+          !event.target ||
+          !(event.target as HTMLDivElement).matches(tips.selector)
+        )
+          return;
+        let text = Array.isArray(tips.text)
+          ? tips.text[Math.floor(Math.random() * tips.text.length)]
+          : tips.text;
+        text = text.replace(
+          '{text}',
+          (event.target as HTMLDivElement).innerText
+        );
+        showMessage(text, 4000, 8);
+      };
+
+      window.addEventListener('mouseover', handleWindowMouseOver);
+    });
+
+    _tips.click.forEach(tips => {
+      handleWindowClick = (event: MouseEvent) => {
+        if (
+          !event.target ||
+          !(event.target as HTMLDivElement).matches(tips.selector)
+        )
+          return;
+        let text = Array.isArray(tips.text)
+          ? tips.text[Math.floor(Math.random() * tips.text.length)]
+          : tips.text;
+        text = text.replace(
+          '{text}',
+          (event.target as HTMLDivElement).innerText
+        );
+        showMessage(text, 4000, 8);
+      };
+      window.addEventListener('click', handleWindowClick);
+    });
+
+    _tips.seasons.forEach(tips => {
+      const now = new Date(),
+        after = tips.date.split('-')[0],
+        before = tips.date.split('-')[1] || after;
+      if (
+        +after.split('/')[0] <= now.getMonth() + 1 &&
+        +now.getMonth() + 1 <= +before.split('/')[0] &&
+        +after.split('/')[1] <= now.getDate() &&
+        +now.getDate() <= +before.split('/')[1]
+      ) {
+        let text = Array.isArray(tips.text)
+          ? tips.text[Math.floor(Math.random() * tips.text.length)]
+          : tips.text;
+        text = text.replace('{year}', now.getFullYear());
+        //showMessage(text, 7000, true);
+        setMessageArray([...messageArray, text]);
+      }
+    });
+    return () => {
+      window.removeEventListener('mouseover', handleWindowMouseOver);
+      window.removeEventListener('click', handleWindowClick);
+      // TODO
+      setMessageArray([]);
+    };
+  }, [lang]);
 
   useEffect(() => {
     handleSetWindowSize(
@@ -312,64 +409,6 @@ const Pet: FunctionComponent = () => {
     const modelTexturesId = getIdFromLocalStorage('modelTexturesId', 45);
 
     loadModel(+modelId, +modelTexturesId);
-
-    // TODO 自定义
-    const defaultTips: IWaifuTips = require('./waifu-tips.json');
-
-    defaultTips.mouseover.forEach(tips => {
-      window.addEventListener('mouseover', event => {
-        if (
-          !event.target ||
-          !(event.target as HTMLDivElement).matches(tips.selector)
-        )
-          return;
-        let text = Array.isArray(tips.text)
-          ? tips.text[Math.floor(Math.random() * tips.text.length)]
-          : tips.text;
-        text = text.replace(
-          '{text}',
-          (event.target as HTMLDivElement).innerText
-        );
-        showMessage(text, 4000, 8);
-      });
-    });
-
-    defaultTips.click.forEach(tips => {
-      window.addEventListener('click', event => {
-        if (
-          !event.target ||
-          !(event.target as HTMLDivElement).matches(tips.selector)
-        )
-          return;
-        let text = Array.isArray(tips.text)
-          ? tips.text[Math.floor(Math.random() * tips.text.length)]
-          : tips.text;
-        text = text.replace(
-          '{text}',
-          (event.target as HTMLDivElement).innerText
-        );
-        showMessage(text, 4000, 8);
-      });
-    });
-
-    defaultTips.seasons.forEach(tips => {
-      const now = new Date(),
-        after = tips.date.split('-')[0],
-        before = tips.date.split('-')[1] || after;
-      if (
-        +after.split('/')[0] <= now.getMonth() + 1 &&
-        +now.getMonth() + 1 <= +before.split('/')[0] &&
-        +after.split('/')[1] <= now.getDate() &&
-        +now.getDate() <= +before.split('/')[1]
-      ) {
-        let text = Array.isArray(tips.text)
-          ? tips.text[Math.floor(Math.random() * tips.text.length)]
-          : tips.text;
-        text = text.replace('{year}', now.getFullYear());
-        //showMessage(text, 7000, true);
-        setMessageArray([...messageArray, text]);
-      }
-    });
   };
 
   const loadOtherTextures = (rand = false) => {
@@ -527,6 +566,8 @@ const Pet: FunctionComponent = () => {
     WebkitAppRegion: isPressAlt ? 'drag' : 'no-drag'
   };
 
+  const cl = langs[lang];
+
   return (
     <>
       <div id="waifu" style={waifuStyle} ref={waifuRef}>
@@ -564,7 +605,7 @@ const Pet: FunctionComponent = () => {
               h:
               <input
                 defaultValue={setting.height}
-                placeholder="高度"
+                placeholder={cl.casHeight}
                 id="setting-height"
                 className="setting-input"
                 type="number"
@@ -575,7 +616,7 @@ const Pet: FunctionComponent = () => {
               w:
               <input
                 defaultValue={setting.width}
-                placeholder="宽度"
+                placeholder={cl.casWidth}
                 id="setting-with"
                 className="setting-input"
                 type="number"
@@ -584,7 +625,7 @@ const Pet: FunctionComponent = () => {
             </div>
 
             <button className="setting-confirm" onClick={handleConfirmClick}>
-              确定
+              {cl.confirmBtn}
             </button>
           </div>
         )}
