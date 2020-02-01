@@ -129,7 +129,8 @@
       "sourceDirectory": "src/main"
     },
     "renderer": {
-      "sourceDirectory": "src/renderer"
+      "sourceDirectory": "src/renderer",
+      "webpackConfig": "webpack.renderer.js"
     }
   },
   "lint-staged": {
