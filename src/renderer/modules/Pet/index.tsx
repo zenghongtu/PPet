@@ -36,7 +36,7 @@ const defaultSize = 300;
 
 const apiBaseUrl = 'https://ppet.zenghongtu.com/api';
 
-const currentWindow = getCurrentWindow();
+const currentWindow: Electron.BrowserWindow = getCurrentWindow();
 
 const langs = {
   zh: {
@@ -498,7 +498,7 @@ const Pet: FunctionComponent = () => {
   };
 
   const showPlugins = () => {
-    showMessage('插件中心，还在努力开发中...', 4000, 12);
+    ipcRenderer.send('show-plugins-message');
   };
 
   const showUp = () => {

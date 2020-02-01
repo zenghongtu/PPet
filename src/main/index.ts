@@ -32,6 +32,7 @@ if (isLinux) {
 
 // global reference to mainWindow (necessary to prevent window from being garbage collected)
 let mainWindow: BrowserWindow | null;
+let pluginsWindow: BrowserWindow | null;
 let mainWindowPositioner;
 
 if (process.platform === 'darwin' && !isDevelopment) {
@@ -109,7 +110,60 @@ app.on('activate', () => {
   }
 });
 
+function createPluginsWindow() {
+  const window = new BrowserWindow({
+    show: false,
+    alwaysOnTop: false,
+    width: 800,
+    height: 600,
+    webPreferences: {
+      nodeIntegration: true,
+      webSecurity: false
+    }
+  });
+
+  if (isDevelopment) {
+    window.webContents.openDevTools();
+  }
+
+  if (isDevelopment) {
+    window.loadURL(
+      `http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}/plugins.html`
+    );
+  } else {
+    window.loadURL(
+      formatUrl({
+        pathname: path.join(__dirname, 'plugins.html'),
+        protocol: 'file',
+        slashes: true
+      })
+    );
+  }
+
+  window.on('closed', () => {
+    pluginsWindow = null;
+  });
+
+  window.webContents.on('devtools-opened', () => {
+    window.focus();
+    setImmediate(() => {
+      window.focus();
+    });
+  });
+
+  window.on('ready-to-show', () => {
+    window.show();
+  });
+
+  return window;
+}
+
+ipcMain.on('show-plugins-message', () => {
+  pluginsWindow = createPluginsWindow();
+});
+
 const onAppReady = () => {
+  createPluginsWindow();
   mainWindow = createMainWindow();
   mainWindow.setMenu(null);
   mainWindow.setMenuBarVisibility(false);

@@ -21,6 +21,8 @@ module.exports = {
   },
   rules: {
     'no-unused-vars': 0,
+    'react/prop-types': 0,
+    '@typescript-eslint/no-explicit-any': 0,
     '@typescript-eslint/interface-name-prefix': 0,
     '@typescript-eslint/no-var-requires': 0,
     '@typescript-eslint/ban-ts-ignore': 0,
