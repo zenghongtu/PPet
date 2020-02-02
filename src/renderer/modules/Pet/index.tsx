@@ -9,6 +9,7 @@ import { remote, webFrame, ipcRenderer, KeyboardInputEvent } from 'electron';
 import path from 'path';
 import fs from 'fs';
 import { format as formatUrl } from 'url';
+import emitter from '@/utils/emitter';
 
 import './live2d.min.js';
 import './style.scss';
@@ -27,6 +28,10 @@ interface Season {
 interface Mouseover {
   selector: string;
   text: string[];
+}
+
+export interface IShowMessageFunc {
+  (text: string | string[], timeout?: number, priority?: number): void;
 }
 
 const { screen, getCurrentWindow } = remote;
@@ -277,6 +282,14 @@ const Pet: FunctionComponent = () => {
     };
   }, []);
 
+  useEffect(() => {
+    emitter.on('waifu-show-message', showMessage);
+
+    return () => {
+      emitter.off('waifu-show-message', showMessage);
+    };
+  }, []);
+
   const handleSetWindowSize = (width: number, height: number) => {
     currentWindow.setSize(+width, +height);
   };
@@ -312,9 +325,9 @@ const Pet: FunctionComponent = () => {
     }
   };
 
-  const showMessage = (
-    text: string | string[],
-    timeout: number,
+  const showMessage: IShowMessageFunc = (
+    text,
+    timeout = 4000,
     priority = 0
   ) => {
     if (!text || (tips && tips.priority > priority)) return;
