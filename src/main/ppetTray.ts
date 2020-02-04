@@ -256,13 +256,13 @@ const initTray = (mainWindow: BrowserWindow) => {
             const filePath = filePaths[0];
             const fileName = path.basename(filePath);
 
-            const requiredKeyList = ['layout', 'model', 'textures', 'motions'];
+            const requiredFieldList = ['model', 'textures', 'motions'];
 
             const contentStr = fs.readFileSync(filePath, { encoding: 'utf-8' });
             const config = JSON.parse(contentStr);
             const keys = Object.keys(config);
 
-            if (requiredKeyList.every(key => keys.includes(key))) {
+            if (requiredFieldList.every(key => keys.includes(key))) {
               const modelFolder = path.dirname(filePath);
               fs.copySync(modelFolder, modelCachePath);
               const _filePath = path.join(modelCachePath, fileName);
@@ -274,7 +274,7 @@ const initTray = (mainWindow: BrowserWindow) => {
             } else {
               dialog.showErrorBox(
                 cl.errorBox.title,
-                cl.errorBox.getContent(requiredKeyList.toString())
+                cl.errorBox.getContent(requiredFieldList.toString())
               );
               console.error('invalid model config');
             }
