@@ -12,7 +12,7 @@ import {
 import path from 'path';
 import fs from 'fs-extra';
 import electronLocalshortcut from 'electron-localshortcut';
-import config from './config';
+import config from '../common/config';
 
 let ppetTray: Tray | null = null;
 
