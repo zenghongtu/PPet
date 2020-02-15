@@ -19,7 +19,7 @@
     "minor": "yarn version --minor",
     "major": "yarn version --major",
     "build": "yarn compile",
-    "release": "yarn dist -p always",
+    "release": "yarn dist -wml -p always",
     "lint": "eslint src --fix --ext .ts,.tsx "
   },
   "dependencies": {
