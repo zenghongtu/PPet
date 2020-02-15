@@ -117,7 +117,10 @@ const initTray = (mainWindow: BrowserWindow) => {
   const alwaysOnTop = config.get('alwaysOnTop', true);
   const ignoreMouseEvents = config.get('ignoreMouseEvents', false);
   const showTool = config.get('showTool', true);
-  const language = config.get('language', '');
+  const language = config.get(
+    'language',
+    app.getLocale().includes('zh') ? 'zh' : 'en'
+  );
 
   mainWindow.setAlwaysOnTop(alwaysOnTop);
   mainWindow.setIgnoreMouseEvents(ignoreMouseEvents, { forward: true });
@@ -340,7 +343,7 @@ const initTray = (mainWindow: BrowserWindow) => {
   ppetTray = new Tray(trayImg);
 
   // TODO: more language?
-  const currLang = language || app.getLocale().includes('zh') ? 'zh' : 'en';
+  const currLang = language;
 
   setTrayMenu(currLang);
 };
