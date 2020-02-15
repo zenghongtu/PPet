@@ -25,9 +25,9 @@
 
 - [x] 本地导入 Model
 
-  > 选择模型文件夹中的模型配置文件（一般为`model.json`/`index.json`），将会导入该配置文件所在的文件夹
+  > 选择模型文件夹中的模型配置文件（一般为`model.json`/`index.json`，必须包含`model`/`textures`/`motions`三个字段，没有的话可以尝试自行添加），将会导入该配置文件所在的文件夹
 
-  > 导入的模型如果显示不完整，可以【设置 Model】设置其宽度和高度。如果还存在问题可以尝试【重新渲染】
+  > **导入的模型如果显示不完整，可以【设置 Model】设置其宽度和高度。如果还存在问题可以尝试【重新渲染】**
 
   > 一些资源推荐：[xiazeyu/live2d-widget-models](https://github.com/xiazeyu/live2d-widget-models) / [xiaoski/live2d_models_collection](https://github.com/xiaoski/live2d_models_collection)/ [QiShaoXuan/live2DModel](https://github.com/QiShaoXuan/live2DModel) / [梦象](https://mx.paul.ren/) 上的 Model 还不错，可以自行下载导入
 
@@ -39,13 +39,13 @@
 * [x] 小工具
 * [x] 拖动（按住 Alt）
 * [x] 放大缩小（Ctrl/Cmd 和 +、-、0 控制）
-* [x] 提醒休息（默认 25 分钟）
+* [x] ~~提醒休息（默认 25 分钟）~~（移到开发中心）
 
 <img src="assets/Xnip2020-01-06_23-35-38.png" width="200">
 
 ## 后续功能
 
-- 插件中心
+- 插件中心【开发中】
 - 选词翻译
 - 换壁纸
 - 记录剪切板
@@ -63,15 +63,15 @@
 
 ### Mac
 
-[下载](https://github.com/zenghongtu/PPet/releases/download/v1.0.0/PPet-1.0.0.dmg) .dmg
+[下载](https://github.com/zenghongtu/PPet/releases/download/v1.1.0/PPet-1.1.0.dmg) .dmg
 
 ### Linux
 
-'Debian / Ubuntu' 使用 .deb [下载](https://github.com/zenghongtu/PPet/releases/download/v1.0.0/PPet-1.0.0.deb)
+'Debian / Ubuntu' 使用 .deb [下载](https://github.com/zenghongtu/PPet/releases/download/v1.1.0/PPet-1.1.0.deb)
 
 ### Window
 
-[下载](https://github.com/zenghongtu/PPet/releases/download/v1.0.0/PPet-1.0.0.exe)
+[下载](https://github.com/zenghongtu/PPet/releases/download/v1.1.0/PPet-1.1.0.exe)
 
 ## 开发
 
