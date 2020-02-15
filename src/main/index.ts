@@ -163,7 +163,6 @@ ipcMain.on('show-plugins-message', () => {
 });
 
 const onAppReady = () => {
-  createPluginsWindow();
   mainWindow = createMainWindow();
   mainWindow.setMenu(null);
   mainWindow.setMenuBarVisibility(false);

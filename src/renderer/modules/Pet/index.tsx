@@ -491,7 +491,7 @@ const Pet: FunctionComponent = () => {
       disabled: !!lmConfigPath
     },
     { name: 'camera', icon: 'camera-retro', call: capture },
-    { name: 'plugin', icon: 'inbox', call: showPlugins },
+    // { name: 'plugin', icon: 'inbox', call: showPlugins },
     { name: 'info', icon: 'info-circle', call: showInfo }
     // { name: 'hide', icon: 'eye-slash', call: hideWaifu }
   ];
