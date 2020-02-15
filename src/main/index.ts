@@ -1,10 +1,18 @@
-import { app, BrowserWindow, screen, crashReporter, ipcMain } from 'electron';
+import {
+  app,
+  BrowserWindow,
+  screen,
+  crashReporter,
+  ipcMain,
+  BrowserWindowConstructorOptions
+} from 'electron';
 import path from 'path';
 import { format as formatUrl } from 'url';
 import { autoUpdater } from 'electron-updater';
 import Positioner from 'electron-positioner';
 import * as Sentry from '@sentry/electron';
 import initTray from './ppetTray';
+import config from 'common/config';
 
 Sentry.init({
   dsn: 'https://57b49a715b324bbf928b32f92054c8d6@sentry.io/1872002'
@@ -40,7 +48,10 @@ if (process.platform === 'darwin' && !isDevelopment) {
 }
 
 function createMainWindow() {
-  const window = new BrowserWindow({
+  const winBounds = config.get('winBounds.mainWindow', null);
+  console.log('winBounds: ', winBounds);
+
+  const opts: BrowserWindowConstructorOptions = {
     show: false,
     alwaysOnTop: true,
     autoHideMenuBar: true,
@@ -59,7 +70,9 @@ function createMainWindow() {
       webSecurity: false,
       backgroundThrottling: false
     }
-  });
+  };
+  Object.assign(opts, winBounds);
+  const window = new BrowserWindow(opts);
 
   if (isDevelopment) {
     window.webContents.openDevTools();
@@ -77,6 +90,10 @@ function createMainWindow() {
     );
   }
 
+  window.on('moved', () => {
+    config.set('winBounds.mainWindow', window.getBounds());
+  });
+
   window.on('closed', () => {
     mainWindow = null;
   });
@@ -89,6 +106,11 @@ function createMainWindow() {
   });
 
   window.on('ready-to-show', () => {
+    if (!winBounds) {
+      mainWindowPositioner = new Positioner(window);
+      mainWindowPositioner.move('bottomRight');
+    }
+
     window.show();
   });
 
@@ -169,9 +191,6 @@ const onAppReady = () => {
   mainWindow.setVisibleOnAllWorkspaces(true);
   mainWindow.webContents.setIgnoreMenuShortcuts(true);
   // mainWindow.setIgnoreMouseEvents(true);
-
-  mainWindowPositioner = new Positioner(mainWindow);
-  mainWindowPositioner.move('bottomRight');
 
   initTray(mainWindow);
 };
