@@ -259,7 +259,7 @@ const initTray = (mainWindow: BrowserWindow) => {
             const filePath = filePaths[0];
             const fileName = path.basename(filePath);
 
-            const requiredFieldList = ['model', 'textures', 'motions'];
+            const requiredFieldList = ['model', 'textures'];
 
             const contentStr = fs.readFileSync(filePath, { encoding: 'utf-8' });
             const config = JSON.parse(contentStr);
