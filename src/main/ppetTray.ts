@@ -41,6 +41,7 @@ const langs = {
     importOnlineModel: '导入在线模型',
     removeModel: '移除模型',
     reRender: '重新渲染',
+    debug: '调试',
     feedback: '反馈建议',
     about: '关于 PPet',
     quit: '退出 PPet',
@@ -71,6 +72,7 @@ const langs = {
     importOnlineModel: 'Import Online Model',
     removeModel: 'Remove Model',
     reRender: 'ReRender',
+    debug: 'Debug',
     feedback: 'Feedback',
     about: 'About PPet',
     quit: 'Quit PPet',
@@ -317,6 +319,15 @@ const initTray = (mainWindow: BrowserWindow) => {
         click: () => {
           app.relaunch();
           app.exit(0);
+        }
+      },
+      {
+        type: 'separator'
+      },
+      {
+        label: cl.debug,
+        click: () => {
+          mainWindow.webContents.openDevTools({ mode: 'undocked' });
         }
       },
       {
