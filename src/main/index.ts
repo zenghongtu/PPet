@@ -189,7 +189,7 @@ const onAppReady = () => {
   mainWindow.setMenu(null);
   mainWindow.setMenuBarVisibility(false);
   mainWindow.setVisibleOnAllWorkspaces(true);
-  mainWindow.webContents.setIgnoreMenuShortcuts(true);
+  // mainWindow.webContents.setIgnoreMenuShortcuts(true);
   // mainWindow.setIgnoreMouseEvents(true);
 
   initTray(mainWindow);

@@ -76,6 +76,7 @@ const Pet: FunctionComponent = () => {
   const [isPressAlt, setIsPressAlt] = useState<boolean>(false);
   const [lmConfigPath, setLmConfigPath] = useState<string>('');
   const [isShowTools, setIsShowTools] = useState<boolean>(true);
+  const [isShowOnlineInput, setShowOnlineModelInput] = useState<boolean>(false);
   const [lang, setLang] = useState<langType>('zh');
   const [isShowSetting, setIsShowSetting] = useState<boolean>(false);
   const [setting, setSetting] = useState<{
@@ -100,13 +101,18 @@ const Pet: FunctionComponent = () => {
   const waifuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // TODO refactor
-    const hasLocalModel = fs.existsSync(defaultModelConfigPath);
-
-    if (hasLocalModel) {
-      handleUseLocalModel(defaultModelConfigPath);
+    const modelUrl = localStorage.modelUrl;
+    if (modelUrl) {
+      handleUseOnlineModel(modelUrl);
     } else {
-      initModel();
+      // TODO refactor
+      const hasLocalModel = fs.existsSync(defaultModelConfigPath);
+
+      if (hasLocalModel) {
+        handleUseLocalModel(defaultModelConfigPath);
+      } else {
+        initModel();
+      }
     }
 
     showUp();
@@ -126,11 +132,14 @@ const Pet: FunctionComponent = () => {
 
     const handleModelChange = (
       event: Electron.IpcRendererEvent,
-      { type }: { type: 'loaded' | 'remove' | 'setting' }
+      { type }: { type: 'loaded' | 'load-online' | 'remove' | 'setting' }
     ) => {
       if (type === 'loaded') {
         handleUseLocalModel(defaultModelConfigPath);
+      } else if (type === 'load-online') {
+        setShowOnlineModelInput(true);
       } else if (type === 'remove') {
+        localStorage.modelUrl = '';
         initModel();
         setLmConfigPath('');
       } else if (type === 'setting') {
@@ -299,7 +308,11 @@ const Pet: FunctionComponent = () => {
       protocol: 'file'
     });
     setLmConfigPath(localModelConfigUrl);
-    loadLocalLocalModel(localModelConfigUrl);
+    loadLocalOrOnlineModel(localModelConfigUrl);
+  };
+
+  const handleUseOnlineModel = (url: string) => {
+    loadLocalOrOnlineModel(url);
   };
 
   const handleZoomFactorChange = (zoomFactor: number) => {
@@ -351,12 +364,8 @@ const Pet: FunctionComponent = () => {
     }, timeout);
   };
 
-  const loadLocalLocalModel = (fileUrl: string): void => {
-    loadlive2d(
-      'live2d',
-      fileUrl,
-      console.log(`Live2D 模型 ${fileUrl} 加载完成`)
-    );
+  const loadLocalOrOnlineModel = (url: string): void => {
+    loadlive2d('live2d', url, console.log(`Live2D 模型 ${url} 加载完成`));
   };
 
   const loadModel = (modelId: number, modelTexturesId = 0): void => {
@@ -522,6 +531,19 @@ const Pet: FunctionComponent = () => {
     handleSetWindowSize(tipsHeight + width, tipsHeight + height);
   };
 
+  const handleModelUrlConfirmBtnClick = () => {
+    const url =
+      (document.querySelector('#model-url') as HTMLInputElement).value || '';
+    setShowOnlineModelInput(false);
+    if (!url.startsWith('http')) {
+      showMessage('Invalid Online Model Url');
+      return;
+    }
+
+    localStorage.modelUrl = url;
+    handleUseOnlineModel(url);
+  };
+
   interface IWaifuStyle extends CSSProperties {
     WebkitAppRegion: string;
   }
@@ -591,6 +613,28 @@ const Pet: FunctionComponent = () => {
             </div>
 
             <button className="setting-confirm" onClick={handleConfirmClick}>
+              {cl.confirmBtn}
+            </button>
+          </div>
+        )}
+        {isShowOnlineInput && (
+          <div className="setting">
+            <div className="setting-item">
+              <input
+                id="model-url"
+                autoFocus
+                defaultValue={localStorage.modelUrl}
+                style={{ width: '100%' }}
+                placeholder="url"
+                className="setting-input"
+                type="text"
+              ></input>
+            </div>
+
+            <button
+              className="setting-confirm"
+              onClick={handleModelUrlConfirmBtnClick}
+            >
               {cl.confirmBtn}
             </button>
           </div>

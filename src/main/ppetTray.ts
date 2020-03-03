@@ -38,6 +38,7 @@ const langs = {
     canvasSettings: '画布设置',
     clearSettings: '清除设置',
     importModel: '导入模型',
+    importOnlineModel: '导入在线模型',
     removeModel: '移除模型',
     reRender: '重新渲染',
     feedback: '反馈建议',
@@ -67,6 +68,7 @@ const langs = {
     canvasSettings: 'Canvas Settings',
     clearSettings: 'Clear Canvas Settings',
     importModel: 'Import Model',
+    importOnlineModel: 'Import Online Model',
     removeModel: 'Remove Model',
     reRender: 'ReRender',
     feedback: 'Feedback',
@@ -285,6 +287,14 @@ const initTray = (mainWindow: BrowserWindow) => {
             dialog.showErrorBox(cl.errorBox.title, err.message || '...');
             console.error('load model error: ', err);
           }
+        }
+      },
+      {
+        label: cl.importOnlineModel,
+        click: async () => {
+          mainWindow.webContents.send('model-change-message', {
+            type: 'load-online'
+          });
         }
       },
       {
