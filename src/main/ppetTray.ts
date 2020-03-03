@@ -37,20 +37,20 @@ const langs = {
     zoomReset: '原始大小',
     canvasSettings: '画布设置',
     clearSettings: '清除设置',
-    importModel: '导入 Model',
-    removeModel: '移除 Model',
+    importModel: '导入模型',
+    removeModel: '移除模型',
     reRender: '重新渲染',
     feedback: '反馈建议',
     about: '关于 PPet',
     quit: '退出 PPet',
     model: {
-      title: '请选择 model 配置文件',
-      buttonLabel: '导入 Model',
-      filtersName: 'model配置文件'
+      title: '请选择模型配置文件',
+      buttonLabel: '导入模型',
+      filtersName: '模型配置文件'
     },
     errorBox: {
-      title: '导入 model 失败',
-      title1: '移除 model 失败',
+      title: '导入模型失败',
+      title1: '移除模型失败',
       getContent: (text: string) =>
         `无效的model配置文件，该文件为'.json'结尾，会包含${text}等字段`
     }
