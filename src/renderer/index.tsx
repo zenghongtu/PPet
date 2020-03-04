@@ -6,6 +6,7 @@ import './index.scss';
 import emitter from '@/utils/emitter';
 import { ipcRenderer, remote } from 'electron';
 import { IShowMessageFunc } from './modules/Pet';
+import config from 'common/config';
 
 Sentry.init({
   dsn: 'https://57b49a715b324bbf928b32f92054c8d6@sentry.io/1872002'
@@ -100,6 +101,14 @@ ipcRenderer.on('remove-plugin-message', (event, { name }) => {
   showMessage(`Uninstalling Plugin: ${name}`);
 
   uninstallPlugin(name);
+});
+
+setTimeout(() => {
+  const plugins = config.get('plugins', {});
+  Object.values(plugins).forEach(plugin => {
+    const { code, name } = plugin;
+    installPlugin(name, code);
+  });
 });
 
 ReactDOM.render(<BasicLayout />, document.getElementById('app'));
