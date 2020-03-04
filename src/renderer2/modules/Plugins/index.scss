@@ -1,0 +1,12 @@
+.plugins {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.plugin-item {
+  width: 200px;
+  height: 300px;
+  margin-left: 20px;
+  border: 1px solid #ccc;
+}

@@ -60,16 +60,22 @@ const installPlugin = (name: string, code: string) => {
     );
     return;
   }
+
   try {
     window.__plugins[name] = module.exports.call(null) || +new Date();
     showMessage(`Installed plugin: ${name}`);
+    ipcRenderer.sendTo(
+      remote.getGlobal('pluginWebContentsId'),
+      'update-plugin-status-message',
+      { name, status: 'active' }
+    );
   } catch (err) {
     showMessage(
       `Install plugin failed: ${name}. Error message: ${err.message}`
     );
     console.log(err);
   } finally {
-    // delete window.__plugins[name];
+    // TODO
   }
 };
 
@@ -80,14 +86,19 @@ const uninstallPlugin = (name: string) => {
     showMessage(
       `Uninstall plugin failed: ${name}. Error message: not found the plugin`
     );
-    return;
+  } else {
+    if (typeof window.__plugins[name] === 'function') {
+      window.__plugins[name].call(null);
+    }
+    delete window.__plugins[name];
+    showMessage(`Uninstalled Plugin: ${name}`);
   }
 
-  if (typeof window.__plugins[name] === 'function') {
-    window.__plugins[name].call(null);
-  }
-  delete window.__plugins[name];
-  showMessage(`Uninstalled Plugin: ${name}`);
+  ipcRenderer.sendTo(
+    remote.getGlobal('pluginWebContentsId'),
+    'update-plugin-status-message',
+    { name, status: 'inactive' }
+  );
 };
 
 ipcRenderer.on('add-plugin-message', (event, plugin) => {
@@ -103,11 +114,21 @@ ipcRenderer.on('remove-plugin-message', (event, { name }) => {
   uninstallPlugin(name);
 });
 
+ipcRenderer.on('get-active-plugins-message', event => {
+  ipcRenderer.sendTo(
+    remote.getGlobal('pluginWebContentsId'),
+    'active-plugins-message',
+    Object.keys(window.__plugins)
+  );
+});
+
 setTimeout(() => {
   const plugins = config.get('plugins', {});
   Object.values(plugins).forEach(plugin => {
-    const { code, name } = plugin;
-    installPlugin(name, code);
+    const { code, name, status } = plugin;
+    if (status === 'active') {
+      installPlugin(name, code);
+    }
   });
 });
 

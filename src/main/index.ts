@@ -74,6 +74,9 @@ function createMainWindow() {
   Object.assign(opts, winBounds);
   const window = new BrowserWindow(opts);
 
+  global.mainWindow = window;
+  global.mainWebContentsId = window.webContents.id;
+
   if (isDevelopment) {
     window.webContents.openDevTools();
   }
@@ -136,13 +139,15 @@ function createPluginsWindow() {
   const window = new BrowserWindow({
     show: false,
     alwaysOnTop: false,
-    width: 800,
-    height: 600,
+    width: 1000,
+    height: 800,
     webPreferences: {
       nodeIntegration: true,
       webSecurity: false
     }
   });
+
+  global.pluginWebContentsId = window.webContents.id;
 
   if (isDevelopment) {
     window.webContents.openDevTools();
