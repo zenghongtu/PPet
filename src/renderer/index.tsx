@@ -25,12 +25,19 @@ interface IPPet extends Electron.BrowserWindow {
 
 window.__plugins = {};
 
-const showMessage: IShowMessageFunc = (...args) => {
-  emitter.emit('waifu-show-message', args);
+const showMessage: IShowMessageFunc = (text, timeout = 4000, priority = 0) => {
+  emitter.emit('waifu-show-message', { text, timeout, priority });
 };
 
 // TODO 渲染完成后，加载插件
 const installPlugin = (name: string, code: string) => {
+  console.log('install plugin: ', name);
+  if (window.__plugins[name]) {
+    showMessage(
+      `Installed plugin failed: ${name}. Error message: repeat install plugin`
+    );
+    return;
+  }
   const func = new Function('ppet', 'app', 'module', code);
 
   const ppet: IPPet = remote.getGlobal('mainWindow');
@@ -47,21 +54,31 @@ const installPlugin = (name: string, code: string) => {
   func(ppet, remote.app, module);
 
   if (typeof module !== 'object' || typeof module.exports !== 'function') {
-    // TODO
+    showMessage(
+      `Installed plugin failed: ${name}. Error message: invalid plugin`
+    );
     return;
   }
   try {
-    // TODO 处理回调
     window.__plugins[name] = module.exports.call(null) || +new Date();
-  } catch (e) {
-    // TODO 提醒错误
-    console.log('error');
+    showMessage(`Installed plugin: ${name}`);
+  } catch (err) {
+    showMessage(
+      `Install plugin failed: ${name}. Error message: ${err.message}`
+    );
+    console.log(err);
+  } finally {
+    // delete window.__plugins[name];
   }
 };
 
 const uninstallPlugin = (name: string) => {
+  console.log('remove plugin: ', name);
+
   if (!window.__plugins[name]) {
-    // TODO
+    showMessage(
+      `Uninstall plugin failed: ${name}. Error message: not found the plugin`
+    );
     return;
   }
 
@@ -69,16 +86,19 @@ const uninstallPlugin = (name: string) => {
     window.__plugins[name].call(null);
   }
   delete window.__plugins[name];
+  showMessage(`Uninstalled Plugin: ${name}`);
 };
 
 ipcRenderer.on('add-plugin-message', (event, plugin) => {
-  // TODO
-  const { createdAt, updatedAt, label, name, code } = plugin;
+  showMessage(`Installing Plugin: ${plugin.name}`);
+
+  const { createdAt, updatedAt, name, code } = plugin;
   installPlugin(name, code);
 });
 
 ipcRenderer.on('remove-plugin-message', (event, { name }) => {
-  console.log('name: ', name);
+  showMessage(`Uninstalling Plugin: ${name}`);
+
   uninstallPlugin(name);
 });
 

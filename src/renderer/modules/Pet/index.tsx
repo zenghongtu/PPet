@@ -292,10 +292,13 @@ const Pet: FunctionComponent = () => {
   }, []);
 
   useEffect(() => {
-    emitter.on('waifu-show-message', showMessage);
+    const handleShowMessage = ({ text, timeout, priority }) => {
+      showMessage(text, timeout, priority);
+    };
+    emitter.on('waifu-show-message', handleShowMessage);
 
     return () => {
-      emitter.off('waifu-show-message', showMessage);
+      emitter.off('waifu-show-message', handleShowMessage);
     };
   }, []);
 
