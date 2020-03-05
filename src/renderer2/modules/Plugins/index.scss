@@ -1,12 +1,35 @@
 .plugins {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-column-gap: 10px;
 }
 
 .plugin-item {
-  width: 200px;
+  position: relative;
   height: 300px;
-  margin-left: 20px;
+  padding: 10px;
+  margin-top: 20px;
   border: 1px solid #ccc;
+}
+
+.name {
+  font-weight: 600;
+  font-size: medium;
+}
+
+.desc {
+  font-weight: 500;
+  height: 200px;
+  overflow: hidden;
+}
+
+.buttons {
+  position: absolute;
+  padding: 0 10px;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  margin: auto;
 }

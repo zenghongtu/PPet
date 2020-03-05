@@ -10,6 +10,8 @@ interface IGistBox {
     name?: string;
     code?: string;
     desc?: string;
+    updatedAt?: string;
+    createAt?: string;
   };
   close: () => void;
 }
@@ -28,40 +30,73 @@ const GistBox: FunctionComponent<IGistBox> = ({ data, close }) => {
     console.log('Failed:', errorInfo);
   };
 
+  const layout = {
+    labelCol: { span: 4 },
+    wrapperCol: { span: 20 }
+  };
+
+  const initFormData = {
+    code: `
+module.exports = () => {
+  // write ...
+  
+  return () => {
+    // clean
+  };
+};
+    `,
+    ...data
+  };
   return (
     <Form
+      {...layout}
+      labelAlign="left"
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
-      initialValues={data}
+      initialValues={initFormData}
     >
       <Form.Item
         name="name"
-        label="名称"
+        label="Name"
         rules={[{ required: true, message: 'Please input name!' }]}
       >
-        <Input autoFocus></Input>
+        <Input placeholder="plugin name" autoFocus></Input>
       </Form.Item>
-      <Form.Item name="desc" label="描述">
-        <Input></Input>
+      <Form.Item name="desc" label="Description">
+        <TextArea
+          placeholder="plugin description"
+          autoSize={{ minRows: 1, maxRows: 4 }}
+        ></TextArea>
       </Form.Item>
       <Form.Item
         name="code"
-        label="代码"
-        rules={[{ required: true, message: 'Please input name!' }]}
+        label="Code"
+        rules={[{ required: true, message: 'Please input code!' }]}
       >
-        <TextArea autoSize={{ minRows: 15, maxRows: 25 }}></TextArea>
+        <TextArea
+          placeholder="code"
+          autoSize={{ minRows: 15, maxRows: 25 }}
+        ></TextArea>
       </Form.Item>
-
+      <div>
+        {data?.createdAt && (
+          <span>created: {new Date(data?.createdAt).toUTCString()}</span>
+        )}
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        {data?.updated && (
+          <span>updatedAt:{new Date(data?.updatedAt).toUTCString()}</span>
+        )}
+      </div>
       <div>
         <Button
           onClick={() => {
             close();
           }}
         >
-          关闭
+          Close
         </Button>
         <Button htmlType="submit" type="primary">
-          保存
+          Save
         </Button>
       </div>
     </Form>

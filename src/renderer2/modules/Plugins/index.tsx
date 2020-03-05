@@ -21,6 +21,10 @@ const Plugins: FunctionComponent = () => {
   }, []);
 
   useEffect(() => {
+    // TODO
+  }, []);
+
+  useEffect(() => {
     ipcRenderer.sendTo(
       remote.getGlobal('mainWebContentsId'),
       'get-active-plugins-message'
@@ -74,15 +78,25 @@ const Plugins: FunctionComponent = () => {
 
         return (
           <div className="plugin-item" key={name}>
-            <div>{name}</div>
-            <div>{desc || '...'}</div>
-            <Button onClick={handleEditBtnClick.bind(null, item)}>Edit</Button>
-            <Button onClick={handleRemoveBtnClick.bind(null, item)}>
-              Remove
-            </Button>
-            <Button onClick={handleChangeStatusBtnClick.bind(null, item)}>
-              {status}
-            </Button>
+            <div className="name">name: {name}</div>
+            <div className="desc">desc: {desc || ' '}</div>
+            <div className="buttons">
+              <Button onClick={handleEditBtnClick.bind(null, item)}>
+                edit
+              </Button>
+              <Button
+                onClick={handleRemoveBtnClick.bind(null, item)}
+                type="dashed"
+              >
+                Delete
+              </Button>
+              <Button
+                onClick={handleChangeStatusBtnClick.bind(null, item)}
+                type={status === 'active' ? 'danger' : 'primary'}
+              >
+                {status === 'active' ? 'stop' : 'run'}
+              </Button>
+            </div>
           </div>
         );
       })}

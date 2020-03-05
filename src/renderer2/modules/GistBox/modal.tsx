@@ -10,9 +10,10 @@ const showGistBoxModal = (data = null) => {
   };
 
   modal.update({
-    okText: '保存',
-    cancelText: '关闭',
-    width: 600,
+    okText: 'save',
+    cancelText: 'close',
+    width: 800,
+    maskClosable: true,
     centered: true,
     title: null,
     icon: null,
