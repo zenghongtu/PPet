@@ -13,6 +13,7 @@ import path from 'path';
 import fs from 'fs-extra';
 import electronLocalshortcut from 'electron-localshortcut';
 import config from '../common/config';
+import { createPluginsWindow } from './';
 
 let ppetTray: Tray | null = null;
 
@@ -30,6 +31,7 @@ const langs = {
     alwaysOnTop: '@置顶',
     ignoreMouseEvents: '忽略点击',
     openAtLogin: '开机启动',
+    plugins: '插件中心',
     tools: '小工具',
     language: '语言',
     zoomIn: '放大',
@@ -61,6 +63,7 @@ const langs = {
     alwaysOnTop: 'Always On Top',
     ignoreMouseEvents: 'Ignore Mouse Events',
     openAtLogin: 'Open At Login',
+    plugins: 'Plugins',
     tools: 'Tools',
     language: 'Language',
     zoomIn: 'Zoom In',
@@ -203,6 +206,12 @@ const initTray = (mainWindow: BrowserWindow) => {
       },
       {
         type: 'separator'
+      },
+      {
+        label: cl.plugins,
+        click: item => {
+          createPluginsWindow();
+        }
       },
       {
         label: cl.zoomIn,

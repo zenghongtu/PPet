@@ -135,7 +135,7 @@ app.on('activate', () => {
   }
 });
 
-function createPluginsWindow() {
+export function createPluginsWindow() {
   const window = new BrowserWindow({
     show: false,
     alwaysOnTop: false,
@@ -184,10 +184,6 @@ function createPluginsWindow() {
 
   return window;
 }
-
-ipcMain.on('show-plugins-message', () => {
-  pluginsWindow = createPluginsWindow();
-});
 
 const onAppReady = () => {
   mainWindow = createMainWindow();
