@@ -1,0 +1,9 @@
+[
+  { "name": "pm25", "desc": "pm25", "path": "pm25/index.js" },
+  { "name": "yiwen", "desc": "yiwen", "path": "yiwen/index.js" },
+  {
+    "name": "yiyan",
+    "desc": "PPet失去焦点时，显示一言·古诗",
+    "path": "yiyan/index.js"
+  }
+]
