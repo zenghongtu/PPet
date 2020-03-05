@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, Button } from 'antd';
 import GistBox from '.';
 
-const showGistBoxModal = (data = null) => {
+const showGistBoxModal = (data: any = null) => {
   const modal = Modal.confirm({});
 
   const close = () => {
