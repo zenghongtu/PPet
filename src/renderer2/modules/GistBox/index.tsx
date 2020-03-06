@@ -11,7 +11,7 @@ interface IGistBox {
     code?: string;
     desc?: string;
     updatedAt?: string;
-    createAt?: string;
+    createdAt?: string;
   };
   close: () => void;
 }
@@ -83,8 +83,8 @@ module.exports = () => {
           <span>created: {new Date(data?.createdAt).toUTCString()}</span>
         )}
         &nbsp;&nbsp;&nbsp;&nbsp;
-        {data?.updated && (
-          <span>updatedAt:{new Date(data?.updatedAt).toUTCString()}</span>
+        {data?.updatedAt && (
+          <span>updated:{new Date(data?.updatedAt).toUTCString()}</span>
         )}
       </div>
       <div>
