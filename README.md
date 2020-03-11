@@ -11,15 +11,15 @@
 
 ### Mac 10.14
 
-<img src="assets/preview.gif" width="800">
+<img src="assets/preview.gif" width="600">
 
 ### Windows 10
 
-<img src="assets/Xnip2020-01-06_01-03-19.png" width="400">
+<img src="assets/Xnip2020-01-06_01-03-19.png" width="300">
 
 ### Ubuntu 18
 
-<img src="assets/Xnip2020-01-06_23-25-25.png" width="400">
+<img src="assets/Xnip2020-01-06_23-25-25.png" width="300">
 
 ## 功能
 
@@ -54,6 +54,12 @@
 - ...
 
 如果你有什么好的想法，也欢迎留言交流~👏🏻
+
+## 特别感谢
+
+### CDN 赞助商
+
+<a href="https://www.maoyuncloud.com" target="_blank"><img src="assets/maocloud.png" width="150" alt="猫云"></a>
 
 ## 安装
 
