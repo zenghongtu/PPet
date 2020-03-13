@@ -3,10 +3,6 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import BasicLayout from './layouts/BasicLayout';
 import './index.scss';
-import emitter from '@/utils/emitter';
-import { ipcRenderer, remote } from 'electron';
-import { IShowMessageFunc } from './modules/Pet';
-import config from 'common/config';
 
 Sentry.init({
   dsn: 'https://57b49a715b324bbf928b32f92054c8d6@sentry.io/1872002'
@@ -20,116 +16,118 @@ window.addEventListener(
   false
 );
 
-interface IPPet extends Electron.BrowserWindow {
-  showMessage: IShowMessageFunc;
-}
+// https://github.com/electron/electron/issues/22545
 
-window.__plugins = {};
+// interface IPPet extends Electron.BrowserWindow {
+//   showMessage: IShowMessageFunc;
+// }
 
-const showMessage: IShowMessageFunc = (text, timeout = 4000, priority = 0) => {
-  emitter.emit('waifu-show-message', { text, timeout, priority });
-};
+// window.__plugins = {};
 
-// TODO 渲染完成后，加载插件
-const installPlugin = (name: string, code: string) => {
-  console.log('install plugin: ', name);
-  if (window.__plugins[name]) {
-    showMessage(
-      `Installed plugin failed: ${name}. Error message: repeat install plugin`
-    );
-    return;
-  }
-  const func = new Function('ppet', 'app', 'module', code);
+// const showMessage: IShowMessageFunc = (text, timeout = 4000, priority = 0) => {
+//   emitter.emit('waifu-show-message', { text, timeout, priority });
+// };
 
-  const ppet: IPPet = remote.getGlobal('mainWindow');
+// // TODO 渲染完成后，加载插件
+// const installPlugin = (name: string, code: string) => {
+//   console.log('install plugin: ', name);
+//   if (window.__plugins[name]) {
+//     showMessage(
+//       `Installed plugin failed: ${name}. Error message: repeat install plugin`
+//     );
+//     return;
+//   }
+  // const func = new Function('ppet', 'app', 'module', code);
 
-  ppet.showMessage = showMessage;
+  // const ppet: IPPet = remote.getGlobal('mainWindow');
 
-  const module = {
-    exports: () => {
-      // TODO
-      return '';
-    }
-  };
+  // ppet.showMessage = showMessage;
 
-  func(ppet, remote.app, module);
+  // const module = {
+  //   exports: () => {
+  //     // TODO
+  //     return '';
+  //   }
+  // };
 
-  if (typeof module !== 'object' || typeof module.exports !== 'function') {
-    showMessage(
-      `Installed plugin failed: ${name}. Error message: invalid plugin`
-    );
-    return;
-  }
+  // func(ppet, remote.app, module);
 
-  try {
-    window.__plugins[name] = module.exports.call(null) || +new Date();
-    showMessage(`Installed plugin: ${name}`);
-    ipcRenderer.sendTo(
-      remote.getGlobal('pluginWebContentsId'),
-      'update-plugin-status-message',
-      { name, status: 'active' }
-    );
-  } catch (err) {
-    showMessage(
-      `Install plugin failed: ${name}. Error message: ${err.message}`
-    );
-    console.log(err);
-  } finally {
-    // TODO
-  }
-};
+//   if (typeof module !== 'object' || typeof module.exports !== 'function') {
+//     showMessage(
+//       `Installed plugin failed: ${name}. Error message: invalid plugin`
+//     );
+//     return;
+//   }
 
-const uninstallPlugin = (name: string) => {
-  console.log('remove plugin: ', name);
+//   try {
+//     window.__plugins[name] = module.exports.call(null) || +new Date();
+//     showMessage(`Installed plugin: ${name}`);
+//     ipcRenderer.sendTo(
+//       remote.getGlobal('pluginWebContentsId'),
+//       'update-plugin-status-message',
+//       { name, status: 'active' }
+//     );
+//   } catch (err) {
+//     showMessage(
+//       `Install plugin failed: ${name}. Error message: ${err.message}`
+//     );
+//     console.log(err);
+//   } finally {
+//     // TODO
+//   }
+// };
 
-  if (!window.__plugins[name]) {
-    showMessage(
-      `Uninstall plugin failed: ${name}. Error message: not found the plugin`
-    );
-  } else {
-    if (typeof window.__plugins[name] === 'function') {
-      window.__plugins[name].call(null);
-    }
-    delete window.__plugins[name];
-    showMessage(`Uninstalled Plugin: ${name}`);
-  }
+// const uninstallPlugin = (name: string) => {
+//   console.log('remove plugin: ', name);
 
-  ipcRenderer.sendTo(
-    remote.getGlobal('pluginWebContentsId'),
-    'update-plugin-status-message',
-    { name, status: 'inactive' }
-  );
-};
+//   if (!window.__plugins[name]) {
+//     showMessage(
+//       `Uninstall plugin failed: ${name}. Error message: not found the plugin`
+//     );
+//   } else {
+//     if (typeof window.__plugins[name] === 'function') {
+//       window.__plugins[name].call(null);
+//     }
+//     delete window.__plugins[name];
+//     showMessage(`Uninstalled Plugin: ${name}`);
+//   }
 
-ipcRenderer.on('add-plugin-message', (event, plugin) => {
-  showMessage(`Installing Plugin: ${plugin.name}`);
+//   ipcRenderer.sendTo(
+//     remote.getGlobal('pluginWebContentsId'),
+//     'update-plugin-status-message',
+//     { name, status: 'inactive' }
+//   );
+// };
 
-  const { createdAt, updatedAt, name, code } = plugin;
-  installPlugin(name, code);
-});
+// ipcRenderer.on('add-plugin-message', (event, plugin) => {
+//   showMessage(`Installing Plugin: ${plugin.name}`);
 
-ipcRenderer.on('remove-plugin-message', (event, { name }) => {
-  showMessage(`Uninstalling Plugin: ${name}`);
+//   const { createdAt, updatedAt, name, code } = plugin;
+//   installPlugin(name, code);
+// });
 
-  uninstallPlugin(name);
-});
+// ipcRenderer.on('remove-plugin-message', (event, { name }) => {
+//   showMessage(`Uninstalling Plugin: ${name}`);
 
-ipcRenderer.on('get-active-plugins-message', event => {
-  ipcRenderer.sendTo(
-    remote.getGlobal('pluginWebContentsId'),
-    'active-plugins-message',
-    Object.keys(window.__plugins)
-  );
-});
+//   uninstallPlugin(name);
+// });
 
-setTimeout(() => {
-  const plugins = config.get('plugins', {});
-  Object.values(plugins).forEach(plugin => {
-    const { code, name, status } = plugin;
-    if (status === 'active') {
-      installPlugin(name, code);
-    }
-  });
-});
+// ipcRenderer.on('get-active-plugins-message', event => {
+//   ipcRenderer.sendTo(
+//     remote.getGlobal('pluginWebContentsId'),
+//     'active-plugins-message',
+//     Object.keys(window.__plugins)
+//   );
+// });
+
+// setTimeout(() => {
+//   const plugins = config.get('plugins', {});
+//   Object.values(plugins).forEach(plugin => {
+//     const { code, name, status } = plugin;
+//     if (status === 'active') {
+//       installPlugin(name, code);
+//     }
+//   });
+// });
 
 ReactDOM.render(<BasicLayout />, document.getElementById('app'));

@@ -7,5 +7,7 @@ namespace NodeJS {
     mainWindow: Electron.BrowserWindow | undefined;
     mainWebContentsId: number | undefined;
     pluginWebContentsId: number | undefined;
+    pluginWebContents: Electron.WebContents | undefined;
+    __plugins: any;
   }
 }

@@ -48,10 +48,7 @@ const Plugins: FunctionComponent = () => {
   }, []);
 
   useEffect(() => {
-    ipcRenderer.sendTo(
-      remote.getGlobal('mainWebContentsId'),
-      'get-active-plugins-message'
-    );
+    ipcRenderer.send('get-active-plugins-message');
 
     ipcRenderer.on('active-plugins-message', (event, activePlugins = []) => {
       activePlugins.forEach(name => {
@@ -99,17 +96,9 @@ const Plugins: FunctionComponent = () => {
   const handleChangeStatusBtnClick = data => {
     if (data.code) {
       if (data.status === 'inactive') {
-        ipcRenderer.sendTo(
-          remote.getGlobal('mainWebContentsId'),
-          'add-plugin-message',
-          data
-        );
+        ipcRenderer.send('add-plugin-message', data);
       } else if (data.status === 'active') {
-        ipcRenderer.sendTo(
-          remote.getGlobal('mainWebContentsId'),
-          'remove-plugin-message',
-          data
-        );
+        ipcRenderer.send('remove-plugin-message', data);
       }
     } else if (data.path) {
       const url = `${pluginsUrl}/${data.path}`;

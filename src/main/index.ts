@@ -13,6 +13,7 @@ import Positioner from 'electron-positioner';
 import * as Sentry from '@sentry/electron';
 import initTray from './ppetTray';
 import config from 'common/config';
+import initPPetPlugins from './ppetPlugins';
 
 Sentry.init({
   dsn: 'https://57b49a715b324bbf928b32f92054c8d6@sentry.io/1872002'
@@ -75,7 +76,7 @@ function createMainWindow() {
   const window = new BrowserWindow(opts);
 
   global.mainWindow = window;
-  global.mainWebContentsId = window.webContents.id;
+  // global.mainWebContentsId = window.webContents.id;
 
   if (isDevelopment) {
     window.webContents.openDevTools();
@@ -92,6 +93,8 @@ function createMainWindow() {
       })
     );
   }
+
+  initPPetPlugins(window);
 
   window.on('moved', () => {
     config.set('winBounds.mainWindow', window.getBounds());
@@ -136,6 +139,10 @@ app.on('activate', () => {
 });
 
 export function createPluginsWindow() {
+  if (pluginsWindow && !pluginsWindow.isDestroyed()) {
+    pluginsWindow.show();
+    return;
+  }
   const window = new BrowserWindow({
     show: false,
     alwaysOnTop: false,
@@ -147,7 +154,8 @@ export function createPluginsWindow() {
     }
   });
 
-  global.pluginWebContentsId = window.webContents.id;
+  pluginsWindow = window;
+  global.pluginWebContents = window.webContents;
 
   if (isDevelopment) {
     window.webContents.openDevTools();
@@ -169,6 +177,7 @@ export function createPluginsWindow() {
 
   window.on('closed', () => {
     pluginsWindow = null;
+    global.pluginWebContents = undefined;
   });
 
   window.webContents.on('devtools-opened', () => {

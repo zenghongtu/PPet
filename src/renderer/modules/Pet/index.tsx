@@ -292,13 +292,13 @@ const Pet: FunctionComponent = () => {
   }, []);
 
   useEffect(() => {
-    const handleShowMessage = ({ text, timeout, priority }) => {
+    const handleShowMessage = (event, { text, timeout, priority }) => {
       showMessage(text, timeout, priority);
     };
-    emitter.on('waifu-show-message', handleShowMessage);
+    ipcRenderer.on('waifu-show-message', handleShowMessage);
 
     return () => {
-      emitter.off('waifu-show-message', handleShowMessage);
+      ipcRenderer.off('waifu-show-message', handleShowMessage);
     };
   }, []);
 
