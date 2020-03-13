@@ -4,6 +4,7 @@ import config from 'common/config';
 import { Button } from 'antd';
 import showGistBoxModal from '../GistBox/modal';
 import { ipcRenderer, remote } from 'electron';
+import { GlobalOutlined } from '@ant-design/icons';
 
 export interface IPlugin {
   data: { name: string; code: string; desc?: string };
@@ -131,7 +132,11 @@ const Plugins: FunctionComponent = () => {
 
           return (
             <div className="plugin-item" key={name}>
-              {!code && 'online'}
+              {!code && (
+                <div className="plugin-online">
+                  <GlobalOutlined />
+                </div>
+              )}
               <div className="name">name: {name}</div>
               <div className="desc">desc: {desc || ' '}</div>
               <div className="buttons">
