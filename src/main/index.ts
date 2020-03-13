@@ -144,7 +144,7 @@ export function createPluginsWindow() {
     return;
   }
   const window = new BrowserWindow({
-    show: false,
+    // show: false,
     alwaysOnTop: false,
     width: 1000,
     height: 800,
@@ -187,9 +187,9 @@ export function createPluginsWindow() {
     });
   });
 
-  window.on('ready-to-show', () => {
-    window.show();
-  });
+  // window.on('ready-to-show', () => {
+  //   window.show();
+  // });
 
   return window;
 }
