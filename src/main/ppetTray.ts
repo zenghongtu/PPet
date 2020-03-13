@@ -214,6 +214,9 @@ const initTray = (mainWindow: BrowserWindow) => {
         }
       },
       {
+        type: 'separator'
+      },
+      {
         label: cl.zoomIn,
         accelerator: 'CmdOrCtrl+=',
         click: async () => {
