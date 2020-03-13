@@ -22,7 +22,7 @@ Object.keys(initPlugins).forEach((name: any) => {
   }
 });
 
-const Plugins: FunctionComponent = () => {
+const Plugins: FunctionComponent<{ refresh: Function }> = ({ refresh }) => {
   const [plugins, setPlugins] = useState(initPlugins);
 
   useEffect(() => {
@@ -46,7 +46,7 @@ const Plugins: FunctionComponent = () => {
         });
         setPlugins(_plugins);
       });
-  }, []);
+  }, [refresh]);
 
   useEffect(() => {
     ipcRenderer.send('get-active-plugins-message');
@@ -56,7 +56,7 @@ const Plugins: FunctionComponent = () => {
         config.set(`plugins.${name}.status`, 'active');
       });
     });
-  }, []);
+  }, [refresh]);
 
   useEffect(() => {
     ipcRenderer.on('update-plugin-status-message', (event, info) => {
