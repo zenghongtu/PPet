@@ -8,7 +8,6 @@ interface IPPet extends Electron.BrowserWindow {
 }
 
 const initPPetPlugins = (mainWindow: BrowserWindow) => {
-  console.log('mainWindow: ', mainWindow);
   global.__plugins = {};
 
   const showMessage: IShowMessageFunc = (
