@@ -40,13 +40,17 @@
 
 > 选择模型文件夹中的模型配置文件（一般为`model.json`/`index.json`，必须包含`model`/`textures`/`motions`三个字段，没有的话可以尝试自行添加），将会导入该配置文件所在的文件夹
 
-> **导入的模型如果显示不完整，可以【设置 Model】设置其宽度和高度。如果还存在问题可以尝试【重新渲染】**
+> 导入的模型如果显示不完整，可以【设置 Model】设置其宽度和高度。如果还存在问题可以尝试【重新渲染】
 
 > 一些资源推荐：[xiazeyu/live2d-widget-models](https://github.com/xiazeyu/live2d-widget-models) / [xiaoski/live2d_models_collection](https://github.com/xiaoski/live2d_models_collection)/ [QiShaoXuan/live2DModel](https://github.com/QiShaoXuan/live2DModel) / [梦象](https://mx.paul.ren/) 上的 Model 还不错，可以自行下载或使用在线地址
 
 > 在线地址使用，比如这里的[live2d-widget-models/tree/master/packages/live2d-widget-model-miku/](https://github.com/xiazeyu/live2d-widget-models/tree/master/packages/live2d-widget-model-miku/assets) ，导入这个地址[https://raw.githubusercontent.com/xiazeyu/live2d-widget-models/master/packages/live2d-widget-model-miku/assets/miku.model.json](https://raw.githubusercontent.com/xiazeyu/live2d-widget-models/master/packages/live2d-widget-model-miku/assets/miku.model.json)
 
+### 插件中心
+
 <img src="assets/ppet-plugin.gif" width="400">
+
+### 托盘
 
 <img src="assets/2020-03-15-15-14-47.png" width="200">
 
@@ -75,15 +79,15 @@
 
 ### Mac
 
-[下载](https://github.com/zenghongtu/PPet/releases/download/v1.1.0/PPet-1.1.0.dmg) .dmg
+[下载](https://github.com/zenghongtu/PPet/releases/download/v1.2.0/PPet-1.2.0.dmg) .dmg
 
 ### Linux
 
-'Debian / Ubuntu' 使用 .deb [下载](https://github.com/zenghongtu/PPet/releases/download/v1.1.0/PPet-1.1.0.deb)
+'Debian / Ubuntu' 使用 .deb [下载](https://github.com/zenghongtu/PPet/releases/download/v1.2.0/PPet-1.2.0.deb)
 
 ### Window
 
-[下载](https://github.com/zenghongtu/PPet/releases/download/v1.1.0/PPet-1.1.0.exe)
+[下载](https://github.com/zenghongtu/PPet/releases/download/v1.2.0/PPet-1.2.0.exe) .exe
 
 ## 开发
 
