@@ -23,29 +23,35 @@
 
 ## 功能
 
-- [x] 本地导入 Model
+- [x] **插件中心**（努力写使用文档中...）
+- [x] **导入在线 Model** (再也不用下载，直接使用 GitHub 上的 Model，输入地址就可以加载了~~，可以通过*调试*查看加载详情)
+- [x] 导入本地 Model (win 上存在问题，可以使用在线导入 Model)
+- [x] 设置 Model (目前只能设置 w 和 h)
+- [x] @置顶
+- [x] 忽略点击
+- [x] 开机启动
+- [x] 小工具
+- [x] 移动位置（按住 Alt）
+- [x] 放大缩小（Ctrl/Cmd 和 +、-、0 控制）
+- [x] 调试
+- [x] ~~提醒休息（默认 25 分钟）~~（移到插件中心，使用 `take-a-rest`插件）
 
-  > 选择模型文件夹中的模型配置文件（一般为`model.json`/`index.json`，必须包含`model`/`textures`/`motions`三个字段，没有的话可以尝试自行添加），将会导入该配置文件所在的文件夹
+### 注意
 
-  > **导入的模型如果显示不完整，可以【设置 Model】设置其宽度和高度。如果还存在问题可以尝试【重新渲染】**
+> 选择模型文件夹中的模型配置文件（一般为`model.json`/`index.json`，必须包含`model`/`textures`/`motions`三个字段，没有的话可以尝试自行添加），将会导入该配置文件所在的文件夹
 
-  > 一些资源推荐：[xiazeyu/live2d-widget-models](https://github.com/xiazeyu/live2d-widget-models) / [xiaoski/live2d_models_collection](https://github.com/xiaoski/live2d_models_collection)/ [QiShaoXuan/live2DModel](https://github.com/QiShaoXuan/live2DModel) / [梦象](https://mx.paul.ren/) 上的 Model 还不错，可以自行下载导入
+> **导入的模型如果显示不完整，可以【设置 Model】设置其宽度和高度。如果还存在问题可以尝试【重新渲染】**
 
-* [x] 设置 Model
-  > 目前只能设置 w 和 h
-* [x] @置顶
-* [x] 忽略点击
-* [x] 开机启动
-* [x] 小工具
-* [x] 拖动（按住 Alt）
-* [x] 放大缩小（Ctrl/Cmd 和 +、-、0 控制）
-* [x] ~~提醒休息（默认 25 分钟）~~（移到开发中心）
+> 一些资源推荐：[xiazeyu/live2d-widget-models](https://github.com/xiazeyu/live2d-widget-models) / [xiaoski/live2d_models_collection](https://github.com/xiaoski/live2d_models_collection)/ [QiShaoXuan/live2DModel](https://github.com/QiShaoXuan/live2DModel) / [梦象](https://mx.paul.ren/) 上的 Model 还不错，可以自行下载或使用在线地址
 
-<img src="assets/Xnip2020-01-06_23-35-38.png" width="200">
+> 在线地址使用，比如这里的[live2d-widget-models/tree/master/packages/live2d-widget-model-miku/](https://github.com/xiazeyu/live2d-widget-models/tree/master/packages/live2d-widget-model-miku/assets) ，导入这个地址[https://raw.githubusercontent.com/xiazeyu/live2d-widget-models/master/packages/live2d-widget-model-miku/assets/miku.model.json](https://raw.githubusercontent.com/xiazeyu/live2d-widget-models/master/packages/live2d-widget-model-miku/assets/miku.model.json)
+
+<img src="assets/ppet-plugin.gif" width="400">
+
+<img src="assets/2020-03-15-15-14-47.png" width="200">
 
 ## 后续功能
 
-- 插件中心【开发中】
 - 选词翻译
 - 换壁纸
 - 记录剪切板
