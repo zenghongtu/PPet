@@ -59,6 +59,7 @@
     "react-hot-loader": "4.12.18",
     "sass-loader": "^8.0.0",
     "typescript": "^3.7.4",
+    "universal-analytics": "^0.4.20",
     "webpack": "4.41.5"
   },
   "build": {

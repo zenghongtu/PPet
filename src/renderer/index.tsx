@@ -3,9 +3,21 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import BasicLayout from './layouts/BasicLayout';
 import './index.scss';
+import { initGA, sendEvent } from './utils/ga';
+import { remote } from 'electron';
 
 Sentry.init({
   dsn: 'https://57b49a715b324bbf928b32f92054c8d6@sentry.io/1872002'
+});
+
+initGA();
+
+remote.getCurrentWindow().on('focus', () => {
+  sendEvent('window', 'focus');
+});
+
+remote.getCurrentWindow().on('blur', () => {
+  sendEvent('window', 'blur');
 });
 
 window.addEventListener(
@@ -37,20 +49,20 @@ window.addEventListener(
 //     );
 //     return;
 //   }
-  // const func = new Function('ppet', 'app', 'module', code);
+// const func = new Function('ppet', 'app', 'module', code);
 
-  // const ppet: IPPet = remote.getGlobal('mainWindow');
+// const ppet: IPPet = remote.getGlobal('mainWindow');
 
-  // ppet.showMessage = showMessage;
+// ppet.showMessage = showMessage;
 
-  // const module = {
-  //   exports: () => {
-  //     // TODO
-  //     return '';
-  //   }
-  // };
+// const module = {
+//   exports: () => {
+//     // TODO
+//     return '';
+//   }
+// };
 
-  // func(ppet, remote.app, module);
+// func(ppet, remote.app, module);
 
 //   if (typeof module !== 'object' || typeof module.exports !== 'function') {
 //     showMessage(
