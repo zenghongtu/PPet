@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
 import './index.scss';
 import config from 'common/config';
-import { Button } from 'antd';
+import { Button, Spin } from 'antd';
 import showGistBoxModal from '../GistBox/modal';
 import { ipcRenderer, remote } from 'electron';
 import { GlobalOutlined } from '@ant-design/icons';
@@ -24,6 +24,7 @@ Object.keys(initPlugins).forEach((name: any) => {
 
 const Plugins: FunctionComponent<{ refresh: Function }> = ({ refresh }) => {
   const [plugins, setPlugins] = useState(initPlugins);
+  const [spinning, setSpinning] = useState(false);
 
   useEffect(() => {
     const unsubscribe = config.onDidChange('plugins', newValue => {
@@ -35,6 +36,7 @@ const Plugins: FunctionComponent<{ refresh: Function }> = ({ refresh }) => {
   }, [plugins]);
 
   useEffect(() => {
+    setSpinning(true);
     fetch(`${pluginsUrl}/index.json`)
       .then(rsp => rsp.json())
       .then(data => {
@@ -45,6 +47,9 @@ const Plugins: FunctionComponent<{ refresh: Function }> = ({ refresh }) => {
           }
         });
         setPlugins(_plugins);
+      })
+      .finally(() => {
+        setSpinning(false);
       });
   }, [refresh]);
 
@@ -124,44 +129,54 @@ const Plugins: FunctionComponent<{ refresh: Function }> = ({ refresh }) => {
   };
 
   return (
-    <div className="plugins">
-      {Object.values(plugins)
-        .sort()
-        .map((item: any) => {
-          const { code, name, path, desc, status, createdAt, updatedAt } = item;
+    <Spin tip="Loading..." spinning={spinning}>
+      <div className="plugins">
+        {Object.values(plugins)
+          .sort()
+          .map((item: any) => {
+            const {
+              code,
+              name,
+              path,
+              desc,
+              status,
+              createdAt,
+              updatedAt
+            } = item;
 
-          return (
-            <div className="plugin-item" key={name}>
-              {!code && (
-                <div className="plugin-online">
-                  <GlobalOutlined />
-                </div>
-              )}
-              <div className="name">name: {name}</div>
-              <div className="desc">desc: {desc || ' '}</div>
-              <div className="buttons">
-                <Button onClick={handleEditBtnClick.bind(null, item)}>
-                  edit
-                </Button>
-                {code && (
-                  <Button
-                    onClick={handleRemoveBtnClick.bind(null, item)}
-                    type="dashed"
-                  >
-                    Delete
-                  </Button>
+            return (
+              <div className="plugin-item" key={name}>
+                {!code && (
+                  <div className="plugin-online">
+                    <GlobalOutlined />
+                  </div>
                 )}
-                <Button
-                  onClick={handleChangeStatusBtnClick.bind(null, item)}
-                  type={status === 'active' ? 'danger' : 'primary'}
-                >
-                  {status === 'active' ? 'stop' : 'run'}
-                </Button>
+                <div className="name">name: {name}</div>
+                <div className="desc">desc: {desc || ' '}</div>
+                <div className="buttons">
+                  <Button onClick={handleEditBtnClick.bind(null, item)}>
+                    edit
+                  </Button>
+                  {code && (
+                    <Button
+                      onClick={handleRemoveBtnClick.bind(null, item)}
+                      type="dashed"
+                    >
+                      Delete
+                    </Button>
+                  )}
+                  <Button
+                    onClick={handleChangeStatusBtnClick.bind(null, item)}
+                    type={status === 'active' ? 'danger' : 'primary'}
+                  >
+                    {status === 'active' ? 'stop' : 'run'}
+                  </Button>
+                </div>
               </div>
-            </div>
-          );
-        })}
-    </div>
+            );
+          })}
+      </div>
+    </Spin>
   );
 };
 
