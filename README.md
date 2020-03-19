@@ -23,7 +23,7 @@
 
 ## 功能
 
-- [x] **插件中心**（默认提供的插件在这里[plugins](https://github.com/zenghongtu/PPet/tree/master/plugins)，可以自己添加插件，添加文档在努力编写中...）
+- [x] **插件中心**（默认提供的插件在这里[plugins](https://github.com/zenghongtu/PPet/tree/master/plugins)，可以自己添加插件 [PPet 插件开发指北](https://github.com/zenghongtu/PPet/wiki/PPet%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E6%8C%87%E5%8C%97)）
 - [x] **导入在线 Model** (再也不用下载，直接使用 GitHub 上的 Model，输入地址就可以加载了~~，可以通过*调试*查看加载详情)
 - [x] 导入本地 Model (win 上存在问题，可以使用在线导入 Model)
 - [x] 设置 Model (目前只能设置 w 和 h)
@@ -79,15 +79,15 @@
 
 ### Mac
 
-[下载](https://github.com/zenghongtu/PPet/releases/download/v1.2.0/PPet-1.2.0.dmg) .dmg
+[下载](https://github.com/zenghongtu/PPet/releases/download/v1.2.1/PPet-1.2.1.dmg) .dmg
 
 ### Linux
 
-'Debian / Ubuntu' 使用 .deb [下载](https://github.com/zenghongtu/PPet/releases/download/v1.2.0/PPet-1.2.0.deb)
+'Debian / Ubuntu' 使用 .deb [下载](https://github.com/zenghongtu/PPet/releases/download/v1.2.1/PPet-1.2.1.deb)
 
 ### Window
 
-[下载](https://github.com/zenghongtu/PPet/releases/download/v1.2.0/PPet-1.2.0.exe) .exe
+[下载](https://github.com/zenghongtu/PPet/releases/download/v1.2.1/PPet-1.2.1.exe) .exe
 
 ## 开发
 
