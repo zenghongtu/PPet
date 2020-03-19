@@ -17,7 +17,11 @@ import { createPluginsWindow } from './';
 
 let ppetTray: Tray | null = null;
 
-const trayImgPath = path.join(__static, 'icons', 'tray.png');
+const trayImgPath = path.join(
+  __static,
+  'icons',
+  process.platform === 'darwin' ? 'strip-tray.png' : 'tray.png'
+);
 
 const userDataPath = app.getPath('userData');
 const modelCachePath = path.join(userDataPath, 'model');
