@@ -45,6 +45,7 @@
     "electron-webpack-eslint": "^5.0.1",
     "electron-webpack-ts": "^3.2.0",
     "eslint-plugin-react": "^7.17.0",
+    "finalhandler": "^1.1.2",
     "font-awesome": "^4.7.0",
     "fs-extra": "^8.1.0",
     "globby": "^11.0.0",
@@ -58,6 +59,7 @@
     "react-dom": "^16.12.0",
     "react-hot-loader": "4.12.18",
     "sass-loader": "^8.0.0",
+    "serve-static": "^1.14.1",
     "typescript": "^3.7.4",
     "universal-analytics": "^0.4.20",
     "webpack": "4.41.5"

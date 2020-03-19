@@ -305,13 +305,20 @@ const Pet: FunctionComponent = () => {
   const handleSetWindowSize = (width: number, height: number) => {
     currentWindow.setSize(+width, +height);
   };
-  const handleUseLocalModel = (pathname: string) => {
-    const localModelConfigUrl = formatUrl({
-      pathname,
-      protocol: 'file'
-    });
-    setLmConfigPath(localModelConfigUrl);
-    loadLocalOrOnlineModel(localModelConfigUrl);
+  const handleUseLocalModel = async (pathname: string) => {
+    const result = await ipcRenderer.invoke(
+      'startup-server-static-message',
+      pathname
+    );
+    if (result) {
+      const { address, family, port } = result;
+      const localModelConfigUrl = `http://${address}:${port}/model.json`;
+      setLmConfigPath(localModelConfigUrl);
+      loadLocalOrOnlineModel(localModelConfigUrl);
+    } else {
+      showMessage('Loaded Failed!');
+    }
+    console.log('loaded local model result: ', result);
   };
 
   const handleUseOnlineModel = (url: string) => {

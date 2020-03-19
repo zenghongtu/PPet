@@ -14,6 +14,7 @@ import * as Sentry from '@sentry/electron';
 import initTray from './ppetTray';
 import config from 'common/config';
 import initPPetPlugins from './ppetPlugins';
+import initStaticServe from './staticServe';
 
 Sentry.init({
   dsn: 'https://57b49a715b324bbf928b32f92054c8d6@sentry.io/1872002'
@@ -202,6 +203,7 @@ const onAppReady = () => {
   // mainWindow.webContents.setIgnoreMenuShortcuts(true);
   // mainWindow.setIgnoreMouseEvents(true);
 
+  initStaticServe();
   initTray(mainWindow);
 };
 
