@@ -4,20 +4,20 @@ import {
   screen,
   crashReporter,
   ipcMain,
-  BrowserWindowConstructorOptions
+  BrowserWindowConstructorOptions,
 } from 'electron';
 import path from 'path';
 import { format as formatUrl } from 'url';
 import { autoUpdater } from 'electron-updater';
 import Positioner from 'electron-positioner';
 import * as Sentry from '@sentry/electron';
+import Serve from './electron-serve';
 import initTray from './ppetTray';
 import config from 'common/config';
 import initPPetPlugins from './ppetPlugins';
-import initStaticServe from './staticServe';
 
 Sentry.init({
-  dsn: 'https://57b49a715b324bbf928b32f92054c8d6@sentry.io/1872002'
+  dsn: 'https://57b49a715b324bbf928b32f92054c8d6@sentry.io/1872002',
 });
 
 crashReporter.start({
@@ -25,7 +25,7 @@ crashReporter.start({
   productName: 'PPet',
   ignoreSystemCrashHandler: true,
   submitURL:
-    'https://sentry.io/api/1872002/minidump/?sentry_key=57b49a715b324bbf928b32f92054c8d6'
+    'https://sentry.io/api/1872002/minidump/?sentry_key=57b49a715b324bbf928b32f92054c8d6',
 });
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
@@ -49,7 +49,9 @@ if (process.platform === 'darwin' && !isDevelopment) {
   app.dock.hide();
 }
 
-function createMainWindow() {
+Serve({ directory: '.' });
+
+async function createMainWindow() {
   const winBounds = config.get('winBounds.mainWindow', null);
   console.log('winBounds: ', winBounds);
 
@@ -70,8 +72,8 @@ function createMainWindow() {
     webPreferences: {
       nodeIntegration: true,
       webSecurity: false,
-      backgroundThrottling: false
-    }
+      backgroundThrottling: false,
+    },
   };
   Object.assign(opts, winBounds);
   const window = new BrowserWindow(opts);
@@ -86,13 +88,7 @@ function createMainWindow() {
   if (isDevelopment) {
     window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`);
   } else {
-    window.loadURL(
-      formatUrl({
-        pathname: path.join(__dirname, 'index.html'),
-        protocol: 'file',
-        slashes: true
-      })
-    );
+    await window.loadURL('app://-/index.html');
   }
 
   initPPetPlugins(window);
@@ -132,10 +128,10 @@ app.on('window-all-closed', () => {
   }
 });
 
-app.on('activate', () => {
+app.on('activate', async () => {
   // on macOS it is common to re-create a window even after all windows have been closed
   if (mainWindow === null) {
-    mainWindow = createMainWindow();
+    mainWindow = await createMainWindow();
   }
 });
 
@@ -151,8 +147,8 @@ export function createPluginsWindow() {
     height: 800,
     webPreferences: {
       nodeIntegration: true,
-      webSecurity: false
-    }
+      webSecurity: false,
+    },
   });
 
   pluginsWindow = window;
@@ -171,7 +167,7 @@ export function createPluginsWindow() {
       formatUrl({
         pathname: path.join(__dirname, 'plugins.html'),
         protocol: 'file',
-        slashes: true
+        slashes: true,
       })
     );
   }
@@ -195,27 +191,22 @@ export function createPluginsWindow() {
   return window;
 }
 
-const onAppReady = () => {
-  mainWindow = createMainWindow();
+const onAppReady = async () => {
+  mainWindow = await createMainWindow();
   mainWindow.setMenu(null);
   mainWindow.setMenuBarVisibility(false);
   mainWindow.setVisibleOnAllWorkspaces(true);
   // mainWindow.webContents.setIgnoreMenuShortcuts(true);
   // mainWindow.setIgnoreMouseEvents(true);
 
-  initStaticServe();
   initTray(mainWindow);
 };
 
 // create main BrowserWindow when electron is ready
 app.on('ready', () => {
-  if (isLinux) {
-    setTimeout(() => {
-      onAppReady();
-    }, 500);
-  } else {
+  setTimeout(() => {
     onAppReady();
-  }
+  }, 500);
 
   autoUpdater.checkForUpdatesAndNotify();
 });
