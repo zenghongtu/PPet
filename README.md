@@ -25,7 +25,7 @@
 
 - [x] **插件中心**（默认提供的插件在这里[plugins](https://github.com/zenghongtu/PPet/tree/master/plugins)，可以自己添加插件 [PPet 插件开发指北](https://github.com/zenghongtu/PPet/wiki/PPet%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E6%8C%87%E5%8C%97)）
 - [x] **导入在线 Model** (再也不用下载，直接使用 GitHub 上的 Model，输入地址就可以加载了~~，可以通过*调试*查看加载详情)
-- [x] 导入本地 Model 【部分设置不会保存，正在解决中😒】
+- [x] 导入本地 Model 【部分设置不会保存，正在解决中 😒】
 - [x] 设置 Model (目前只能设置 w 和 h)
 - [x] @置顶
 - [x] 忽略点击
@@ -106,6 +106,10 @@ $ yarn run start
 
 - [fghrsh/live2d_api](https://github.com/fghrsh/live2d_api) 提供的 model api 接口
 - [stevenjoezhang/live2d-widget](https://github.com/stevenjoezhang/live2d-widget) 部分代码魔改自该项目
+
+## api 接口
+
+- [zenghongtu/PPet-Api](https://github.com/zenghongtu/PPet-Api)
 
 ## 版权声明
 
