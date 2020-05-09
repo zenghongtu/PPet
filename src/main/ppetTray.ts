@@ -7,7 +7,7 @@ import {
   shell,
   dialog,
   MenuItemConstructorOptions,
-  MenuItem,
+  MenuItem
 } from 'electron';
 import path from 'path';
 import fs from 'fs-extra';
@@ -54,14 +54,14 @@ const langs = {
     model: {
       title: '请选择模型配置文件',
       buttonLabel: '导入模型',
-      filtersName: '模型配置文件',
+      filtersName: '模型配置文件'
     },
     errorBox: {
       title: '导入模型失败',
       title1: '移除模型失败',
       getContent: (text: string) =>
-        `无效的model配置文件，该文件为'.json'结尾，会包含${text}等字段`,
-    },
+        `无效的model配置文件，该文件为'.json'结尾，会包含${text}等字段`
+    }
   },
   en: {
     alwaysOnTop: 'Always On Top',
@@ -86,15 +86,15 @@ const langs = {
     model: {
       title: 'Please select model configuration file',
       buttonLabel: 'Import model',
-      filtersName: 'model configuration file',
+      filtersName: 'model configuration file'
     },
     errorBox: {
       title: 'Import model failed',
       title1: 'Remove model failed',
       getContent: (text: string) =>
-        `Invalid model configuration file. The file ends with '.json' and should contain fields such as ${text}`,
-    },
-  },
+        `Invalid model configuration file. The file ends with '.json' and should contain fields such as ${text}`
+    }
+  }
 };
 
 type langType = keyof typeof langs;
@@ -117,7 +117,7 @@ const initTray = (mainWindow: BrowserWindow) => {
   });
   electronLocalshortcut.register(mainWindow, 'CmdOrCtrl+,', () => {
     mainWindow.webContents.send('model-change-message', {
-      type: 'setting',
+      type: 'setting'
     });
   });
   electronLocalshortcut.register(mainWindow, 'CmdOrCtrl+r', () => {
@@ -155,40 +155,40 @@ const initTray = (mainWindow: BrowserWindow) => {
         label: cl.alwaysOnTop,
         type: 'checkbox',
         checked: alwaysOnTop,
-        click: (item) => {
+        click: item => {
           const { checked } = item;
           mainWindow.setAlwaysOnTop(checked);
           config.set('alwaysOnTop', checked);
-        },
+        }
       },
       {
         label: cl.ignoreMouseEvents,
         type: 'checkbox',
         checked: ignoreMouseEvents,
-        click: (item) => {
+        click: item => {
           const { checked } = item;
           mainWindow.setIgnoreMouseEvents(checked, { forward: true });
           config.set('ignoreMouseEvents', checked);
-        },
+        }
       },
       {
         label: cl.openAtLogin,
         type: 'checkbox',
         checked: app.getLoginItemSettings().openAtLogin,
-        click: (item) => {
+        click: item => {
           const { checked } = item;
           app.setLoginItemSettings({ openAtLogin: checked });
-        },
+        }
       },
       {
         label: cl.tools,
         type: 'checkbox',
         checked: showTool,
-        click: (item) => {
+        click: item => {
           const { checked } = item;
           mainWindow.webContents.send('switch-tool-message', checked);
           config.set('showTool', checked);
-        },
+        }
       },
       {
         label: cl.language,
@@ -198,68 +198,68 @@ const initTray = (mainWindow: BrowserWindow) => {
             label: '简体中文',
             type: 'radio',
             checked: lang === 'zh',
-            click: handleClickLangRadio.bind(null, 'zh'),
+            click: handleClickLangRadio.bind(null, 'zh')
           },
           {
             label: 'English',
             type: 'radio',
             checked: lang === 'en',
-            click: handleClickLangRadio.bind(null, 'en'),
-          },
-        ],
+            click: handleClickLangRadio.bind(null, 'en')
+          }
+        ]
       },
       {
-        type: 'separator',
+        type: 'separator'
       },
       {
         label: cl.plugins,
-        click: (item) => {
+        click: item => {
           createPluginsWindow();
-        },
+        }
       },
       {
-        type: 'separator',
+        type: 'separator'
       },
       {
         label: cl.zoomIn,
         accelerator: 'CmdOrCtrl+=',
         click: async () => {
           sendMessage('zoomIn');
-        },
+        }
       },
       {
         label: cl.zoomOut,
         accelerator: 'CmdOrCtrl+-',
         click: async () => {
           sendMessage('zoomOut');
-        },
+        }
       },
       {
         label: cl.zoomReset,
         accelerator: 'CmdOrCtrl+0',
         click: async () => {
           sendMessage('reset');
-        },
+        }
       },
       {
         label: cl.canvasSettings,
         accelerator: 'CmdOrCtrl+,',
         click: async () => {
           mainWindow.webContents.send('model-change-message', {
-            type: 'setting',
+            type: 'setting'
           });
-        },
+        }
       },
       {
         label: cl.clearSettings,
         click: async () => {
           mainWindow.webContents.send('model-change-message', {
-            type: 'setting-reset',
+            type: 'setting-reset'
           });
-        },
+        }
       },
       {
-        type: 'separator',
+        type: 'separator'
       },
       {
         label: cl.importModel,
@@ -269,7 +269,7 @@ const initTray = (mainWindow: BrowserWindow) => {
               title: cl.model.title,
               buttonLabel: cl.model.buttonLabel,
               filters: [{ name: cl.model.filtersName, extensions: ['json'] }],
-              properties: ['openFile'],
+              properties: ['openFile']
             });
 
             if (canceled) {
@@ -285,14 +285,14 @@ const initTray = (mainWindow: BrowserWindow) => {
             const config = JSON.parse(contentStr);
             const keys = Object.keys(config);
 
-            if (requiredFieldList.every((key) => keys.includes(key))) {
+            if (requiredFieldList.every(key => keys.includes(key))) {
               const modelFolder = path.dirname(filePath);
               fs.copySync(modelFolder, modelCachePath);
               const _filePath = path.join(modelCachePath, fileName);
               fs.renameSync(_filePath, defaultModelConfigPath);
 
               mainWindow.webContents.send('model-change-message', {
-                type: 'loaded',
+                type: 'loaded'
               });
             } else {
               dialog.showErrorBox(
@@ -305,15 +305,15 @@ const initTray = (mainWindow: BrowserWindow) => {
             dialog.showErrorBox(cl.errorBox.title, err.message || '...');
             console.error('load model error: ', err);
           }
-        },
+        }
       },
       {
         label: cl.importOnlineModel,
         click: async () => {
           mainWindow.webContents.send('model-change-message', {
-            type: 'load-online',
+            type: 'load-online'
           });
-        },
+        }
       },
       {
         label: cl.removeModel,
@@ -321,13 +321,13 @@ const initTray = (mainWindow: BrowserWindow) => {
           try {
             fs.removeSync(modelCachePath);
             mainWindow.webContents.send('model-change-message', {
-              type: 'remove',
+              type: 'remove'
             });
           } catch (err) {
             dialog.showErrorBox(cl.errorBox.title1, err.message || '...');
             console.error('remove model error: ', err);
           }
-        },
+        }
       },
       {
         label: cl.reRender,
@@ -335,36 +335,36 @@ const initTray = (mainWindow: BrowserWindow) => {
         click: () => {
           app.relaunch();
           app.exit(0);
-        },
+        }
       },
       {
-        type: 'separator',
+        type: 'separator'
       },
       {
         label: cl.debug,
         click: () => {
           mainWindow.webContents.openDevTools({ mode: 'undocked' });
-        },
+        }
       },
       {
-        type: 'separator',
+        type: 'separator'
       },
       {
         label: cl.feedback,
         click: () => {
           shell.openExternal('https://github.com/zenghongtu/PPet/issues');
-        },
+        }
       },
       {
         label: cl.about,
-        role: 'about',
+        role: 'about'
       },
       {
         label: cl.quit,
-        click: (item) => {
+        click: item => {
           app.quit();
-        },
-      },
+        }
+      }
     ];
 
     const menu = Menu.buildFromTemplate(template);

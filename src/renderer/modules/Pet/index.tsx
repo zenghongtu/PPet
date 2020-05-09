@@ -3,7 +3,7 @@ import React, {
   useState,
   useRef,
   CSSProperties,
-  FunctionComponent,
+  FunctionComponent
 } from 'react';
 import { remote, webFrame, ipcRenderer, KeyboardInputEvent } from 'electron';
 import path from 'path';
@@ -47,13 +47,13 @@ const langs = {
   zh: {
     confirmBtn: '确定',
     casHeight: '高度',
-    casWidth: '宽度',
+    casWidth: '宽度'
   },
   en: {
     confirmBtn: 'Confirm',
     casHeight: 'Height',
-    casWidth: 'Width',
-  },
+    casWidth: 'Width'
+  }
 };
 
 type langType = keyof typeof langs;
@@ -93,16 +93,12 @@ const Pet: FunctionComponent = () => {
     '好久不见，日子过得好快呢……',
     '大坏蛋！你都多久没理人家了呀，嘤嘤嘤～',
     '嗨～快来逗我玩吧！',
-    '拿小拳拳锤你胸口！',
+    '拿小拳拳锤你胸口！'
   ]);
 
   const messageTimerRef = useRef<number | null>(null);
   const hitokotoTimerRef = useRef<number | null>(null);
   const waifuRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    remote.getCurrentWindow().show();
-  }, []);
 
   useEffect(() => {
     const modelUrl = localStorage.modelUrl;
@@ -181,7 +177,7 @@ const Pet: FunctionComponent = () => {
     let handleWindowMouseOver: (event: MouseEvent) => void;
     let handleWindowClick: (event: MouseEvent) => void;
 
-    _tips.mouseover.forEach((tips) => {
+    _tips.mouseover.forEach(tips => {
       handleWindowMouseOver = (event: MouseEvent) => {
         if (
           !event.target ||
@@ -201,7 +197,7 @@ const Pet: FunctionComponent = () => {
       window.addEventListener('mouseover', handleWindowMouseOver);
     });
 
-    _tips.click.forEach((tips) => {
+    _tips.click.forEach(tips => {
       handleWindowClick = (event: MouseEvent) => {
         if (
           !event.target ||
@@ -220,7 +216,7 @@ const Pet: FunctionComponent = () => {
       window.addEventListener('click', handleWindowClick);
     });
 
-    _tips.seasons.forEach((tips) => {
+    _tips.seasons.forEach(tips => {
       const now = new Date(),
         after = tips.date.split('-')[0],
         before = tips.date.split('-')[1] || after;
@@ -310,10 +306,19 @@ const Pet: FunctionComponent = () => {
     currentWindow.setSize(+width, +height);
   };
   const handleUseLocalModel = async (pathname: string) => {
-    const localModelConfigUrl = defaultModelConfigPath;
-
-    setLmConfigPath(localModelConfigUrl);
-    loadLocalOrOnlineModel(localModelConfigUrl);
+    const result = await ipcRenderer.invoke(
+      'startup-server-static-message',
+      pathname
+    );
+    if (result) {
+      const { address, family, port } = result;
+      const localModelConfigUrl = `http://${address}:${port}/model.json`;
+      setLmConfigPath(localModelConfigUrl);
+      loadLocalOrOnlineModel(localModelConfigUrl);
+    } else {
+      showMessage('Loaded Failed!');
+    }
+    console.log('loaded local model result: ', result);
   };
 
   const handleUseOnlineModel = (url: string) => {
@@ -361,7 +366,7 @@ const Pet: FunctionComponent = () => {
 
     setTips({
       text,
-      priority,
+      priority
     });
 
     messageTimerRef.current = window.setTimeout(() => {
@@ -400,8 +405,8 @@ const Pet: FunctionComponent = () => {
         rand ? 'rand' : 'switch'
       }_textures/?id=${modelId}-${modelTexturesId}`
     )
-      .then((response) => response.json())
-      .then((result) => {
+      .then(response => response.json())
+      .then(result => {
         if (
           result.textures.id === 1 &&
           (modelTexturesId === 1 || modelTexturesId === 0)
@@ -415,8 +420,8 @@ const Pet: FunctionComponent = () => {
   const loadOtherModel = (rand = false) => {
     const modelId = getIdFromLocalStorage('modelId');
     fetch(`${apiBaseUrl}/${rand ? 'rand' : 'switch'}/?id=${modelId}`)
-      .then((response) => response.json())
-      .then((result) => {
+      .then(response => response.json())
+      .then(result => {
         loadModel(result.model.id);
         showMessage(result.model.message, 4000, 10);
         localStorage.modelMessage = result.model.message;
@@ -449,8 +454,8 @@ const Pet: FunctionComponent = () => {
   // TODO 节流
   const showHitokoto = () => {
     fetch('https://v1.hitokoto.cn')
-      .then((response) => response.json())
-      .then((result) => {
+      .then(response => response.json())
+      .then(result => {
         const text = `这句一言来自 <span>「${result.from}」</span>，是 <span>${result.creator}</span> 在 hitokoto.cn 投稿的。`;
         showMessage(result.hitokoto, 6000, 10);
         if (hitokotoTimerRef.current) {
@@ -496,24 +501,24 @@ const Pet: FunctionComponent = () => {
       name: 'user',
       icon: 'user-circle',
       call: loadOtherModel,
-      disabled: !!lmConfigPath,
+      disabled: !!lmConfigPath
     },
     {
       name: 'clothes',
       icon: 'street-view',
       call: loadOtherTextures,
-      disabled: !!lmConfigPath,
+      disabled: !!lmConfigPath
     },
     { name: 'camera', icon: 'camera-retro', call: capture },
     // { name: 'plugin', icon: 'inbox', call: showPlugins },
-    { name: 'info', icon: 'info-circle', call: showInfo },
+    { name: 'info', icon: 'info-circle', call: showInfo }
     // { name: 'hide', icon: 'eye-slash', call: hideWaifu }
   ];
 
   const handleToolListClick = (e: React.MouseEvent<HTMLSpanElement>) => {
     const name = (e.target as HTMLSpanElement).dataset.name;
     if (name) {
-      const findItem = toolList.find((item) => item.name === name);
+      const findItem = toolList.find(item => item.name === name);
       if (findItem) {
         findItem.call();
       } else {
@@ -556,7 +561,7 @@ const Pet: FunctionComponent = () => {
   const waifuStyle: IWaifuStyle = {
     // border: isShowSetting ? '1px solid #fa0' : 'none',
     cursor: isPressAlt ? 'move' : 'grab',
-    WebkitAppRegion: isPressAlt ? 'drag' : 'no-drag',
+    WebkitAppRegion: isPressAlt ? 'drag' : 'no-drag'
   };
 
   const cl = langs[lang];
@@ -577,7 +582,7 @@ const Pet: FunctionComponent = () => {
         ></canvas>
         {isShowTools && (
           <div id="waifu-tool" onClick={handleToolListClick}>
-            {toolList.map((item) => {
+            {toolList.map(item => {
               const { name, icon, disabled } = item;
               if (disabled) {
                 return null;
