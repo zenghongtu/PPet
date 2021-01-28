@@ -35,7 +35,7 @@
     "@typescript-eslint/eslint-plugin": "^2.14.0",
     "@typescript-eslint/parser": "^2.14.0",
     "antd": "^4.0.0",
-    "electron": "7.1.2",
+    "electron": "9.4.0",
     "electron-builder": "21.2.0",
     "electron-localshortcut": "^3.2.1",
     "electron-positioner": "^4.1.0",
