@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "@electron/remote": "^2.0.1",
+    "@rematch/core": "^2.2.0",
     "@types/react": "^17.0.33",
     "@types/react-dom": "^17.0.10",
     "@types/styled-components": "^5.1.19",
@@ -38,6 +39,7 @@
     "prettier": "^2.5.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-router-dom": "^6.2.1",
     "styled-components": "^5.3.3",
     "typescript": "^4.4.4",
     "vite": "^2.7.10"

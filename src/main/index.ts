@@ -1,6 +1,6 @@
 import os from 'os'
 import { join } from 'path'
-import { app, BrowserWindow, session } from 'electron'
+import { app, BrowserWindow, protocol, session } from 'electron'
 
 import remoteMain from '@electron/remote/main'
 
@@ -54,7 +54,21 @@ async function createWindow() {
   // });
 }
 
-app.whenReady().then(createWindow)
+app
+  .whenReady()
+  .then(() => {
+    protocol.registerFileProtocol('file', (request, callback) => {
+      const url = request.url.replace('file://', '')
+      const decodedUrl = decodeURI(url)
+      try {
+        return callback(decodedUrl)
+      } catch (error) {
+        console.error('Could not get file path:', error)
+        return callback('404')
+      }
+    })
+  })
+  .then(createWindow)
 
 app.on('window-all-closed', () => {
   win = null

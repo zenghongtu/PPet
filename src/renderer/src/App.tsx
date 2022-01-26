@@ -1,11 +1,16 @@
-import styled from 'styled-components'
 import { GlobalStyles } from './styles/GlobalStyles'
+import { Route, Routes } from 'react-router-dom'
+import Model from './pages/Model'
+import Store from './pages/Store'
 
 function App() {
   return (
     <>
       <GlobalStyles />
-      123
+      <Routes>
+        <Route path="/" element={<Model />} />
+        <Route path="/store" element={<Store />} />
+      </Routes>
     </>
   )
 }
