@@ -1,5 +1,5 @@
-import Store from 'electron-store';
+import Store from 'electron-store'
 
-const config = new Store();
+const store = new Store({ name: 'ppet-config' })
 
-export default config;
+export default store

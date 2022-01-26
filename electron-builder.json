@@ -1,0 +1,77 @@
+{
+  "productName": "PPet",
+  "artifactName": "PPet-${version}.${ext}",
+  "appId": "com.zenghongtu.ppet-v3",
+  "asar": true,
+  "files": ["dist", "package.json", "static/**/*"],
+  "mac": {
+    "artifactName": "${productName}_${version}.${ext}",
+    "target": ["dmg", "zip"],
+    "category": "public.app-category.development",
+    "icon": "static/icons/mac/icon.icns",
+    "darkModeSupport": true
+  },
+  "win": {
+    "icon": "static/icons/win/icon.ico",
+    "artifactName": "${productName}_${version}.${ext}",
+    "target": [
+      {
+        "target": "nsis-web",
+        "arch": ["x64", "ia32"]
+      },
+      {
+        "target": "zip",
+        "arch": ["x64", "ia32"]
+      }
+    ]
+  },
+  "nsis": {
+    "createDesktopShortcut": "always",
+    "createStartMenuShortcut": true,
+    "shortcutName": "PPet",
+    "oneClick": false,
+    "perMachine": true,
+    "allowToChangeInstallationDirectory": true,
+    "artifactName": "${productName}_${version}.${ext}",
+    "unicode": true
+  },
+  "extraFiles": [],
+  "dmg": {
+    "contents": [
+      {
+        "x": 130,
+        "y": 220
+      },
+      {
+        "x": 410,
+        "y": 220,
+        "type": "link",
+        "path": "/Applications"
+      }
+    ]
+  },
+  "linux": {
+    "icon": "static/icons/png",
+    "target": [
+      {
+        "target": "AppImage",
+        "arch": ["x64"]
+      },
+      {
+        "target": "deb",
+        "arch": ["x64"]
+      }
+    ],
+    "category": "Development"
+  },
+  "publish": [
+    {
+      "provider": "github",
+      "owner": "zenghongtu",
+      "repo": "PPet"
+    }
+  ],
+  "directories": {
+    "output": "./release"
+  }
+}
