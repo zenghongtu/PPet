@@ -1,6 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
+  '@ant-design/icons': ^4.7.0
   '@electron/remote': ^2.0.1
   '@rematch/core': ^2.2.0
   '@types/react': ^17.0.33
@@ -20,6 +21,7 @@ specifiers:
   vite: ^2.7.10
 
 devDependencies:
+  '@ant-design/icons': registry.npmmirror.com/@ant-design/icons/4.7.0_react-dom@17.0.2+react@17.0.2
   '@electron/remote': registry.npmmirror.com/@electron/remote/2.0.1_electron@16.0.6
   '@rematch/core': registry.npmmirror.com/@rematch/core/2.2.0
   '@types/react': registry.npmmirror.com/@types/react/17.0.38

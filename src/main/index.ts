@@ -14,24 +14,35 @@ if (!app.requestSingleInstanceLock()) {
   process.exit(0)
 }
 
+app.commandLine.appendSwitch('disable-renderer-backgrounding')
+app.commandLine.appendSwitch('disable-background-timer-throttling')
+app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required')
+
+// if (process.platform === 'darwin' && app.isPackaged) {
+//   app.dock.hide();
+// }
+
 let win: BrowserWindow | null = null
 
 async function createWindow() {
   win = new BrowserWindow({
     title: 'PPet',
-    // frame: false,
-    // autoHideMenuBar: true,
-    hasShadow: true,
-    // skipTaskbar: true,
-    // transparent: true,
-    // minimizable: false,
-    // maximizable: false,
-    resizable: true,
-    width: 800,
+    alwaysOnTop: true,
+    autoHideMenuBar: true,
+    hasShadow: false,
+    transparent: true,
+    frame: false,
+    width: 350,
     height: 600,
+    skipTaskbar: true,
+    minimizable: false,
+    maximizable: false,
+    resizable: true,
+    // titleBarStyle: 'hidden',
     webPreferences: {
       preload: join(__dirname, '../preload/index.cjs'),
       webSecurity: false,
+      backgroundThrottling: false,
     },
   })
 

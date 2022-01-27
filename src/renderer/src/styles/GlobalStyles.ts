@@ -1,5 +1,5 @@
-import { createGlobalStyle } from 'styled-components';
-import Variables from './Variables';
+import { createGlobalStyle } from 'styled-components'
+import Variables from './Variables'
 
 export const GlobalStyles = createGlobalStyle`
   ${Variables};
@@ -16,11 +16,12 @@ export const GlobalStyles = createGlobalStyle`
     scroll-behavior: smooth;
     box-sizing: inherit;
     width: 100%;
+    -webkit-user-select: none;
   }
 
-  // Scrollbar styles 
+  // Scrollbar styles
   html {
     scrollbar-width: thin;
     scrollbar-color: var(--black);
   }
-`;
+`

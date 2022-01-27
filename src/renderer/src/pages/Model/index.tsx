@@ -1,31 +1,52 @@
-import React, { useEffect, useLayoutEffect, useRef } from 'react'
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import styled from 'styled-components'
+
+import { debounce } from '@src/renderer/src/utils'
+import Legacy from './Legacy'
+import Current from './Current'
+import Toolbar from './Toolbar'
+
+const Wrapper = styled.div`
+  border: 1px double #ccc;
+`
 
 const Model = () => {
-  const cavRef = useRef<HTMLDivElement>(null)
+  const [modelVersion, setModelVersion] = useState('3')
+  const [cavSize, setCavSize] = useState({ height: 900, width: 800 })
 
-  useEffect(() => {
-    // @ts-ignore
-    // new l2dViewer({
-    //   el: cavRef.current,
-    //   basePath:
-    //     'https://raw.githubusercontent.com//assets/model/moc3',
-    //   modelName: 'lafei_4',
-    //   width: 1500,
-    //   height: 900,
-    //   autoMotion: true,
-    // })
+  useLayoutEffect(() => {
+    const resizeCanvas = debounce(() => {
+      setCavSize({
+        width: window.innerWidth - 20,
+        height: window.innerHeight - 20,
+      })
+    })
 
-    loadlive2d(
-      'live2d',
-      // `https://raw.githubusercontent.com//assets/model/moc/platelet/model.json`,
-    )
+    window.addEventListener('resize', resizeCanvas, false)
+
+    resizeCanvas()
+
+    return () => {
+      window.removeEventListener('resize', resizeCanvas)
+    }
   }, [])
 
   return (
-    <div>
-      <canvas id="live2d" width="800" height="800"></canvas>
-      <div style={{ height: '100vh', width: '100vw' }} ref={cavRef}></div>
-    </div>
+    <Wrapper>
+      <Toolbar></Toolbar>
+      {modelVersion !== '3' ? (
+        <Legacy
+          {...cavSize}
+          modelPath={`file:///Users/jason/Downloads/live2d_models-main/assets/model/moc/rem/model.json`}
+        ></Legacy>
+      ) : (
+        <Current
+          {...cavSize}
+          basePath="file:///Users/jason/Downloads/live2d_models-main/assets/model/moc3"
+          modelName="aierdeliqi_4"
+        ></Current>
+      )}
+    </Wrapper>
   )
 }
 
