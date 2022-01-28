@@ -14,8 +14,9 @@ export const GlobalStyles = createGlobalStyle`
 
   html {
     scroll-behavior: smooth;
-    box-sizing: inherit;
+    box-sizing: border-box;
     width: 100%;
+    overflow: hidden;
     -webkit-user-select: none;
   }
 

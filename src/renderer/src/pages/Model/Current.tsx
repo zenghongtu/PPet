@@ -1,25 +1,36 @@
 import React, { FC, useEffect, useLayoutEffect, useRef } from 'react'
 
 export type CurrentType = {
-  basePath: string
-  modelName: string
+  modelPath: string
   width: number
   height: number
 }
 
-const Current: FC<CurrentType> = ({ basePath, modelName, width, height }) => {
-  const l2dRef = useRef<any>(null)
+const parseModelPath = (p: string) => {
+  const paths = p.split('/')
+  paths.pop()
 
+  const modelName = paths.pop()
+  const basePath = paths.join('/')
+
+  return {
+    basePath,
+    modelName,
+  }
+}
+
+const Current: FC<CurrentType> = ({ modelPath, width, height }) => {
   useEffect(() => {
-    const l2d = (l2dRef.current = new (window as any).l2dViewer({
+    const { basePath, modelName } = parseModelPath(modelPath)
+    new (window as any).l2dViewer({
       el: document.getElementById('live2dv3'),
       basePath,
       modelName,
       width,
       height,
       autoMotion: true,
-    }))
-  }, [basePath, modelName, width, height])
+    })
+  }, [modelPath, width, height])
 
   return <div id="live2dv3" key={+new Date()}></div>
 }

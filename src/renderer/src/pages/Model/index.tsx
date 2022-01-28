@@ -2,16 +2,21 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 
 import { debounce } from '@src/renderer/src/utils'
-import Legacy from './Legacy'
-import Current from './Current'
+import LegacyRender from './Legacy'
+import CurrentRender from './Current'
 import Toolbar from './Toolbar'
 
 const Wrapper = styled.div`
   border: 1px double #ccc;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
 `
 
 const Model = () => {
-  const [modelVersion, setModelVersion] = useState('3')
+  const [modelPath, setModelPath] = useState(
+    'file:///Users/jason/Downloads/live2d_models-main/assets/model/moc3/aierdeliqi_4/aierdeliqi_4.model3.json',
+  )
   const [cavSize, setCavSize] = useState({ height: 900, width: 800 })
 
   useLayoutEffect(() => {
@@ -31,21 +36,14 @@ const Model = () => {
     }
   }, [])
 
+  const Render = modelPath.endsWith('.model3.json')
+    ? CurrentRender
+    : LegacyRender
+
   return (
     <Wrapper>
       <Toolbar></Toolbar>
-      {modelVersion !== '3' ? (
-        <Legacy
-          {...cavSize}
-          modelPath={`file:///Users/jason/Downloads/live2d_models-main/assets/model/moc/rem/model.json`}
-        ></Legacy>
-      ) : (
-        <Current
-          {...cavSize}
-          basePath="file:///Users/jason/Downloads/live2d_models-main/assets/model/moc3"
-          modelName="aierdeliqi_4"
-        ></Current>
-      )}
+      <Render {...cavSize} modelPath={modelPath}></Render>
     </Wrapper>
   )
 }
