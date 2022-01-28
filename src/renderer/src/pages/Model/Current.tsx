@@ -35,4 +35,4 @@ const Current: FC<CurrentType> = ({ modelPath, width, height }) => {
   return <div id="live2dv3" key={+new Date()}></div>
 }
 
-export default Current
+export default React.memo(Current)

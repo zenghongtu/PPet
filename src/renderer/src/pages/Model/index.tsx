@@ -5,6 +5,7 @@ import { debounce } from '@src/renderer/src/utils'
 import LegacyRender from './Legacy'
 import CurrentRender from './Current'
 import Toolbar from './Toolbar'
+import Tips, { TipsType } from './Tips'
 
 const Wrapper = styled.div`
   border: 1px double #ccc;
@@ -13,11 +14,28 @@ const Wrapper = styled.div`
   overflow: hidden;
 `
 
+const RenderWrapper = styled.div`
+  margin-top: 20px;
+`
+
+const getCavSize = () => {
+  return {
+    width: window.innerWidth,
+    height: window.innerHeight - 20,
+  }
+}
+
 const Model = () => {
+  const [tips, setTips] = useState<TipsType>({
+    text: '',
+    priority: -1,
+    timeout: 0,
+  })
   const [modelPath, setModelPath] = useState(
     'file:///Users/jason/Downloads/live2d_models-main/assets/model/moc3/aierdeliqi_4/aierdeliqi_4.model3.json',
   )
-  const [cavSize, setCavSize] = useState({ height: 900, width: 800 })
+  const [cavSize, setCavSize] =
+    useState<{ width: number; height: number }>(getCavSize)
 
   useEffect(() => {
     const handleDragOver = (evt: DragEvent): void => {
@@ -40,17 +58,13 @@ const Model = () => {
       document.body.removeEventListener('drop', handleDrop)
     }
   }, [])
+
   useLayoutEffect(() => {
     const resizeCanvas = debounce(() => {
-      setCavSize({
-        width: window.innerWidth - 20,
-        height: window.innerHeight - 20,
-      })
+      setCavSize(getCavSize())
     })
 
     window.addEventListener('resize', resizeCanvas, false)
-
-    resizeCanvas()
 
     return () => {
       window.removeEventListener('resize', resizeCanvas)
@@ -61,10 +75,19 @@ const Model = () => {
     ? CurrentRender
     : LegacyRender
 
+  const handleMessageChange = (nextTips: TipsType) => {
+    if (nextTips.priority >= tips.priority) {
+      setTips(nextTips)
+    }
+  }
+
   return (
     <Wrapper>
-      <Toolbar></Toolbar>
-      <Render {...cavSize} modelPath={modelPath}></Render>
+      <Tips {...tips}></Tips>
+      <Toolbar onShowMessage={handleMessageChange}></Toolbar>
+      <RenderWrapper>
+        <Render {...cavSize} modelPath={modelPath}></Render>
+      </RenderWrapper>
     </Wrapper>
   )
 }

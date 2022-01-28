@@ -13,6 +13,7 @@ specifiers:
   electron-builder: ^22.14.5
   electron-store: ^8.0.1
   electron-window-state: ^5.0.3
+  font-awesome: ^4.7.0
   prettier: ^2.5.1
   react: ^17.0.2
   react-dom: ^17.0.2
@@ -34,6 +35,7 @@ devDependencies:
   electron-builder: registry.npmmirror.com/electron-builder/22.14.5
   electron-store: registry.npmmirror.com/electron-store/8.0.1
   electron-window-state: 5.0.3
+  font-awesome: 4.7.0
   prettier: registry.npmmirror.com/prettier/2.5.1
   react: registry.npmmirror.com/react/17.0.2
   react-dom: registry.npmmirror.com/react-dom/17.0.2_react@17.0.2
@@ -214,6 +216,11 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /font-awesome/4.7.0:
+    resolution: {integrity: sha1-j6jPBBGhoxr9B7BtKQK7n8gVoTM=}
+    engines: {node: '>=0.10.3'}
+    dev: true
 
   /fsevents/2.3.2:
     resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}

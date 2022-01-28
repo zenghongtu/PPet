@@ -19,4 +19,4 @@ const Legacy: FC<LegacyType> = ({ modelPath, height, width }) => {
   )
 }
 
-export default Legacy
+export default React.memo(Legacy)
