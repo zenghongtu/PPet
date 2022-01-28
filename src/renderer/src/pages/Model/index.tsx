@@ -19,6 +19,27 @@ const Model = () => {
   )
   const [cavSize, setCavSize] = useState({ height: 900, width: 800 })
 
+  useEffect(() => {
+    const handleDragOver = (evt: DragEvent): void => {
+      evt.preventDefault()
+    }
+    const handleDrop = (evt: DragEvent): void => {
+      evt.preventDefault()
+
+      const file = evt.dataTransfer?.files?.[0]
+      if (file?.type === 'application/json') {
+        setModelPath(`file://${file.path}`)
+      }
+    }
+
+    document.body.addEventListener('dragover', handleDragOver)
+    document.body.addEventListener('drop', handleDrop)
+
+    return () => {
+      document.body.removeEventListener('dragover', handleDragOver)
+      document.body.removeEventListener('drop', handleDrop)
+    }
+  }, [])
   useLayoutEffect(() => {
     const resizeCanvas = debounce(() => {
       setCavSize({
