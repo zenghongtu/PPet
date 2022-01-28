@@ -1,6 +1,7 @@
 import os from 'os'
 import { join } from 'path'
 import { app, BrowserWindow, protocol, session } from 'electron'
+import windowStateKeeper from 'electron-window-state'
 
 import remoteMain from '@electron/remote/main'
 
@@ -24,6 +25,8 @@ app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required')
 
 let win: BrowserWindow | null = null
 
+let mainWindowState: windowStateKeeper.State
+
 async function createWindow() {
   win = new BrowserWindow({
     title: 'PPet',
@@ -32,8 +35,10 @@ async function createWindow() {
     hasShadow: false,
     transparent: true,
     frame: false,
-    width: 350,
-    height: 600,
+    x: mainWindowState.x,
+    y: mainWindowState.y,
+    width: mainWindowState.width,
+    height: mainWindowState.height,
     skipTaskbar: true,
     minimizable: false,
     maximizable: false,
@@ -59,6 +64,7 @@ async function createWindow() {
     win.webContents.openDevTools()
   }
 
+  mainWindowState.manage(win)
   // Test active push message to Renderer-process.
   // win.webContents.on('did-finish-load', () => {
   //   win?.webContents.send('main-process-message', new Date().toLocaleString());
@@ -67,6 +73,12 @@ async function createWindow() {
 
 app
   .whenReady()
+  .then(() => {
+    mainWindowState = windowStateKeeper({
+      defaultHeight: 350,
+      defaultWidth: 600,
+    })
+  })
   .then(() => {
     protocol.registerFileProtocol('file', (request, callback) => {
       const url = request.url.replace('file://', '')
