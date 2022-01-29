@@ -6,6 +6,8 @@ import LegacyRender from './Legacy'
 import CurrentRender from './Current'
 import Toolbar from './Toolbar'
 import Tips, { TipsType } from './Tips'
+import { useDispatch, useSelector } from 'react-redux'
+import { Dispatch, RootState } from '../../store'
 
 const Wrapper = styled.div`
   border: 1px double #ccc;
@@ -25,17 +27,17 @@ const getCavSize = () => {
   }
 }
 
-const initModelPath =
-  'file:///Users/jason/Downloads/live2d_models-main/assets/model/moc3/aierdeliqi_4/aierdeliqi_4.model3.json'
-
 const Model = () => {
+  const { modelPath } = useSelector((state: RootState) => state.config)
+
+  const dispatch = useDispatch<Dispatch>()
+
   const [tips, setTips] = useState<TipsType>({
     text: '',
     priority: -1,
     timeout: 0,
   })
-  const [modelList, setModelList] = useState<string[]>([])
-  const [modelPath, setModelPath] = useState(initModelPath)
+
   const [cavSize, setCavSize] =
     useState<{ width: number; height: number }>(getCavSize)
 
@@ -62,8 +64,9 @@ const Model = () => {
 
       if (paths.length > 0) {
         const models = paths.map((p) => `file://${p}`)
-        setModelList(models)
-        setModelPath(models[0])
+
+        dispatch.config.setModelList(models)
+        dispatch.config.setModelPath(models[0])
       }
     }
 
@@ -98,23 +101,10 @@ const Model = () => {
     }
   }
 
-  const handleNextModel = () => {
-    let idx = modelList.findIndex((f) => modelPath === f)
-    if (idx > -1) {
-      if (++idx >= modelList.length) {
-        idx = 0
-      }
-      setModelPath(modelList[idx])
-    }
-  }
-
   return (
     <Wrapper>
       <Tips {...tips}></Tips>
-      <Toolbar
-        onModelChange={handleNextModel}
-        onShowMessage={handleMessageChange}
-      ></Toolbar>
+      <Toolbar onShowMessage={handleMessageChange}></Toolbar>
       <RenderWrapper>
         <Render {...cavSize} modelPath={modelPath}></Render>
       </RenderWrapper>

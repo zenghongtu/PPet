@@ -1,5 +1,7 @@
 import React, { FC } from 'react'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
+import { Dispatch } from '../../store'
 import { TipsType } from './Tips'
 
 const Wrapper = styled.div`
@@ -36,8 +38,8 @@ const MoveIcon = styled.span`
 
 const Toolbar: FC<{
   onShowMessage: (tips: TipsType) => void
-  onModelChange: () => void
-}> = ({ onShowMessage, onModelChange }) => {
+}> = ({ onShowMessage }) => {
+  const dispatch = useDispatch<Dispatch>()
   const showMessage = (text: string, timeout: number, priority: number) => {
     onShowMessage({ text, priority, timeout })
   }
@@ -55,7 +57,7 @@ const Toolbar: FC<{
       })
   }
   const loadOtherModel = () => {
-    onModelChange()
+    dispatch.config.nextModel()
   }
   const capture = () => {}
   const showInfo = () => {}
