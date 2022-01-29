@@ -36,7 +36,8 @@ const MoveIcon = styled.span`
 
 const Toolbar: FC<{
   onShowMessage: (tips: TipsType) => void
-}> = ({ onShowMessage }) => {
+  onModelChange: () => void
+}> = ({ onShowMessage, onModelChange }) => {
   const showMessage = (text: string, timeout: number, priority: number) => {
     onShowMessage({ text, priority, timeout })
   }
@@ -53,7 +54,9 @@ const Toolbar: FC<{
         }, 6000)
       })
   }
-  const loadOtherModel = () => {}
+  const loadOtherModel = () => {
+    onModelChange()
+  }
   const capture = () => {}
   const showInfo = () => {}
 

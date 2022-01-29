@@ -25,15 +25,17 @@ const getCavSize = () => {
   }
 }
 
+const initModelPath =
+  'file:///Users/jason/Downloads/live2d_models-main/assets/model/moc3/aierdeliqi_4/aierdeliqi_4.model3.json'
+
 const Model = () => {
   const [tips, setTips] = useState<TipsType>({
     text: '',
     priority: -1,
     timeout: 0,
   })
-  const [modelPath, setModelPath] = useState(
-    'file:///Users/jason/Downloads/live2d_models-main/assets/model/moc3/aierdeliqi_4/aierdeliqi_4.model3.json',
-  )
+  const [modelList, setModelList] = useState<string[]>([])
+  const [modelPath, setModelPath] = useState(initModelPath)
   const [cavSize, setCavSize] =
     useState<{ width: number; height: number }>(getCavSize)
 
@@ -41,12 +43,27 @@ const Model = () => {
     const handleDragOver = (evt: DragEvent): void => {
       evt.preventDefault()
     }
-    const handleDrop = (evt: DragEvent): void => {
+    const handleDrop = async (evt: DragEvent) => {
       evt.preventDefault()
 
-      const file = evt.dataTransfer?.files?.[0]
-      if (file?.type === 'application/json') {
-        setModelPath(`file://${file.path}`)
+      const files = evt.dataTransfer?.files
+
+      if (!files) {
+        return
+      }
+
+      const paths = []
+      for (let i = 0; i < files.length; i++) {
+        const result = await window.bridge.getModels(files[i])
+        paths.push(...result)
+      }
+
+      console.log('modelList: ', paths)
+
+      if (paths.length > 0) {
+        const models = paths.map((p) => `file://${p}`)
+        setModelList(models)
+        setModelPath(models[0])
       }
     }
 
@@ -81,10 +98,23 @@ const Model = () => {
     }
   }
 
+  const handleNextModel = () => {
+    let idx = modelList.findIndex((f) => modelPath === f)
+    if (idx > -1) {
+      if (++idx >= modelList.length) {
+        idx = 0
+      }
+      setModelPath(modelList[idx])
+    }
+  }
+
   return (
     <Wrapper>
       <Tips {...tips}></Tips>
-      <Toolbar onShowMessage={handleMessageChange}></Toolbar>
+      <Toolbar
+        onModelChange={handleNextModel}
+        onShowMessage={handleMessageChange}
+      ></Toolbar>
       <RenderWrapper>
         <Render {...cavSize} modelPath={modelPath}></Render>
       </RenderWrapper>
