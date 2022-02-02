@@ -8,13 +8,14 @@ export const config = createModel<RootModel>()({
   state: {
     modelPath: initModelPath,
     modelList: [],
-  } as { modelPath: string; modelList: string[] },
+    resizable: false,
+  } as { modelPath: string; modelList: string[]; resizable: boolean },
   reducers: {
-    setModelList(state, payload: string[]) {
-      return { ...state, modelList: payload }
+    setModelList(state, modelList: string[]) {
+      return { ...state, modelList }
     },
-    setModelPath(state, payload: string) {
-      return { ...state, modelPath: payload }
+    setModelPath(state, modelPath: string) {
+      return { ...state, modelPath }
     },
     nextModel(state) {
       const { modelList, modelPath } = state
@@ -26,6 +27,10 @@ export const config = createModel<RootModel>()({
         return { ...state, modelPath: modelList[idx] }
       }
       return state
+    },
+    setResizable: (state, resizable: boolean) => {
+      window.bridge.setWinResizable(resizable)
+      return { ...state, resizable }
     },
   },
   effects: (dispatch) => ({

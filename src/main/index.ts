@@ -42,7 +42,7 @@ async function createWindow() {
     skipTaskbar: true,
     minimizable: false,
     maximizable: false,
-    resizable: true,
+    resizable: false,
     // titleBarStyle: 'hidden',
     webPreferences: {
       preload: join(__dirname, '../preload/index.cjs'),

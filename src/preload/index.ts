@@ -22,8 +22,13 @@ const getModels = async (file: File) => {
   })
 }
 
+const setWinResizable = (resizable: boolean) => {
+  electron.getCurrentWindow().setResizable(resizable)
+}
+
 contextBridge.exposeInMainWorld('bridge', {
   __dirname,
   __filename,
   getModels,
+  setWinResizable,
 })

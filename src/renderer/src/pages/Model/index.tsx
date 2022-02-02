@@ -9,8 +9,8 @@ import Tips, { TipsType } from './Tips'
 import { useDispatch, useSelector } from 'react-redux'
 import { Dispatch, RootState } from '../../store'
 
-const Wrapper = styled.div`
-  border: 1px double #ccc;
+const Wrapper = styled.div<{ border: boolean }>`
+  ${(props) => (props.border ? 'border: 2px dashed #ccc;' : 'padding: 2px;')}
   height: 100vh;
   width: 100vw;
   overflow: hidden;
@@ -28,7 +28,9 @@ const getCavSize = () => {
 }
 
 const Model = () => {
-  const { modelPath } = useSelector((state: RootState) => state.config)
+  const { modelPath, resizable } = useSelector(
+    (state: RootState) => state.config,
+  )
 
   const dispatch = useDispatch<Dispatch>()
 
@@ -102,7 +104,7 @@ const Model = () => {
   }
 
   return (
-    <Wrapper>
+    <Wrapper border={resizable}>
       <Tips {...tips}></Tips>
       <Toolbar onShowMessage={handleMessageChange}></Toolbar>
       <RenderWrapper>
