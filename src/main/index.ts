@@ -2,8 +2,9 @@ import os from 'os'
 import { join } from 'path'
 import { app, BrowserWindow, protocol, session } from 'electron'
 import windowStateKeeper from 'electron-window-state'
-
 import remoteMain from '@electron/remote/main'
+
+import initTray from './tray'
 
 remoteMain.initialize()
 
@@ -69,6 +70,8 @@ async function createWindow() {
   // win.webContents.on('did-finish-load', () => {
   //   win?.webContents.send('main-process-message', new Date().toLocaleString());
   // });
+
+  initTray(win)
 }
 
 app
