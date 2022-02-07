@@ -1,7 +1,5 @@
 import React, { FC, useEffect } from 'react'
 
-let key = 0
-
 export type LegacyType = { modelPath: string; width: number; height: number }
 
 const Legacy: FC<LegacyType> = ({ modelPath, height, width }) => {

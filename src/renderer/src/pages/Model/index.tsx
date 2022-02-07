@@ -28,9 +28,10 @@ const getCavSize = () => {
 }
 
 const Model = () => {
-  const { modelPath, resizable } = useSelector(
-    (state: RootState) => state.config,
-  )
+  const { modelPath, resizable } = useSelector((state: RootState) => ({
+    ...state.config,
+    ...state.win,
+  }))
 
   const dispatch = useDispatch<Dispatch>()
 
@@ -104,7 +105,17 @@ const Model = () => {
   }
 
   return (
-    <Wrapper border={resizable}>
+    <Wrapper
+      border={resizable}
+      onMouseOver={(ev) => {
+        console.log('ev: ', ev.target)
+        //
+      }}
+      onClick={(ev) => {
+        console.log('ev: ', ev.target)
+        //
+      }}
+    >
       <Tips {...tips}></Tips>
       <Toolbar onShowMessage={handleMessageChange}></Toolbar>
       <RenderWrapper>

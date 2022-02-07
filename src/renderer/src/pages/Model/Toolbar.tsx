@@ -40,9 +40,10 @@ const Toolbar: FC<{
   onShowMessage: (tips: TipsType) => void
 }> = ({ onShowMessage }) => {
   const dispatch = useDispatch<Dispatch>()
-  const { modelPath, resizable } = useSelector(
-    (state: RootState) => state.config,
-  )
+  const { modelPath, resizable } = useSelector((state: RootState) => ({
+    ...state.config,
+    ...state.win,
+  }))
   const showMessage = (text: string, timeout: number, priority: number) => {
     onShowMessage({ text, priority, timeout })
   }
@@ -64,7 +65,7 @@ const Toolbar: FC<{
   }
   const capture = () => {}
   const setResizable = () => {
-    dispatch.config.setResizable(!resizable)
+    dispatch.win.setResizable(!resizable)
   }
   const showInfo = () => {
     const text = `${modelPath}`
