@@ -10,6 +10,7 @@ specifiers:
   '@types/styled-components': ^5.1.19
   '@vitejs/plugin-react': ^1.1.4
   antd: ^4.16.13
+  chalk: ^5.0.0
   electron: 16.0.6
   electron-builder: ^22.14.5
   electron-store: ^8.0.1
@@ -37,6 +38,7 @@ devDependencies:
   '@types/styled-components': registry.npmmirror.com/@types/styled-components/5.1.21
   '@vitejs/plugin-react': registry.npmmirror.com/@vitejs/plugin-react/1.1.4
   antd: registry.npmmirror.com/antd/4.18.5_react-dom@17.0.2+react@17.0.2
+  chalk: 5.0.0
   electron: registry.npmmirror.com/electron/16.0.6
   electron-builder: registry.npmmirror.com/electron-builder/22.14.5
   electron-store: registry.npmmirror.com/electron-store/8.0.1
@@ -146,6 +148,28 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       fill-range: 7.0.1
+    dev: true
+
+  /chalk/2.4.2:
+    resolution: {integrity: sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ==}
+    engines: {node: '>=4'}
+    dependencies:
+      ansi-styles: registry.npmmirror.com/ansi-styles/3.2.1
+      escape-string-regexp: registry.nlark.com/escape-string-regexp/1.0.5
+      supports-color: registry.npmmirror.com/supports-color/5.5.0
+    dev: true
+
+  /chalk/4.1.2:
+    resolution: {integrity: sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==}
+    engines: {node: '>=10'}
+    dependencies:
+      ansi-styles: registry.npmmirror.com/ansi-styles/4.3.0
+      supports-color: registry.npmmirror.com/supports-color/7.2.0
+    dev: true
+
+  /chalk/5.0.0:
+    resolution: {integrity: sha512-/duVOqst+luxCQRKEo4bNxinsOQtMP80ZYm7mMqzuh5PociNL0PvmHFvREJ9ueYL2TxlHjBcmLCdmocx9Vg+IQ==}
+    engines: {node: ^12.17.0 || ^14.13 || >=16.0.0}
     dev: true
 
   /csstype/3.0.10:
@@ -1366,7 +1390,7 @@ packages:
     hasBin: true
     dependencies:
       async: registry.npmmirror.com/async/0.9.2
-      chalk: registry.npmmirror.com/chalk/2.4.2
+      chalk: 2.4.2
       filelist: registry.npmmirror.com/filelist/1.0.2
       minimatch: registry.nlark.com/minimatch/3.0.4
     dev: true
@@ -2183,7 +2207,7 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       boxen: registry.npmmirror.com/boxen/5.1.2
-      chalk: registry.npmmirror.com/chalk/4.1.2
+      chalk: 4.1.2
       configstore: registry.nlark.com/configstore/5.0.1
       has-yarn: registry.nlark.com/has-yarn/2.1.0
       import-lazy: registry.nlark.com/import-lazy/2.1.0
@@ -2524,7 +2548,7 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/helper-validator-identifier': registry.npmmirror.com/@babel/helper-validator-identifier/7.16.7
-      chalk: registry.npmmirror.com/chalk/2.4.2
+      chalk: 2.4.2
       js-tokens: 4.0.0
     dev: true
 
@@ -3140,7 +3164,7 @@ packages:
     dependencies:
       ansi-align: registry.npmmirror.com/ansi-align/3.0.1
       camelcase: registry.npmmirror.com/camelcase/6.3.0
-      chalk: registry.npmmirror.com/chalk/4.1.2
+      chalk: 4.1.2
       cli-boxes: registry.nlark.com/cli-boxes/2.2.1
       string-width: registry.npmmirror.com/string-width/4.2.3
       type-fest: registry.npmmirror.com/type-fest/0.20.2
@@ -3195,7 +3219,7 @@ packages:
       app-builder-bin: registry.npmmirror.com/app-builder-bin/3.7.1
       bluebird-lst: registry.nlark.com/bluebird-lst/1.0.9
       builder-util-runtime: registry.npmmirror.com/builder-util-runtime/8.9.1
-      chalk: registry.npmmirror.com/chalk/4.1.2
+      chalk: 4.1.2
       cross-spawn: registry.nlark.com/cross-spawn/7.0.3
       debug: registry.npmmirror.com/debug/4.3.3
       fs-extra: registry.nlark.com/fs-extra/10.0.0
@@ -3219,27 +3243,6 @@ packages:
     resolution: {integrity: sha512-YYTMO+tfwvgUN+1ZnRViE53Ma1S/oETg+J2lISsqi/ZTNThj3ZYBOKP2rHwJc37oCsPqAzJ3w2puZHn0xlLPPw==, registry: http://xnpm.ximalaya.com/, tarball: https://registry.npmmirror.com/caniuse-lite/download/caniuse-lite-1.0.30001302.tgz}
     name: caniuse-lite
     version: 1.0.30001302
-    dev: true
-
-  registry.npmmirror.com/chalk/2.4.2:
-    resolution: {integrity: sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ==, registry: http://xnpm.ximalaya.com/, tarball: https://registry.npmmirror.com/chalk/download/chalk-2.4.2.tgz}
-    name: chalk
-    version: 2.4.2
-    engines: {node: '>=4'}
-    dependencies:
-      ansi-styles: registry.npmmirror.com/ansi-styles/3.2.1
-      escape-string-regexp: registry.nlark.com/escape-string-regexp/1.0.5
-      supports-color: registry.npmmirror.com/supports-color/5.5.0
-    dev: true
-
-  registry.npmmirror.com/chalk/4.1.2:
-    resolution: {integrity: sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==, registry: http://xnpm.ximalaya.com/, tarball: https://registry.npmmirror.com/chalk/download/chalk-4.1.2.tgz}
-    name: chalk
-    version: 4.1.2
-    engines: {node: '>=10'}
-    dependencies:
-      ansi-styles: registry.npmmirror.com/ansi-styles/4.3.0
-      supports-color: registry.npmmirror.com/supports-color/7.2.0
     dev: true
 
   registry.npmmirror.com/ci-info/2.0.0:
@@ -3510,7 +3513,7 @@ packages:
       app-builder-lib: registry.npmmirror.com/app-builder-lib/22.14.5
       builder-util: registry.npmmirror.com/builder-util/22.14.5
       builder-util-runtime: registry.npmmirror.com/builder-util-runtime/8.9.1
-      chalk: registry.npmmirror.com/chalk/4.1.2
+      chalk: 4.1.2
       dmg-builder: registry.npmmirror.com/dmg-builder/22.14.5
       fs-extra: registry.nlark.com/fs-extra/10.0.0
       is-ci: registry.npmmirror.com/is-ci/3.0.1
@@ -3545,7 +3548,7 @@ packages:
       '@types/fs-extra': registry.npmmirror.com/@types/fs-extra/9.0.13
       builder-util: registry.npmmirror.com/builder-util/22.14.5
       builder-util-runtime: registry.npmmirror.com/builder-util-runtime/8.9.1
-      chalk: registry.npmmirror.com/chalk/4.1.2
+      chalk: 4.1.2
       fs-extra: registry.nlark.com/fs-extra/10.0.0
       lazy-val: registry.nlark.com/lazy-val/1.0.5
       mime: registry.npmmirror.com/mime/2.6.0

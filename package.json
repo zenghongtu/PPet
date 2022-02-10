@@ -35,6 +35,7 @@
     "@types/styled-components": "^5.1.19",
     "@vitejs/plugin-react": "^1.1.4",
     "antd": "^4.16.13",
+    "chalk": "^5.0.0",
     "electron": "16.0.6",
     "electron-builder": "^22.14.5",
     "electron-store": "^8.0.1",
