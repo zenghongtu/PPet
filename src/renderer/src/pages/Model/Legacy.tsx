@@ -10,6 +10,7 @@ const Legacy: FC<LegacyType> = ({ modelPath, height, width }) => {
   return (
     <canvas
       id="live2d"
+      className="live2d"
       width={width}
       height={height}
       key={+new Date()}

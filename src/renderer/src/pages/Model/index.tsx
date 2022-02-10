@@ -7,7 +7,24 @@ import CurrentRender from './Current'
 import Toolbar from './Toolbar'
 import Tips, { TipsType } from './Tips'
 import { useDispatch, useSelector } from 'react-redux'
+import zhTips from './tips/zh.json'
+import enTips from './tips/en.json'
 import { Dispatch, RootState } from '../../store'
+
+interface ITips {
+  mouseover: Mouseover[]
+  click: Mouseover[]
+}
+
+interface Season {
+  date: string
+  text: string
+}
+
+interface Mouseover {
+  selector: string
+  text: string[]
+}
 
 const Wrapper = styled.div<{ border: boolean }>`
   ${(props) => (props.border ? 'border: 2px dashed #ccc;' : 'padding: 2px;')}
@@ -99,22 +116,57 @@ const Model = () => {
     : LegacyRender
 
   const handleMessageChange = (nextTips: TipsType) => {
-    if (nextTips.priority >= tips.priority) {
-      setTips(nextTips)
-    }
+    setTips(nextTips)
   }
+
+  const handleMouseOver: React.MouseEventHandler<HTMLDivElement> = (event) => {
+    const tips = tipJSONs.mouseover.find((item) =>
+      (event.target as any).matches(item.selector),
+    )
+
+    if (!tips) {
+      return
+    }
+
+    let text = Array.isArray(tips.text)
+      ? tips.text[Math.floor(Math.random() * tips.text.length)]
+      : tips.text
+    text = text.replace('{text}', (event.target as HTMLDivElement).innerText)
+    handleMessageChange({
+      text,
+      timeout: 4000,
+      priority: 8,
+    })
+  }
+
+  const handleClick: React.MouseEventHandler<HTMLDivElement> = (event) => {
+    const tips = tipJSONs.mouseover.find((item) =>
+      (event.target as any).matches(item.selector),
+    )
+
+    if (!tips) {
+      return
+    }
+
+    let text = Array.isArray(tips.text)
+      ? tips.text[Math.floor(Math.random() * tips.text.length)]
+      : tips.text
+    text = text.replace('{text}', (event.target as HTMLDivElement).innerText)
+
+    handleMessageChange({
+      text,
+      timeout: 4000,
+      priority: 8,
+    })
+  }
+
+  const tipJSONs = zhTips
 
   return (
     <Wrapper
       border={resizable}
-      onMouseOver={(ev) => {
-        console.log('ev: ', ev.target)
-        //
-      }}
-      onClick={(ev) => {
-        console.log('ev: ', ev.target)
-        //
-      }}
+      onMouseOver={handleMouseOver}
+      onClick={handleClick}
     >
       <Tips {...tips}></Tips>
       <Toolbar onShowMessage={handleMessageChange}></Toolbar>

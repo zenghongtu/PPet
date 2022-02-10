@@ -66,10 +66,6 @@ async function createWindow() {
   }
 
   mainWindowState.manage(win)
-  // Test active push message to Renderer-process.
-  // win.webContents.on('did-finish-load', () => {
-  //   win?.webContents.send('main-process-message', new Date().toLocaleString());
-  // });
 
   initTray(win)
 }
