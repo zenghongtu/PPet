@@ -13,7 +13,7 @@ const getModels = async (file: File) => {
   console.log('getModels: ', filePath)
   return fs.stat(filePath).then(async (f) => {
     if (f.isDirectory()) {
-      const result = await globby(['**/model.json', '**.model3.json'], {
+      const result = await globby(['**/*model.json', '**.model3.json'], {
         cwd: filePath,
       })
       return result.map((f) => path.join(filePath, f))
