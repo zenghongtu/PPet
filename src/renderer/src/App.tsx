@@ -4,7 +4,7 @@ import 'font-awesome/css/font-awesome.css'
 
 import { GlobalStyles } from './styles/GlobalStyles'
 import Model from './pages/Model'
-import Store from './pages/Store'
+import Setting from './pages/Setting'
 import store from './store'
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
       <GlobalStyles />
       <Routes>
         <Route path="/" element={<Model />} />
-        <Route path="/store" element={<Store />} />
+        <Route path="/setting" element={<Setting />} />
       </Routes>
     </Provider>
   )

@@ -11,52 +11,42 @@ remoteMain.initialize()
 const isWin7 = os.release().startsWith('6.1')
 if (isWin7) app.disableHardwareAcceleration()
 
-if (!app.requestSingleInstanceLock()) {
-  app.quit()
-  process.exit(0)
+if (app.isPackaged) {
+  if (!app.requestSingleInstanceLock()) {
+    app.quit()
+    process.exit(0)
+  }
+  if (process.platform === 'darwin') {
+    app.dock.hide()
+  }
 }
 
 app.commandLine.appendSwitch('disable-renderer-backgrounding')
 app.commandLine.appendSwitch('disable-background-timer-throttling')
 app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required')
 
-// if (process.platform === 'darwin' && app.isPackaged) {
-//   app.dock.hide();
-// }
-
-let win: BrowserWindow | null = null
-
 let mainWindowState: windowStateKeeper.State
 
-async function createWindow() {
-  win = new BrowserWindow({
-    title: 'PPet',
-    alwaysOnTop: true,
-    autoHideMenuBar: true,
-    hasShadow: false,
-    transparent: true,
-    frame: false,
-    x: mainWindowState.x,
-    y: mainWindowState.y,
-    width: mainWindowState.width,
-    height: mainWindowState.height,
-    skipTaskbar: true,
-    minimizable: false,
-    maximizable: false,
-    resizable: false,
-    // titleBarStyle: 'hidden',
-    webPreferences: {
-      preload: join(__dirname, '../preload/index.cjs'),
-      webSecurity: false,
-      backgroundThrottling: false,
-    },
-  })
+const winPagePathMap: Map<string, BrowserWindow> = new Map()
+
+export async function createWindow(
+  options: Electron.BrowserWindowConstructorOptions,
+  pagePath: string = '',
+) {
+  const lastWin = winPagePathMap.get(pagePath)
+  if (lastWin && !lastWin.isDestroyed()) {
+    lastWin.focus()
+    return
+  }
+
+  const win = new BrowserWindow(options)
 
   if (app.isPackaged) {
-    win.loadFile(join(__dirname, '../renderer/index.html'))
+    win.loadFile(join(__dirname, '../renderer/index.html') + pagePath)
   } else {
     const pkg = await import('../../package.json')
-    const url = `http://${pkg.env.HOST || '127.0.0.1'}:${pkg.env.PORT}`
+    const url =
+      `http://${pkg.env.HOST || '127.0.0.1'}:${pkg.env.PORT}` + pagePath
 
     win.loadURL(url, {
       // userAgent:
@@ -65,19 +55,13 @@ async function createWindow() {
     win.webContents.openDevTools()
   }
 
-  mainWindowState.manage(win)
+  winPagePathMap.set(pagePath, win)
 
-  initTray(win)
+  return win
 }
 
 app
   .whenReady()
-  .then(() => {
-    mainWindowState = windowStateKeeper({
-      defaultHeight: 350,
-      defaultWidth: 600,
-    })
-  })
   .then(() => {
     protocol.registerFileProtocol('file', (request, callback) => {
       const url = request.url.replace('file://', '')
@@ -90,13 +74,47 @@ app
       }
     })
   })
-  .then(createWindow)
+  .then(() => {
+    mainWindowState = windowStateKeeper({
+      defaultHeight: 350,
+      defaultWidth: 600,
+    })
+  })
+  .then(async () => {
+    const options = {
+      title: 'PPet',
+      alwaysOnTop: true,
+      autoHideMenuBar: true,
+      hasShadow: false,
+      transparent: true,
+      frame: false,
+      x: mainWindowState.x,
+      y: mainWindowState.y,
+      width: mainWindowState.width,
+      height: mainWindowState.height,
+      skipTaskbar: true,
+      minimizable: false,
+      maximizable: false,
+      resizable: false,
+      // titleBarStyle: 'hidden',
+      webPreferences: {
+        preload: join(__dirname, '../preload/index.cjs'),
+        webSecurity: false,
+        backgroundThrottling: false,
+      },
+    }
+
+    const win = await createWindow(options)
+    if (win) {
+      mainWindowState.manage(win)
+
+      initTray(win)
+    }
+  })
 
 app.on('window-all-closed', () => {
-  win = null
-  if (process.platform !== 'darwin') {
-    app.quit()
-  }
+  winPagePathMap.clear()
+  app.quit()
 })
 
 app.on('browser-window-created', (ev, win) => {
@@ -104,6 +122,7 @@ app.on('browser-window-created', (ev, win) => {
 })
 
 app.on('second-instance', () => {
+  const win = BrowserWindow.getAllWindows()[0]
   if (win) {
     // Someone tried to run a second instance, we should focus our window.
     if (win.isMinimized()) win.restore()
@@ -115,7 +134,5 @@ app.on('activate', () => {
   const allWindows = BrowserWindow.getAllWindows()
   if (allWindows.length) {
     allWindows[0].focus()
-  } else {
-    createWindow()
   }
 })

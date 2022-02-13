@@ -1,4 +1,4 @@
-import { config } from '@src/common'
+import { join } from 'path'
 import electron, {
   Tray,
   nativeImage,
@@ -9,6 +9,8 @@ import electron, {
   BrowserWindow,
   Menu,
 } from 'electron'
+import { config } from '@src/common'
+import { createWindow } from '.'
 
 import stripTrayIcon from '../../static/icons/strip-tray.png'
 import trayIcon from '../../static/icons/tray.png'
@@ -33,9 +35,9 @@ const langs = {
     removeModel: '移除模型',
     reRender: '重新渲染',
     debug: '调试',
-    feedback: '反馈建议',
-    about: '关于 PPet',
-    quit: '退出 PPet',
+    feedback: '反馈',
+    about: '关于',
+    quit: '退出',
     model: {
       title: '请选择模型配置文件',
       buttonLabel: '导入模型',
@@ -47,6 +49,7 @@ const langs = {
       getContent: (text: string) =>
         `无效的model配置文件，该文件为'.json'结尾，会包含${text}等字段`,
     },
+    settings: '配置',
   },
   en: {
     alwaysOnTop: 'Always On Top',
@@ -66,8 +69,8 @@ const langs = {
     reRender: 'ReRender',
     debug: 'Debug',
     feedback: 'Feedback',
-    about: 'About PPet',
-    quit: 'Quit PPet',
+    about: 'About',
+    quit: 'Quit',
     model: {
       title: 'Please select model configuration file',
       buttonLabel: 'Import model',
@@ -79,6 +82,7 @@ const langs = {
       getContent: (text: string) =>
         `Invalid model configuration file. The file ends with '.json' and should contain fields such as ${text}`,
     },
+    settings: 'Settings',
   },
 }
 
@@ -140,6 +144,25 @@ const initTray = (mainWindow: BrowserWindow) => {
     },
 
     {
+      label: cl.settings,
+      accelerator: 'CmdOrCtrl+,',
+      click: async () => {
+        await createWindow(
+          {
+            title: cl.settings,
+            width: 800,
+            height: 600,
+            webPreferences: {
+              preload: join(__dirname, '../preload/index.cjs'),
+              webSecurity: false,
+              backgroundThrottling: false,
+            },
+          },
+          '#/setting',
+        )
+      },
+    },
+    {
       label: cl.language,
       type: 'submenu',
       submenu: [
@@ -161,7 +184,6 @@ const initTray = (mainWindow: BrowserWindow) => {
     {
       type: 'separator',
     },
-
     {
       label: cl.reRender,
       accelerator: 'CmdOrCtrl+r',
@@ -169,9 +191,6 @@ const initTray = (mainWindow: BrowserWindow) => {
         app.relaunch()
         app.exit(0)
       },
-    },
-    {
-      type: 'separator',
     },
     {
       label: cl.debug,
@@ -191,6 +210,9 @@ const initTray = (mainWindow: BrowserWindow) => {
     {
       label: cl.about,
       role: 'about',
+    },
+    {
+      type: 'separator',
     },
     {
       label: cl.quit,
