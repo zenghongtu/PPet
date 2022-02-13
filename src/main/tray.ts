@@ -188,8 +188,7 @@ const initTray = (mainWindow: BrowserWindow) => {
       label: cl.reRender,
       accelerator: 'CmdOrCtrl+r',
       click: () => {
-        app.relaunch()
-        app.exit(0)
+        mainWindow.reload()
       },
     },
     {
