@@ -140,7 +140,7 @@ const Model = () => {
   }
 
   const handleClick: React.MouseEventHandler<HTMLDivElement> = (event) => {
-    const tips = tipJSONs.mouseover.find((item) =>
+    const tips = tipJSONs.click.find((item) =>
       (event.target as any).matches(item.selector),
     )
 
