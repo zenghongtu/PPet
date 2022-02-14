@@ -7,6 +7,7 @@ declare global {
       __filename: string
       getModels: (file?: File) => Promise<string[]>
       setWinResizable: (resizable: boolean) => void
+      isWinResizable: () => boolean
     }
   }
 }

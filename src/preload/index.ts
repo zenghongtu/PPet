@@ -26,9 +26,14 @@ const setWinResizable = (resizable: boolean) => {
   electron.getCurrentWindow().setResizable(resizable)
 }
 
+const isWinResizable = () => {
+  return electron.getCurrentWindow().isResizable()
+}
+
 contextBridge.exposeInMainWorld('bridge', {
   __dirname,
   __filename,
   getModels,
   setWinResizable,
+  isWinResizable,
 })

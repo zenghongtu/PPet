@@ -3,7 +3,7 @@ import { RootModel } from '.'
 
 export const win = createModel<RootModel>()({
   state: {
-    resizable: false,
+    resizable: window.bridge.isWinResizable(),
   } as { resizable: boolean },
   reducers: {
     setResizable: (state, resizable: boolean) => {
