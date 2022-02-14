@@ -45,10 +45,19 @@ const getCavSize = () => {
 }
 
 const Model = () => {
-  const { modelPath, resizable } = useSelector((state: RootState) => ({
+  const {
+    modelPath: originModelPath,
+    resizable,
+    useGhProxy,
+  } = useSelector((state: RootState) => ({
     ...state.config,
     ...state.win,
   }))
+
+  const modelPath =
+    useGhProxy && originModelPath.startsWith('http')
+      ? `https://ghproxy.com/${originModelPath}`
+      : originModelPath
 
   const dispatch = useDispatch<Dispatch>()
 

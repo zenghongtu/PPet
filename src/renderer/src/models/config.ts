@@ -1,20 +1,23 @@
 import { createModel } from '@rematch/core'
 import { RootModel } from './'
 
-const initModelPath =
-  'file:///Users/jason/Downloads/live2d_models-main/assets/model/moc3/aierdeliqi_4/aierdeliqi_4.model3.json'
+import initModelList from './models.json'
 
 export const config = createModel<RootModel>()({
   state: {
-    modelPath: initModelPath,
-    modelList: [],
-  } as { modelPath: string; modelList: string[] },
+    modelPath: initModelList[0],
+    modelList: initModelList,
+    useGhProxy: true,
+  } as { modelPath: string; modelList: string[]; useGhProxy: boolean },
   reducers: {
     setModelList(state, modelList: string[]) {
       return { ...state, modelList }
     },
     setModelPath(state, modelPath: string) {
       return { ...state, modelPath }
+    },
+    setUseGhProxy(state, enable: boolean) {
+      return { ...state, useGhProxy: enable }
     },
     nextModel(state) {
       const { modelList, modelPath } = state
