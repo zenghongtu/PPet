@@ -20,10 +20,12 @@ const parseModelPath = (p: string) => {
 }
 
 const Current: FC<CurrentType> = ({ modelPath, width, height }) => {
+  const live2dRef = useRef<HTMLDivElement>(null)
+
   useEffect(() => {
     const { basePath, modelName } = parseModelPath(modelPath)
     new (window as any).l2dViewer({
-      el: document.getElementById('live2d'),
+      el: live2dRef.current,
       basePath,
       modelName,
       width,
@@ -32,7 +34,7 @@ const Current: FC<CurrentType> = ({ modelPath, width, height }) => {
     })
   }, [modelPath, width, height])
 
-  return <div id="live2d" className="live2d" key={+new Date()}></div>
+  return <div className="live2d" ref={live2dRef} key={+new Date()}></div>
 }
 
 export default React.memo(Current)
