@@ -44,6 +44,8 @@ const getCavSize = () => {
   }
 }
 
+const config = window.bridge.getConfig() || {}
+
 const Model = () => {
   const {
     modelPath: originModelPath,
@@ -70,7 +72,9 @@ const Model = () => {
   const [cavSize, setCavSize] =
     useState<{ width: number; height: number }>(getCavSize)
 
-  const [isShowTools, setIsShowTools] = useState(true)
+  const [isShowTools, setIsShowTools] = useState(() => {
+    return config.showTool ?? true
+  })
 
   useEffect(() => {
     const handleShowTool = (
@@ -182,7 +186,7 @@ const Model = () => {
     })
   }
 
-  const tipJSONs = zhTips
+  const tipJSONs = config.language === 'en' ? enTips : zhTips
 
   return (
     <Wrapper

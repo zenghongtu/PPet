@@ -30,6 +30,8 @@ const isWinResizable = () => {
   return electron.getCurrentWindow().isResizable()
 }
 
+const getConfig = () => electron.getGlobal('config')
+
 contextBridge.exposeInMainWorld('bridge', {
   __dirname,
   __filename,
@@ -39,4 +41,5 @@ contextBridge.exposeInMainWorld('bridge', {
   onToolbarSwitch: (
     callback: (event: Electron.IpcRendererEvent, ...args: any[]) => void,
   ) => ipcRenderer.on('toolbar-switch', callback),
+  getConfig,
 })

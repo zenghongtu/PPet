@@ -4,6 +4,7 @@ import { app, BrowserWindow, protocol, session } from 'electron'
 import windowStateKeeper from 'electron-window-state'
 import remoteMain from '@electron/remote/main'
 
+import './initConfig'
 import initTray from './tray'
 
 remoteMain.initialize()

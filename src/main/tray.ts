@@ -97,18 +97,14 @@ const initTray = (mainWindow: BrowserWindow) => {
 
   const handleClickLangRadio = (lang: langType) => {
     config.set('language', lang)
-    mainWindow.webContents.send('language-change', lang)
     initTray(mainWindow)
+    mainWindow.webContents.reload()
   }
 
-  const alwaysOnTop = config.get('alwaysOnTop', true) as boolean
-  const ignoreMouseEvents = config.get('ignoreMouseEvents', false) as boolean
-  const showTool = config.get('showTool', true) as boolean
-
-  const lang = config.get(
-    'language',
-    app.getLocale().includes('zh') ? 'zh' : 'en',
-  ) as langType
+  const alwaysOnTop = config.get('alwaysOnTop')
+  const ignoreMouseEvents = config.get('ignoreMouseEvents')
+  const showTool = config.get('showTool')
+  const lang = config.get('language')
 
   const cl = langs[lang]
   mainWindow.setAlwaysOnTop(alwaysOnTop)
