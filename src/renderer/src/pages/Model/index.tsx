@@ -137,9 +137,9 @@ const Model = () => {
     }
   }, [])
 
-  const Render = modelPath.endsWith('.model3.json')
-    ? CurrentRender
-    : LegacyRender
+  const isMoc3 = modelPath.endsWith('.model3.json')
+
+  const Render = isMoc3 ? CurrentRender : LegacyRender
 
   const handleMessageChange = (nextTips: TipsType) => {
     setTips(nextTips)
@@ -191,8 +191,8 @@ const Model = () => {
   return (
     <Wrapper
       border={resizable}
-      onMouseOver={handleMouseOver}
-      onClick={handleClick}
+      onMouseOver={isMoc3 ? undefined : handleMouseOver}
+      onClick={isMoc3 ? undefined : handleClick}
     >
       <Tips {...tips}></Tips>
       {isShowTools && <Toolbar onShowMessage={handleMessageChange}></Toolbar>}
