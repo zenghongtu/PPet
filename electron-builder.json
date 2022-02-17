@@ -1,6 +1,6 @@
 {
-  "productName": "PPet",
-  "artifactName": "PPet-${version}.${ext}",
+  "productName": "PPet3",
+  "artifactName": "PPet3-${version}.${ext}",
   "appId": "com.zenghongtu.ppet-v3",
   "asar": true,
   "files": ["dist", "package.json", "static/**/*"],
