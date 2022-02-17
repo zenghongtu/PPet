@@ -7,6 +7,11 @@ import styled from 'styled-components'
 
 const Wrapper = styled.div`
   padding: 10px;
+
+  & > div {
+    display: flex;
+    padding: 0 10px;
+  }
 `
 
 const TextAreaWrapStyled = styled.div`
@@ -14,6 +19,10 @@ const TextAreaWrapStyled = styled.div`
   & > textarea {
     white-space: nowrap;
   }
+`
+const ButtonStyled = styled(Button)`
+  padding: 0 40px !important;
+  margin-left: auto;
 `
 
 const Setting = () => {
@@ -35,30 +44,31 @@ const Setting = () => {
       模型列表：
       <TextAreaWrapStyled>
         <Input.TextArea
-          rows={8}
+          rows={20}
           value={value}
           onChange={(ev) => {
             setValue(ev.target.value)
           }}
         ></Input.TextArea>
       </TextAreaWrapStyled>
-      <Button type="primary" onClick={handleClickConfirmBtn}>
-        确定
-      </Button>
-      <br />
-      <Checkbox
-        checked={useGhProxy}
-        onChange={(ev) => {
-          const enable = ev.target.checked
-          dispatch.config.setUseGhProxy(enable)
-        }}
-      >
-        使用
-        <a href="https://ghproxy.com" target="_blank">
-          ghproxy
-        </a>
-        加速
-      </Checkbox>
+      <div>
+        <Checkbox
+          checked={useGhProxy}
+          onChange={(ev) => {
+            const enable = ev.target.checked
+            dispatch.config.setUseGhProxy(enable)
+          }}
+        >
+          使用
+          <a href="https://ghproxy.com" target="_blank">
+            ghproxy
+          </a>
+          加速
+        </Checkbox>{' '}
+        <ButtonStyled type="primary" onClick={handleClickConfirmBtn}>
+          确定
+        </ButtonStyled>
+      </div>
     </Wrapper>
   )
 }
