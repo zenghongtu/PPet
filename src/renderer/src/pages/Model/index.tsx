@@ -70,6 +70,19 @@ const Model = () => {
   const [cavSize, setCavSize] =
     useState<{ width: number; height: number }>(getCavSize)
 
+  const [isShowTools, setIsShowTools] = useState(true)
+
+  useEffect(() => {
+    const handleShowTool = (
+      event: Electron.IpcRendererEvent,
+      isShow: boolean,
+    ) => {
+      setIsShowTools(isShow)
+    }
+
+    window.bridge.onToolbarSwitch(handleShowTool)
+  }, [])
+
   useEffect(() => {
     const handleDragOver = (evt: DragEvent): void => {
       evt.preventDefault()
@@ -178,7 +191,7 @@ const Model = () => {
       onClick={handleClick}
     >
       <Tips {...tips}></Tips>
-      <Toolbar onShowMessage={handleMessageChange}></Toolbar>
+      {isShowTools && <Toolbar onShowMessage={handleMessageChange}></Toolbar>}
       <RenderWrapper>
         <Render {...cavSize} modelPath={modelPath}></Render>
       </RenderWrapper>

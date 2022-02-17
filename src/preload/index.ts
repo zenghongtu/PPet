@@ -1,4 +1,4 @@
-import { contextBridge } from 'electron'
+import { contextBridge, ipcRenderer } from 'electron'
 import electron from '@electron/remote'
 import fs from 'fs/promises'
 import path from 'path'
@@ -36,4 +36,7 @@ contextBridge.exposeInMainWorld('bridge', {
   getModels,
   setWinResizable,
   isWinResizable,
+  onToolbarSwitch: (
+    callback: (event: Electron.IpcRendererEvent, ...args: any[]) => void,
+  ) => ipcRenderer.on('toolbar-switch', callback),
 })

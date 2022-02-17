@@ -8,6 +8,9 @@ declare global {
       getModels: (file?: File) => Promise<string[]>
       setWinResizable: (resizable: boolean) => void
       isWinResizable: () => boolean
+      onToolbarSwitch: (
+        callback: (event: Electron.IpcRendererEvent, ...args: any[]) => void,
+      ) => Electron.IpcRenderer
     }
   }
 }

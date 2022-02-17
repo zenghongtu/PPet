@@ -97,11 +97,13 @@ const initTray = (mainWindow: BrowserWindow) => {
 
   const handleClickLangRadio = (lang: langType) => {
     config.set('language', lang)
+    mainWindow.webContents.send('language-change', lang)
     initTray(mainWindow)
   }
 
   const alwaysOnTop = config.get('alwaysOnTop', true) as boolean
   const ignoreMouseEvents = config.get('ignoreMouseEvents', false) as boolean
+  const showTool = config.get('showTool', true) as boolean
 
   const lang = config.get(
     'language',
@@ -124,6 +126,16 @@ const initTray = (mainWindow: BrowserWindow) => {
       },
     },
     {
+      label: cl.tools,
+      type: 'checkbox',
+      checked: showTool,
+      click: (item) => {
+        const { checked } = item
+        mainWindow.webContents.send('toolbar-switch', checked)
+        config.set('showTool', checked)
+      },
+    },
+    {
       label: cl.ignoreMouseEvents,
       type: 'checkbox',
       checked: ignoreMouseEvents,
@@ -133,16 +145,6 @@ const initTray = (mainWindow: BrowserWindow) => {
         config.set('ignoreMouseEvents', checked)
       },
     },
-    {
-      label: cl.openAtLogin,
-      type: 'checkbox',
-      checked: app.getLoginItemSettings().openAtLogin,
-      click: (item) => {
-        const { checked } = item
-        app.setLoginItemSettings({ openAtLogin: checked })
-      },
-    },
-
     {
       label: cl.settings,
       accelerator: 'CmdOrCtrl+,',
@@ -179,6 +181,15 @@ const initTray = (mainWindow: BrowserWindow) => {
           click: handleClickLangRadio.bind(null, 'en'),
         },
       ],
+    },
+    {
+      label: cl.openAtLogin,
+      type: 'checkbox',
+      checked: app.getLoginItemSettings().openAtLogin,
+      click: (item) => {
+        const { checked } = item
+        app.setLoginItemSettings({ openAtLogin: checked })
+      },
     },
 
     {

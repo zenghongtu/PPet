@@ -5,10 +5,15 @@ import { Dispatch, RootState } from '../../store'
 import { TipsType } from './Tips'
 
 const Wrapper = styled.div`
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 50px;
   color: #aaa;
   opacity: 0;
   position: absolute;
-  right: 10px;
+  right: 0px;
   top: 50%;
   transform: translateY(-50%);
   transition: opacity 1s;
