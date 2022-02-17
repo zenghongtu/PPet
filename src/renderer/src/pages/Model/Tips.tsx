@@ -239,7 +239,10 @@ const Tips: FC<TipsType> = (props) => {
   const timerRef = useRef<number>()
 
   useEffect(() => {
-    if (!currentTips || props.priority >= currentTips.priority) {
+    if (
+      props.text &&
+      (!currentTips || props.priority >= currentTips.priority)
+    ) {
       window.clearTimeout(timerRef.current)
       setCurrentTips(props)
 
