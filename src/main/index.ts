@@ -6,6 +6,7 @@ import remoteMain from '@electron/remote/main'
 
 import './initConfig'
 import initTray from './tray'
+import { createWindow, winPagePathMap } from './window'
 
 remoteMain.initialize()
 
@@ -28,39 +29,6 @@ app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required')
 
 let mainWindowState: windowStateKeeper.State
 
-const winPagePathMap: Map<string, BrowserWindow> = new Map()
-
-export async function createWindow(
-  options: Electron.BrowserWindowConstructorOptions,
-  pagePath: string = '',
-) {
-  const lastWin = winPagePathMap.get(pagePath)
-  if (lastWin && !lastWin.isDestroyed()) {
-    lastWin.focus()
-    return
-  }
-
-  const win = new BrowserWindow(options)
-
-  if (app.isPackaged) {
-    win.loadFile(join(__dirname, '../renderer/index.html') + pagePath)
-  } else {
-    const pkg = await import('../../package.json')
-    const url =
-      `http://${pkg.env.HOST || '127.0.0.1'}:${pkg.env.PORT}` + pagePath
-
-    win.loadURL(url, {
-      // userAgent:
-      //   'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3 like Mac OS X) AppleWebKit/603.1.23 (KHTML, like Gecko) Version/10.0 Mobile/14E5239e Safari/602.1',
-    })
-    win.webContents.openDevTools()
-  }
-
-  winPagePathMap.set(pagePath, win)
-
-  return win
-}
-
 app
   .whenReady()
   .then(() => {
@@ -77,8 +45,8 @@ app
   })
   .then(() => {
     mainWindowState = windowStateKeeper({
-      defaultHeight: 350,
-      defaultWidth: 600,
+      defaultHeight: 600,
+      defaultWidth: 350,
     })
   })
   .then(async () => {

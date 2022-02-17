@@ -10,8 +10,8 @@ import electron, {
   Menu,
 } from 'electron'
 import { config } from '@src/common'
-import { createWindow } from '.'
 
+import { createWindow } from './window'
 import stripTrayIcon from '../../static/icons/strip-tray.png'
 import trayIcon from '../../static/icons/tray.png'
 
@@ -156,7 +156,7 @@ const initTray = (mainWindow: BrowserWindow) => {
               backgroundThrottling: false,
             },
           },
-          '#/setting',
+          '/setting',
         )
       },
     },
