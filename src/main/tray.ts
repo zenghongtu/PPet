@@ -98,7 +98,7 @@ const initTray = (mainWindow: BrowserWindow) => {
   const handleClickLangRadio = (lang: langType) => {
     config.set('language', lang)
     initTray(mainWindow)
-    mainWindow.webContents.reload()
+    mainWindow.webContents.executeJavaScript(`window.setLanguage('${lang}')`)
   }
 
   const alwaysOnTop = config.get('alwaysOnTop')
@@ -127,7 +127,9 @@ const initTray = (mainWindow: BrowserWindow) => {
       checked: showTool,
       click: (item) => {
         const { checked } = item
-        mainWindow.webContents.send('toolbar-switch', checked)
+        mainWindow.webContents.executeJavaScript(
+          `window.setSwitchTool(${checked})`,
+        )
         config.set('showTool', checked)
       },
     },

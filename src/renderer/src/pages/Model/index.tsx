@@ -44,13 +44,13 @@ const getCavSize = () => {
   }
 }
 
-const config = window.bridge.getConfig() || {}
-
 const Model = () => {
   const {
     modelPath: originModelPath,
     resizable,
     useGhProxy,
+    language,
+    showTool,
   } = useSelector((state: RootState) => ({
     ...state.config,
     ...state.win,
@@ -72,19 +72,9 @@ const Model = () => {
   const [cavSize, setCavSize] =
     useState<{ width: number; height: number }>(getCavSize)
 
-  const [isShowTools, setIsShowTools] = useState(() => {
-    return config.showTool ?? true
-  })
-
   useEffect(() => {
-    const handleShowTool = (
-      event: Electron.IpcRendererEvent,
-      isShow: boolean,
-    ) => {
-      setIsShowTools(isShow)
-    }
-
-    window.bridge.onToolbarSwitch(handleShowTool)
+    ;(window as any).setSwitchTool = dispatch.win.setSwitchTool
+    ;(window as any).setLanguage = dispatch.win.setLanguage
   }, [])
 
   useEffect(() => {
@@ -199,7 +189,7 @@ const Model = () => {
     })
   }
 
-  const tipJSONs = config.language === 'en' ? enTips : zhTips
+  const tipJSONs = language === 'en' ? enTips : zhTips
 
   return (
     <Wrapper
@@ -208,7 +198,7 @@ const Model = () => {
       onClick={isMoc3 ? undefined : handleClick}
     >
       <Tips {...tips}></Tips>
-      {isShowTools && <Toolbar onShowMessage={handleMessageChange}></Toolbar>}
+      {showTool && <Toolbar onShowMessage={handleMessageChange}></Toolbar>}
       <RenderWrapper>
         <Render {...cavSize} modelPath={modelPath}></Render>
       </RenderWrapper>

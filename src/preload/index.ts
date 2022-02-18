@@ -38,8 +38,5 @@ contextBridge.exposeInMainWorld('bridge', {
   getModels,
   setWinResizable,
   isWinResizable,
-  onToolbarSwitch: (
-    callback: (event: Electron.IpcRendererEvent, ...args: any[]) => void,
-  ) => ipcRenderer.on('toolbar-switch', callback),
   getConfig,
 })
