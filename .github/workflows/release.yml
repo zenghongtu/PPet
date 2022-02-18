@@ -8,17 +8,16 @@ jobs:
 
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [macos-latest, ubuntu-latest, windows-2019]
 
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v2
 
-      - name: Install pnpm
-      - uses: pnpm/action-setup@v2.1.0
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@v1
         with:
-          version: 6.0.2
-          run_install: true
+          node-version: 14
 
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@v1
