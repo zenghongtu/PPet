@@ -16,7 +16,7 @@
     "artifactName": "${productName}_${version}.${ext}",
     "target": [
       {
-        "target": "nsis-web",
+        "target": "nsis",
         "arch": ["x64", "ia32"]
       },
       {
