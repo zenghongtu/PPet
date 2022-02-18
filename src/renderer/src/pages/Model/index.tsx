@@ -137,6 +137,19 @@ const Model = () => {
     }
   }, [])
 
+  useEffect(() => {
+    const handleBlur = () => {
+      if (resizable) {
+        dispatch.win.setResizable(false)
+      }
+    }
+
+    window.addEventListener('blur', handleBlur)
+    return () => {
+      window.removeEventListener('blur', handleBlur)
+    }
+  }, [])
+
   const isMoc3 = modelPath.endsWith('.model3.json')
 
   const Render = isMoc3 ? CurrentRender : LegacyRender
