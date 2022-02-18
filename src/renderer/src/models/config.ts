@@ -30,6 +30,17 @@ export const config = createModel<RootModel>()({
       }
       return state
     },
+    prevModel(state) {
+      const { modelList, modelPath } = state
+      let idx = modelList.findIndex((f) => modelPath === f)
+      if (idx > -1) {
+        if (--idx < 0) {
+          idx = modelList.length - 1
+        }
+        return { ...state, modelPath: modelList[idx] }
+      }
+      return state
+    },
   },
   effects: (dispatch) => ({
     // handle state changes with impure functions.

@@ -75,6 +75,8 @@ const Model = () => {
   useEffect(() => {
     ;(window as any).setSwitchTool = dispatch.win.setSwitchTool
     ;(window as any).setLanguage = dispatch.win.setLanguage
+    ;(window as any).nextModel = dispatch.config.nextModel
+    ;(window as any).prevModel = dispatch.config.prevModel
   }, [])
 
   useEffect(() => {

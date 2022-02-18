@@ -38,6 +38,8 @@ const langs = {
     feedback: '反馈',
     about: '关于',
     quit: '退出',
+    next: '下一个模型',
+    prev: '上一个模型',
     model: {
       title: '请选择模型配置文件',
       buttonLabel: '导入模型',
@@ -71,6 +73,8 @@ const langs = {
     feedback: 'Feedback',
     about: 'About',
     quit: 'Quit',
+    next: 'Next Model',
+    prev: 'Prev Model',
     model: {
       title: 'Please select model configuration file',
       buttonLabel: 'Import model',
@@ -124,6 +128,7 @@ const initTray = (mainWindow: BrowserWindow) => {
     {
       label: cl.tools,
       type: 'checkbox',
+      accelerator: 'CmdOrCtrl+t',
       checked: showTool,
       click: (item) => {
         const { checked } = item
@@ -135,6 +140,7 @@ const initTray = (mainWindow: BrowserWindow) => {
     },
     {
       label: cl.ignoreMouseEvents,
+      accelerator: 'CmdOrCtrl+i',
       type: 'checkbox',
       checked: ignoreMouseEvents,
       click: (item) => {
@@ -163,6 +169,26 @@ const initTray = (mainWindow: BrowserWindow) => {
       },
     },
     {
+      type: 'separator',
+    },
+    {
+      label: cl.prev,
+      accelerator: 'CmdOrCtrl+p',
+      click: () => {
+        mainWindow.webContents.executeJavaScript('window.prevModel()')
+      },
+    },
+    {
+      label: cl.next,
+      accelerator: 'CmdOrCtrl+n',
+      click: () => {
+        mainWindow.webContents.executeJavaScript('window.nextModel()')
+      },
+    },
+    {
+      type: 'separator',
+    },
+    {
       label: cl.language,
       type: 'submenu',
       submenu: [
@@ -181,16 +207,6 @@ const initTray = (mainWindow: BrowserWindow) => {
       ],
     },
     {
-      label: cl.openAtLogin,
-      type: 'checkbox',
-      checked: app.getLoginItemSettings().openAtLogin,
-      click: (item) => {
-        const { checked } = item
-        app.setLoginItemSettings({ openAtLogin: checked })
-      },
-    },
-
-    {
       type: 'separator',
     },
     {
@@ -202,8 +218,21 @@ const initTray = (mainWindow: BrowserWindow) => {
     },
     {
       label: cl.debug,
+      accelerator: 'CmdOrCtrl+d',
       click: () => {
         mainWindow.webContents.openDevTools({ mode: 'undocked' })
+      },
+    },
+    {
+      type: 'separator',
+    },
+    {
+      label: cl.openAtLogin,
+      type: 'checkbox',
+      checked: app.getLoginItemSettings().openAtLogin,
+      click: (item) => {
+        const { checked } = item
+        app.setLoginItemSettings({ openAtLogin: checked })
       },
     },
     {
