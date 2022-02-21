@@ -103,7 +103,7 @@ const Toolbar: FC<{
           ></span>
         )
       })}
-      <MoveIcon className="fa fa-lg fa-arrows" aria-hidden="true"></MoveIcon>
+      <MoveIcon className="fa fa-lg fa-arrows"></MoveIcon>
     </Wrapper>
   )
 }
