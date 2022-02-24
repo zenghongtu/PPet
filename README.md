@@ -3,7 +3,9 @@
 # PPet
 
 > 给你的桌面多一点趣味~😁
-> 
+
+**支持 Live2d v3 啦~**
+
 [![Current Release](https://img.shields.io/github/release/zenghongtu/PPet.svg?style=flat-square)](https://github.com/zenghongtu/PPet/releases)
 ![License](https://img.shields.io/github/license/zenghongtu/PPet.svg?style=flat-square)
 
