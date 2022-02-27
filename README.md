@@ -17,10 +17,6 @@
 
 <img src="assets/record1.gif" width="400">
 
-导入本地 Model：
-
-<img src="assets/record2.gif" width="400">
-
 
 设置（可以使用在线/本地 Model）：
 
@@ -47,6 +43,20 @@
 [这里](https://github.com/zenghongtu/PPet/releases/latest)去下载最新版本，Mac使用.dmg， Window使用.exe，Linux使用.deb。
 
 （可以使用 [GitHub Proxy 代理加速](https://ghproxy.com/) 下载）
+
+## 使用
+
+### 导入模型
+
+两种方式：
+
+- 在设置 -> 模型列表中添加 `json` 文件（本地模型以`file://`开头）。
+
+- 本地模型将文件夹拖入窗口中，导入成功会更新到模型列表中
+
+<img src="assets/record2.gif" width="300">
+
+
 
 
 ## 开发
